@@ -1,6 +1,8 @@
 *.class
 ~*
 *~
+*.apk
+acid-snake-android/bin/
 
 # Package Files #
 *.jar

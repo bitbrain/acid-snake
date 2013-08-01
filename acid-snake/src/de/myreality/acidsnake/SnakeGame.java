@@ -20,12 +20,13 @@ package de.myreality.acidsnake;
 
 import com.badlogic.gdx.Game;
 
+import de.myreality.acidsnake.screens.IntroScreen;
+
 public class SnakeGame extends Game {
 
 	@Override
 	public void create() {
-		// TODO Auto-generated method stub
-		
+		setScreen(new IntroScreen(this));
 	}
 	
 }
