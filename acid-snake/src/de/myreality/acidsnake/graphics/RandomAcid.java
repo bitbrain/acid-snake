@@ -18,7 +18,6 @@
 
 package de.myreality.acidsnake.graphics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import de.myreality.acid.Acid;
@@ -40,7 +39,7 @@ public class RandomAcid extends Acid {
 	// Constants
 	// ===========================================================
 	
-	private static final int DURATION = 700;
+	private static final int DURATION = 400;
 	
 	private CellEffect fadeEffect;
 	
@@ -68,6 +67,11 @@ public class RandomAcid extends Acid {
 	public void render() {	
 		
 		if (fadeEffect == null || fadeEffect.isDone()) {
+			
+			if (fadeEffect != null) {
+				fadeEffect.close();
+			}
+			
 			fadeEffect = new CellEffect(this, Resources.COLOR_GREEN, Resources.COLOR_VIOLET);
 		}
 		
@@ -92,7 +96,7 @@ public class RandomAcid extends Acid {
 		
 		private ColorFader fader;
 		
-		private static final int REFRESH_INTERVAL = 10;
+		private static final int REFRESH_INTERVAL = 20;
 		
 		private int indexX, indexY;
 		
@@ -106,7 +110,7 @@ public class RandomAcid extends Acid {
 			indexX = getRandomIndexX();
 			indexY = getRandomIndexY();
 			
-			fader = new ColorFader(0f, 0f, 0f, targetColor.r, targetColor.g, targetColor.b);
+			fader = new ColorFader(0.1f, 0.1f, 0.1f, targetColor.r, targetColor.g, targetColor.b);
 		}
 		
 		public void update() {
@@ -128,11 +132,13 @@ public class RandomAcid extends Acid {
 			}
 		}
 		
+		public void close() {
+			acid.clear(indexX, indexY);
+		}
+		
 		public boolean isDone() {
 			return timer.getTicks() >= DURATION;
 		}
-		
-		
 		
 		private Color generateRandomColor(String ... colorCollection) {
 			String selected = colorCollection[(int)(colorCollection.length * Math.random())];

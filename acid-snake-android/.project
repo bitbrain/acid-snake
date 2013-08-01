@@ -3,6 +3,7 @@
 	<name>acid-snake-android</name>
 	<comment></comment>
 	<projects>
+		<project>acid-snake</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
