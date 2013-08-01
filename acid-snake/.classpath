@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/tween-engine-api.jar" sourcepath="libs/tween-engine-api-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/acid.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/acid-libgdx.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/chronos.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

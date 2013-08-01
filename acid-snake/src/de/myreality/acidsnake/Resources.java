@@ -31,15 +31,15 @@ public class Resources {
 	// Textures
 	// ===========================================================
 	
-	public static final String TEXTURE_ACID_LOGO = "data/banner.png";
+	public static final String TEXTURE_ACID_LOGO = "texture-acid-banner";
 	
 	// ===========================================================
 	// Colors
 	// ===========================================================
 	
-	public static final String COLOR_GREEN = "89e000";
+	public static final String COLOR_GREEN = "color-green";
 	
-	public static final String COLOR_VIOLET = "6f0076";
+	public static final String COLOR_VIOLET = "color-violet";
 	
 	// ===========================================================
 	// Meta

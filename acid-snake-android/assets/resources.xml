@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    
+    <!-- TEXTURES -->
+    <resource type="texture" id="texture-acid-banner">data/banner.png</resource>
+    
+    <!--  FONTS -->
+    <resource type="bitmap-font" id="bitmap-font-regular">data/regular.fnt</resource>
+    
+    <!-- COLORS -->
+    <resource type="color" id="color-green">89e000</resource>
+    <resource type="color" id="color-violet">6f0076</resource>
+</resources>

@@ -34,6 +34,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.tweens.SpriteTween;
+import de.myreality.chronos.resources.ResourceManager;
 
 /**
  * Screen which displays the intro of the game. The intro can be skipped by
@@ -58,6 +59,8 @@ public class IntroScreen implements Screen {
 	
 	// Manager to handle the fade animation
 	private TweenManager tweenManager;
+	
+	private ResourceManager resourceManager = ResourceManager.getInstance();
 	
 	
 	public IntroScreen(SnakeGame game) {
@@ -90,7 +93,7 @@ public class IntroScreen implements Screen {
 	public void show() {
 		
 		batch = new SpriteBatch();
-		Texture texLogo = new Texture(Gdx.files.internal(Resources.TEXTURE_ACID_LOGO));
+		Texture texLogo = resourceManager.getResource(Resources.TEXTURE_ACID_LOGO, Texture.class);
 		spriteIntro = new Sprite(texLogo);
 		
 		// Center the logo into center

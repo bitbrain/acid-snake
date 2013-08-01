@@ -25,6 +25,7 @@ import de.myreality.acid.BufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.util.ColorFader;
 import de.myreality.acidsnake.util.Timer;
+import de.myreality.chronos.resources.ResourceManager;
 
 /**
  * 
@@ -44,6 +45,8 @@ public class RandomAcid extends Acid {
 	private int randomWaitTime = 36000;
 	
 	private int randomFadeTime = 3600;
+	
+	private ResourceManager resourceManager = ResourceManager.getInstance();
 	
 	// ===========================================================
 	// Fields
@@ -184,9 +187,8 @@ public class RandomAcid extends Acid {
 			}
 		}
 		
-		private Color generateRandomColor(String ... colorCollection) {
-			String selected = colorCollection[(int)(colorCollection.length * Math.random())];
-			return Color.valueOf(selected);
+		private Color generateRandomColor(Color ... colorCollection) {
+			return colorCollection[(int)(colorCollection.length * Math.random())];
 		}
 		
 		private void resetWaitTime() {
@@ -201,7 +203,9 @@ public class RandomAcid extends Acid {
 		}
 		
 		private void reloadColor() {
-			targetColor = generateRandomColor(Resources.COLOR_GREEN, Resources.COLOR_VIOLET);
+			Color color1 = resourceManager.getResource(Resources.COLOR_GREEN, Color.class);
+			Color color2 = resourceManager.getResource(Resources.COLOR_VIOLET, Color.class);
+			targetColor = generateRandomColor(color1, color2);
 			fader = new ColorFader(0.01f, 0.01f, 0.01f, targetColor.r, targetColor.g, targetColor.b);
 		}
 	}
