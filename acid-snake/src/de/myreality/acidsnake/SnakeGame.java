@@ -1,4 +1,4 @@
-/* Acid - Provides a Java cell API to display fancy cell boxes.
+/* AcidSnake - Snake game using Acid
  * Copyright (C) 2013  Miguel Gonzalez
  * 
  * This program is free software; you can redistribute it and/or
