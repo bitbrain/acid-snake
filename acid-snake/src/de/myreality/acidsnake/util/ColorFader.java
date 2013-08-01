@@ -18,14 +18,16 @@
 
 package de.myreality.acidsnake.util;
 
+import com.badlogic.gdx.graphics.Color;
+
 /**
- * Simple timer implementation
+ * Class which fades between two colors
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 
+ * @version 
  */
-public class Timer {
+public class ColorFader {
 
 	// ===========================================================
 	// Constants
@@ -35,22 +37,45 @@ public class Timer {
 	// Fields
 	// ===========================================================
 	
-	private long startTime;
-
-	private boolean running;
+	private float srcR, srcG, srcB, dstR, dstG, dstB;	
 	
+	private double ratio;
+	
+	private Color color;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public Timer() {
-		reset();
-		running = false;
+	public ColorFader(float srcR, float srcG, float srcB, float dstR,
+			float dstG, float dstB) {
+		super();
+		this.srcR = srcR;
+		this.srcG = srcG;
+		this.srcB = srcB;
+		this.dstR = dstR;
+		this.dstG = dstG;
+		this.dstB = dstB;
+		color = new Color();
 	}
 
 	// ===========================================================
 	// Getters and Setters
 	// ===========================================================
+	
+	public void setRatio(double ratio) {
+		this.ratio = ratio;
+		ratio = Math.min(this.ratio, 1.0);
+		ratio = Math.max(this.ratio, 0.0);
+		
+	}
+	
+	public Color getColor() {
+		
+		blend(srcR, srcG, srcB, dstR, dstG, dstB, ratio);
+		
+		return color;
+	}
 
 	// ===========================================================
 	// Methods from Superclass
@@ -60,25 +85,12 @@ public class Timer {
 	// Methods
 	// ===========================================================
 	
-	public void start() {
-		running = true;
-	}
-	
-	public void stop() {
-		running = false;
-		reset();
-	}
-	
-	public void reset() {
-		startTime = System.currentTimeMillis();
-	}
-	
-	public long getTicks() {
-		return System.currentTimeMillis() - startTime;
-	}
-	
-	public boolean isRunning() {
-		return running;
+	private void blend(float r1, float g1, float b1, float r2, float g2, float b2, double ratio) {
+		float r = (float) ratio;
+		float ir = (float) 1.0 - r;
+		color.r = r1 * r + r2 * ir;
+		color.g  = g1 * r + g2 * ir;
+		color.b = b1 * r + b2 * ir;           
 	}
 
 	// ===========================================================

@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.Color;
 import de.myreality.acid.Acid;
 import de.myreality.acid.BufferedRenderer;
 import de.myreality.acidsnake.Resources;
+import de.myreality.acidsnake.util.ColorFader;
+import de.myreality.acidsnake.util.Timer;
 
 /**
  * 
@@ -38,7 +40,7 @@ public class RandomAcid extends Acid {
 	// Constants
 	// ===========================================================
 	
-	private static final int DURATION = 2000;
+	private static final int DURATION = 700;
 	
 	private CellEffect fadeEffect;
 	
@@ -66,10 +68,10 @@ public class RandomAcid extends Acid {
 	public void render() {	
 		
 		if (fadeEffect == null || fadeEffect.isDone()) {
-			fadeEffect = new CellEffect(Resources.COLOR_GREEN, Resources.COLOR_VIOLET);
+			fadeEffect = new CellEffect(this, Resources.COLOR_GREEN, Resources.COLOR_VIOLET);
 		}
 		
-		fadeEffect.update((int)Gdx.graphics.getDeltaTime());
+		fadeEffect.update();
 		
 		super.render();
 	}
@@ -86,24 +88,63 @@ public class RandomAcid extends Acid {
 		
 		private Color targetColor;
 		
-		public CellEffect(String ... colors) {
+		private Timer timer, refreshTimer;
+		
+		private ColorFader fader;
+		
+		private static final int REFRESH_INTERVAL = 10;
+		
+		private int indexX, indexY;
+		
+		private Acid acid;
+		
+		public CellEffect(Acid acid, String ... colors) {
+			targetColor = generateRandomColor(colors);
+			timer = new Timer();
+			refreshTimer = new Timer();
+			this.acid = acid;
+			indexX = getRandomIndexX();
+			indexY = getRandomIndexY();
 			
+			fader = new ColorFader(0f, 0f, 0f, targetColor.r, targetColor.g, targetColor.b);
 		}
 		
-		public void update(int delta) {
+		public void update() {
 			
+			if (!timer.isRunning()) {
+				timer.start();
+			}
+			
+			if (!refreshTimer.isRunning()) {
+				refreshTimer.start();
+			}
+			
+			if (refreshTimer.getTicks() >= REFRESH_INTERVAL) {
+				fader.setRatio(timer.getTicks() / (float) DURATION);
+				Color color = fader.getColor();
+				acid.color(color.r, color.g, color.b);
+				acid.put(indexX, indexY);
+				refreshTimer.reset();
+			}
 		}
 		
 		public boolean isDone() {
-			return false;
+			return timer.getTicks() >= DURATION;
 		}
 		
-		private int blend(float r1, float g1, float b1, float r2, float g2, float b2, double ratio) {
-			float r = (float) ratio;
-			float ir = (float) 1.0 - r;
-			return Color.rgb888(r1 * r + r2 * ir, 
-							 g1 * r + g2 * ir,
-							 b1 * r + b2 * ir);             
+		
+		
+		private Color generateRandomColor(String ... colorCollection) {
+			String selected = colorCollection[(int)(colorCollection.length * Math.random())];
+			return Color.valueOf(selected);
+		}
+		
+		private int getRandomIndexX() {
+			return (int) (Math.random() * acid.getIndexX());
+		}
+		
+		private int getRandomIndexY() {
+			return (int) (Math.random() * acid.getIndexY());
 		}
 	}
 }
