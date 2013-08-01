@@ -39,9 +39,11 @@ public class RandomAcid extends Acid {
 	// Constants
 	// ===========================================================
 	
-	private static final int DURATION = 400;
+	private CellEffect[][] fadeEffects;
 	
-	private CellEffect fadeEffect;
+	private int randomWaitTime = 36000;
+	
+	private int randomFadeTime = 3600;
 	
 	// ===========================================================
 	// Fields
@@ -65,19 +67,41 @@ public class RandomAcid extends Acid {
 	
 	@Override
 	public void render() {	
-		
-		if (fadeEffect == null || fadeEffect.isDone()) {
+	
+		if (fadeEffects == null) {
+			fadeEffects = new CellEffect[getIndexX()][getIndexY()];
 			
-			if (fadeEffect != null) {
-				fadeEffect.close();
-			}
-			
-			fadeEffect = new CellEffect(this, Resources.COLOR_GREEN, Resources.COLOR_VIOLET);
 		}
 		
-		fadeEffect.update();
+		for (int x = 0; x < getIndexX(); ++x) {
+			for (int y = 0; y < getIndexY(); ++y) {
+				if (fadeEffects[x][y] == null) {
+					fadeEffects[x][y] = new CellEffect(x, y, this);
+				}
+				
+				fadeEffects[x][y].update();
+			}
+		}
 		
 		super.render();
+	}
+	
+
+	
+	public void setRandomWaitTime(int time) {
+		randomWaitTime = time;
+	}
+	
+	public int getRandomWaitTime() {
+		return randomWaitTime;
+	}
+	
+	public void setRandomFadeTime(int time) {
+		randomFadeTime = time;
+	}
+	
+	public int getRandomFadeTime() {
+		return randomFadeTime;
 	}
 
 	// ===========================================================
@@ -92,52 +116,72 @@ public class RandomAcid extends Acid {
 		
 		private Color targetColor;
 		
-		private Timer timer, refreshTimer;
+		private Timer timer, refreshTimer, waitTimer;
 		
 		private ColorFader fader;
+		
+		private long fadeTime;
 		
 		private static final int REFRESH_INTERVAL = 20;
 		
 		private int indexX, indexY;
 		
+		private int waitTime;
+		
+		private boolean waitMode;
+		
 		private Acid acid;
 		
-		public CellEffect(Acid acid, String ... colors) {
-			targetColor = generateRandomColor(colors);
+		public CellEffect(int indexX, int indexY, Acid acid) {
+			
 			timer = new Timer();
 			refreshTimer = new Timer();
+			waitTimer = new Timer();
+			this.indexX = indexX;
+			this.indexY = indexY;
 			this.acid = acid;
-			indexX = getRandomIndexX();
-			indexY = getRandomIndexY();
-			
-			fader = new ColorFader(0.1f, 0.1f, 0.1f, targetColor.r, targetColor.g, targetColor.b);
+			reloadColor();
+			waitMode = true;
 		}
 		
 		public void update() {
 			
-			if (!timer.isRunning()) {
-				timer.start();
+			if (waitMode) {
+				
+				if (!waitTimer.isRunning()) {
+					resetWaitTime();
+					waitTimer.start();
+				}
+				
+				if (waitTimer.getTicks() >= waitTime) {
+					resetFadeTime();
+					waitTimer.stop();
+					waitMode = false;
+				}
+			} else {
+				if (!timer.isRunning()) {
+					resetFadeTime();
+					timer.start();
+				}
+				
+				if (!refreshTimer.isRunning()) {
+					refreshTimer.reset();
+					refreshTimer.start();
+				}
+				
+				if (refreshTimer.getTicks() >= REFRESH_INTERVAL) {
+					fader.setRatio(timer.getTicks() / (float) fadeTime);
+					Color color = fader.getColor();
+					acid.color(color.r, color.g, color.b);
+					acid.put(indexX, indexY);
+					refreshTimer.reset();
+				}
+				
+				if (timer.getTicks() >= fadeTime) {
+					waitMode = true;
+					acid.clear(indexX, indexY);
+				}
 			}
-			
-			if (!refreshTimer.isRunning()) {
-				refreshTimer.start();
-			}
-			
-			if (refreshTimer.getTicks() >= REFRESH_INTERVAL) {
-				fader.setRatio(timer.getTicks() / (float) DURATION);
-				Color color = fader.getColor();
-				acid.color(color.r, color.g, color.b);
-				acid.put(indexX, indexY);
-				refreshTimer.reset();
-			}
-		}
-		
-		public void close() {
-			acid.clear(indexX, indexY);
-		}
-		
-		public boolean isDone() {
-			return timer.getTicks() >= DURATION;
 		}
 		
 		private Color generateRandomColor(String ... colorCollection) {
@@ -145,12 +189,20 @@ public class RandomAcid extends Acid {
 			return Color.valueOf(selected);
 		}
 		
-		private int getRandomIndexX() {
-			return (int) (Math.random() * acid.getIndexX());
+		private void resetWaitTime() {
+			waitTime = (int) (Math.random() * getRandomWaitTime() + 100);
+			waitTimer.reset();
 		}
 		
-		private int getRandomIndexY() {
-			return (int) (Math.random() * acid.getIndexY());
+		private void resetFadeTime() {
+			fadeTime = (int) (Math.random() * getRandomFadeTime() + 200);
+			reloadColor();
+			timer.reset();
+		}
+		
+		private void reloadColor() {
+			targetColor = generateRandomColor(Resources.COLOR_GREEN, Resources.COLOR_VIOLET);
+			fader = new ColorFader(0.01f, 0.01f, 0.01f, targetColor.r, targetColor.g, targetColor.b);
 		}
 	}
 }

@@ -86,11 +86,11 @@ public class ColorFader {
 	// ===========================================================
 	
 	private void blend(float r1, float g1, float b1, float r2, float g2, float b2, double ratio) {
-		float r = (float) ratio;
-		float ir = (float) 1.0 - r;
-		color.r = r1 * r + r2 * ir;
-		color.g  = g1 * r + g2 * ir;
-		color.b = b1 * r + b2 * ir;           
+		double r = ratio;
+		double ir = 1.0 - r;
+		color.r = (float)(r1 * r + r2 * ir);
+		color.g  = (float)(g1 * r + g2 * ir);
+		color.b = (float)(b1 * r + b2 * ir);           
 	}
 
 	// ===========================================================

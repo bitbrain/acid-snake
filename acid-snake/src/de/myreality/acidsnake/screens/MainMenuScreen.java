@@ -22,8 +22,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 
-import de.myreality.acid.Acid;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.graphics.RandomAcid;
 
@@ -38,7 +38,7 @@ public class MainMenuScreen implements Screen {
 	
 	private SnakeGame game;
 	
-	private Acid background;
+	private RandomAcid background;
 	
 	public MainMenuScreen(SnakeGame game) {
 		this.game = game;
@@ -49,6 +49,7 @@ public class MainMenuScreen implements Screen {
 		float color = 0.0f;
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
 		
 		background.render();
 	}
@@ -61,10 +62,12 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void show() {
 		background = new RandomAcid(new GdxBufferedRenderer());
-		background.backgroundColor(0.1f, 0.1f, 0.1f);
-		background.setSize(64);
-		background.setIndexX(8);
-		background.setIndexY(6);
+		background.backgroundColor(0.0f, 0.0f, 0.0f);
+		background.setSize(Resources.CELL_SIZE);
+		
+		
+		background.setIndexX((Gdx.graphics.getWidth() / Resources.CELL_SIZE) + 2);
+		background.setIndexY((Gdx.graphics.getHeight() / Resources.CELL_SIZE) + 2);
 		
 		background.setPosition(Gdx.graphics.getWidth() / 2f - background.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - background.getHeight() / 2f);

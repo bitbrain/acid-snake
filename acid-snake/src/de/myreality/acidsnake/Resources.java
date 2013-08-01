@@ -40,4 +40,10 @@ public class Resources {
 	public static final String COLOR_GREEN = "89e000";
 	
 	public static final String COLOR_VIOLET = "6f0076";
+	
+	// ===========================================================
+	// Meta
+	// ===========================================================
+	
+	public static final int CELL_SIZE = 26;
 }
