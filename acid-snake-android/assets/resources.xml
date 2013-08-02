@@ -13,6 +13,6 @@
     <resource type="string" id="string-start-game">Touch to start</resource>
     
     <!-- COLORS -->
-    <resource type="color" id="color-green">d2ff00</resource>
+    <resource type="color" id="color-green">8af500</resource>
     <resource type="color" id="color-violet">6f0076</resource>
 </resources>

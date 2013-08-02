@@ -40,8 +40,6 @@ public class LabelTween implements TweenAccessor<Label> {
 	@Override
 	public void setValues(Label target, int tweenType, float[] newValues) {
 		
-		System.out.println(newValues[0]);
-		
 		switch (tweenType) {
 		case ALPHA:
 			target.setColor(target.getColor().r, target.getColor().g, target.getColor().b, newValues[0]);

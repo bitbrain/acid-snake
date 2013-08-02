@@ -44,6 +44,7 @@ import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.graphics.RandomAcid;
 import de.myreality.acidsnake.tweens.LabelTween;
 import de.myreality.acidsnake.tweens.SpriteTween;
+import de.myreality.acidsnake.ui.FadeLabel;
 import de.myreality.chronos.resources.ResourceManager;
 
 /**
@@ -71,8 +72,11 @@ public class MainMenuScreen implements Screen {
 
 	private TweenManager tweenManager;
 	
+	private boolean readyForTouch;
+	
 	public MainMenuScreen(SnakeGame game) {
 		this.game = game;
+		readyForTouch = false;
 	}
 
 	@Override
@@ -80,6 +84,12 @@ public class MainMenuScreen implements Screen {
 		float color = 0.0f;
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		if (readyForTouch && Gdx.input.isTouched()) {
+			game.setScreen(new IngameScreen(game));
+		} else if (!Gdx.input.isTouched()) {
+			readyForTouch = true;
+		}
 		
 		tweenManager.update(delta);
 		stage.act(delta);
@@ -95,21 +105,22 @@ public class MainMenuScreen implements Screen {
 	public void resize(int width, int height) {
 		if (stage == null) {
 			stage = new Stage(width, height, false);
-		
+			
+			tweenManager = new TweenManager();
+			Tween.registerAccessor(Label.class, new LabelTween());
+			
 			LabelStyle lblStyle = new LabelStyle();
 			
 			lblStyle.font = resourceManager.getResource(Resources.BITMAP_FONT_REGULAR, BitmapFont.class);
 			lblStyle.fontColor = resourceManager.getResource(Resources.COLOR_GREEN, Color.class);
 			
-			lblStart = new Label(resourceManager.getResource(Resources.STRING_START_GAME, String.class),
-					             lblStyle);
+			lblStart = new FadeLabel(resourceManager.getResource(Resources.STRING_START_GAME, String.class),
+					             1f, tweenManager, lblStyle);
 			
 			lblStart.setPosition(Gdx.graphics.getWidth() / 2f - lblStart.getWidth() / 2f,
 								 Gdx.graphics.getHeight() / 2f - lblStart.getHeight() / 2f - Gdx.graphics.getHeight() / 8f);
 			
 			stage.addActor(lblStart);
-		
-		
 			imgLogo = new Image(resourceManager.getResource(Resources.TEXTURE_GAME_LOGO, Texture.class));
 		
 		
@@ -118,15 +129,6 @@ public class MainMenuScreen implements Screen {
 								 (Gdx.graphics.getHeight() / 2f - imgLogo.getHeight() / 2f) + Gdx.graphics.getHeight() / 4f);
 		
 			stage.addActor(imgLogo);
-		
-			tweenManager = new TweenManager();
-			Tween.registerAccessor(Label.class, new LabelTween());
-			Tween.to(lblStart, LabelTween.ALPHA, 100)
-				 	.target(0f)
-					.ease(TweenEquations.easeInOutQuad)
-					.repeatYoyo(1, 1.5f)
-					.setCallbackTriggers(TweenCallback.COMPLETE)
-					.start(tweenManager);
 		} else {
 			
 			stage.setViewport(width, height, false);
@@ -176,8 +178,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		stage.dispose();
 	}
 
 	
