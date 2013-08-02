@@ -19,6 +19,7 @@
 package de.myreality.acidsnake.controls;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 import de.myreality.acidsnake.SnakeGame;
@@ -37,6 +38,7 @@ public class IngameProcessor implements InputProcessor {
 	
 	public IngameProcessor(SnakeGame game) {
 		this.game = game;
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override

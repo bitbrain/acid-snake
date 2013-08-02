@@ -22,6 +22,8 @@ import com.badlogic.gdx.graphics.Color;
 
 import de.myreality.acid.Acid;
 import de.myreality.acid.BufferedRenderer;
+import de.myreality.acid.CellRenderer;
+import de.myreality.acid.gdx.GdxCellRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.util.ColorFader;
 import de.myreality.acidsnake.util.Timer;

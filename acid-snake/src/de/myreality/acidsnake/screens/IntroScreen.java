@@ -82,7 +82,9 @@ public class IntroScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		
+		float x = width / 2f - spriteIntro.getWidth() / 2f;
+		float y  = height / 2f - spriteIntro.getHeight() / 2f;
+		spriteIntro.setPosition(x, y);
 	}
 
 	@Override

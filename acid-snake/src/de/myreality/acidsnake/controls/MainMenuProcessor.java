@@ -38,6 +38,7 @@ public class MainMenuProcessor implements InputProcessor {
 	
 	public MainMenuProcessor(SnakeGame game) {
 		this.game = game;
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override

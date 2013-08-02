@@ -84,7 +84,6 @@ public class IngameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(new IngameProcessor(game));
-        Gdx.input.setCatchBackKey(true);
         
         acid = new Acid(new GdxBufferedRenderer());
         acid.setIndexY(12);
