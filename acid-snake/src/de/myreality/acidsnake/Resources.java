@@ -36,9 +36,28 @@ public class Resources {
 	// Textures
 	// ===========================================================
 	
-	public static final Texture TEXTURE_ACID_LOGO = new Texture("data/banner.png");
-	public static final Texture TEXTURE_GAME_LOGO = new Texture("data/logo.png");
-	public static final Texture TEXTURE_BLOCK = new Texture("data/block.png");
+	public static Texture TEXTURE_ACID_LOGO;
+	public static Texture TEXTURE_GAME_LOGO;
+	public static Texture TEXTURE_BLOCK;
+	
+	public static void reloadTextures() {
+		
+		if (TEXTURE_ACID_LOGO != null) {
+			TEXTURE_ACID_LOGO.dispose();
+		}
+		
+		if (TEXTURE_GAME_LOGO != null) {
+			TEXTURE_GAME_LOGO.dispose();
+		}
+		
+		if (TEXTURE_BLOCK != null) {
+			TEXTURE_BLOCK.dispose();
+		}
+		
+		TEXTURE_ACID_LOGO  = new Texture("data/banner.png");
+		TEXTURE_GAME_LOGO = new Texture("data/logo.png");
+		TEXTURE_BLOCK = new Texture("data/block.png");
+	}
 	
 	// ===========================================================
 	// Colors
@@ -58,7 +77,14 @@ public class Resources {
 	// Fonts
 	// ===========================================================
 		
-	public static final BitmapFont BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
+	public static BitmapFont BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
 	
-	
+	public static void reloadFonts() {
+		
+		if (BITMAP_FONT_REGULAR != null) {
+			BITMAP_FONT_REGULAR.dispose();
+		}
+		
+		BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
+	}
 }

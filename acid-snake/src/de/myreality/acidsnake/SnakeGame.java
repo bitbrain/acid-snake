@@ -26,6 +26,8 @@ public class SnakeGame extends Game {
 
 	@Override
 	public void create() {
+		Resources.reloadTextures();
+		Resources.reloadFonts();
 		setScreen(new IntroScreen(this));
 	}
 	
