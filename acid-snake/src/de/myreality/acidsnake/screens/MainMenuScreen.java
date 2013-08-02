@@ -137,7 +137,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		
+		Gdx.input.setInputProcessor(null);
 		batch = new SpriteBatch();
 		BufferedRenderer renderer = new GdxBufferedRenderer();
 		acdBackground = new RandomAcid(renderer);

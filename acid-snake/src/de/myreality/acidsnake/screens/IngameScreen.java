@@ -22,7 +22,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 
+import de.myreality.acid.Acid;
+import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.SnakeGame;
+import de.myreality.acidsnake.controls.MainMenuProcessor;
 
 /**
  * Ingame screen which handles the basic game
@@ -32,18 +35,44 @@ import de.myreality.acidsnake.SnakeGame;
  * @version 1.0
  */
 public class IngameScreen implements Screen {
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
 	
 	private SnakeGame game;
+	
+	private Acid acid;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 	
 	public IngameScreen(SnakeGame game) {
 		this.game = game;
 	}
 
+	// ===========================================================
+	// Getters and Setters
+	// ===========================================================
+
+	// ===========================================================
+	// Methods from Superclass
+	// ===========================================================
+	
+
+
 	@Override
 	public void render(float delta) {
-		float color = 0.1f;
+		float color = 0.0f;
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		acid.render();
 	}
 
 	@Override
@@ -51,11 +80,21 @@ public class IngameScreen implements Screen {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
+		Gdx.input.setInputProcessor(new MainMenuProcessor(game));
+        Gdx.input.setCatchBackKey(true);
+        
+        acid = new Acid(new GdxBufferedRenderer());
+        acid.setIndexY(12);
+        acid.setSize(Gdx.graphics.getHeight() / 12);
+        acid.setIndexX((int) (Gdx.graphics.getWidth() / acid.getCellSize()));		
+        acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
+							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
+        acid.color(1f, 0, 0);
+        acid.put(0, 1);
+        
 	}
 
 	@Override
@@ -82,26 +121,7 @@ public class IngameScreen implements Screen {
 
 	}
 
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	// ===========================================================
-	// Fields
-	// ===========================================================
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getters and Setters
-	// ===========================================================
-
-	// ===========================================================
-	// Methods from Superclass
-	// ===========================================================
-
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================
