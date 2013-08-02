@@ -18,10 +18,7 @@
 
 package de.myreality.acidsnake.screens;
 
-import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
@@ -30,7 +27,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -43,7 +39,6 @@ import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.graphics.RandomAcid;
 import de.myreality.acidsnake.tweens.LabelTween;
-import de.myreality.acidsnake.tweens.SpriteTween;
 import de.myreality.acidsnake.ui.FadeLabel;
 import de.myreality.chronos.resources.ResourceManager;
 
