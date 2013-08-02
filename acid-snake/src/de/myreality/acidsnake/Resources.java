@@ -32,6 +32,7 @@ public class Resources {
 	// ===========================================================
 	
 	public static final String TEXTURE_ACID_LOGO = "texture-acid-banner";
+	public static final String TEXTURE_GAME_LOGO = "texture-game-logo";
 	
 	// ===========================================================
 	// Colors
@@ -42,8 +43,16 @@ public class Resources {
 	public static final String COLOR_VIOLET = "color-violet";
 	
 	// ===========================================================
-	// Meta
+	// Strings
 	// ===========================================================
 	
-	public static final int CELL_SIZE = 26;
+	public static final String STRING_START_GAME = "string-start-game";
+
+	// ===========================================================
+	// Fonts
+	// ===========================================================
+		
+	public static final String BITMAP_FONT_REGULAR = "bitmap-font-regular";
+	
+	
 }

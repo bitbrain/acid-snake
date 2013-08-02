@@ -18,14 +18,33 @@
 
 package de.myreality.acidsnake.screens;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
+import de.myreality.acid.BufferedRenderer;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.graphics.RandomAcid;
+import de.myreality.acidsnake.tweens.LabelTween;
+import de.myreality.acidsnake.tweens.SpriteTween;
+import de.myreality.chronos.resources.ResourceManager;
 
 /**
  * Displays a fancy main menu
@@ -38,7 +57,19 @@ public class MainMenuScreen implements Screen {
 	
 	private SnakeGame game;
 	
-	private RandomAcid background;
+	private RandomAcid acdBackground;
+	
+	private Image imgLogo;
+	
+	private SpriteBatch batch;
+	
+	private ResourceManager resourceManager = ResourceManager.getInstance();
+	
+	private Label lblStart;
+	
+	private Stage stage;
+
+	private TweenManager tweenManager;
 	
 	public MainMenuScreen(SnakeGame game) {
 		this.game = game;
@@ -50,27 +81,79 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		tweenManager.update(delta);
+		stage.act(delta);
+
+		acdBackground.render();
+		batch.begin();
+			stage.draw();
+		batch.end();
 		
-		background.render();
 	}
 
 	@Override
 	public void resize(int width, int height) {
+		if (stage == null) {
+			stage = new Stage(width, height, false);
 		
+			LabelStyle lblStyle = new LabelStyle();
+			
+			lblStyle.font = resourceManager.getResource(Resources.BITMAP_FONT_REGULAR, BitmapFont.class);
+			lblStyle.fontColor = resourceManager.getResource(Resources.COLOR_GREEN, Color.class);
+			
+			lblStart = new Label(resourceManager.getResource(Resources.STRING_START_GAME, String.class),
+					             lblStyle);
+			
+			lblStart.setPosition(Gdx.graphics.getWidth() / 2f - lblStart.getWidth() / 2f,
+								 Gdx.graphics.getHeight() / 2f - lblStart.getHeight() / 2f - Gdx.graphics.getHeight() / 8f);
+			
+			stage.addActor(lblStart);
+		
+		
+			imgLogo = new Image(resourceManager.getResource(Resources.TEXTURE_GAME_LOGO, Texture.class));
+		
+		
+		
+			imgLogo.setPosition(Gdx.graphics.getWidth() / 2f - imgLogo.getWidth() / 2f,
+								 (Gdx.graphics.getHeight() / 2f - imgLogo.getHeight() / 2f) + Gdx.graphics.getHeight() / 4f);
+		
+			stage.addActor(imgLogo);
+		
+			tweenManager = new TweenManager();
+			Tween.registerAccessor(Label.class, new LabelTween());
+			Tween.to(lblStart, LabelTween.ALPHA, 100)
+				 	.target(0f)
+					.ease(TweenEquations.easeInOutQuad)
+					.repeatYoyo(1, 1.5f)
+					.setCallbackTriggers(TweenCallback.COMPLETE)
+					.start(tweenManager);
+		} else {
+			
+			stage.setViewport(width, height, false);
+			lblStart.setPosition(Gdx.graphics.getWidth() / 2f - lblStart.getWidth() / 2f,
+					 Gdx.graphics.getHeight() / 2f - lblStart.getHeight() / 2f - Gdx.graphics.getHeight() / 8f);
+			imgLogo.setPosition(Gdx.graphics.getWidth() / 2f - imgLogo.getWidth() / 2f,
+					 (Gdx.graphics.getHeight() / 2f - imgLogo.getHeight() / 2f) + Gdx.graphics.getHeight() / 4f);
+			
+		}
 	}
 
 	@Override
 	public void show() {
-		background = new RandomAcid(new GdxBufferedRenderer());
-		background.backgroundColor(0.0f, 0.0f, 0.0f);
-		background.setSize(Resources.CELL_SIZE);
 		
+		batch = new SpriteBatch();
+		BufferedRenderer renderer = new GdxBufferedRenderer();
+		acdBackground = new RandomAcid(renderer);
+		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);		
 		
-		background.setIndexX((Gdx.graphics.getWidth() / Resources.CELL_SIZE) + 2);
-		background.setIndexY((Gdx.graphics.getHeight() / Resources.CELL_SIZE) + 2);
+		acdBackground.setIndexY(12);
+
+		acdBackground.setSize(Gdx.graphics.getHeight() / 12);		
+
+		acdBackground.setIndexX((int) (Gdx.graphics.getWidth() / acdBackground.getCellSize()));
 		
-		background.setPosition(Gdx.graphics.getWidth() / 2f - background.getWidth() / 2f, 
-							   Gdx.graphics.getHeight() / 2f - background.getHeight() / 2f);
+		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
+							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);		
 	}
 
 	@Override

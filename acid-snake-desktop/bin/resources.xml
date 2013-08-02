@@ -3,11 +3,16 @@
     
     <!-- TEXTURES -->
     <resource type="texture" id="texture-acid-banner">data/banner.png</resource>
+    <resource type="texture" id="texture-block">data/block.png</resource>
+    <resource type="texture" id="texture-game-logo">data/logo.png</resource>
     
     <!--  FONTS -->
     <resource type="bitmap-font" id="bitmap-font-regular">data/regular.fnt</resource>
     
+    <!-- STRINGS -->
+    <resource type="string" id="string-start-game">Touch to start</resource>
+    
     <!-- COLORS -->
-    <resource type="color" id="color-green">89e000</resource>
+    <resource type="color" id="color-green">d2ff00</resource>
     <resource type="color" id="color-violet">6f0076</resource>
 </resources>

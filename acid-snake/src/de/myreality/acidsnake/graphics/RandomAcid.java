@@ -42,9 +42,9 @@ public class RandomAcid extends Acid {
 	
 	private CellEffect[][] fadeEffects;
 	
-	private int randomWaitTime = 36000;
+	private int randomWaitTime = 56000;
 	
-	private int randomFadeTime = 3600;
+	private int randomFadeTime = 5600;
 	
 	private ResourceManager resourceManager = ResourceManager.getInstance();
 	
