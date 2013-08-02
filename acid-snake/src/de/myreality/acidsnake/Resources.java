@@ -18,6 +18,11 @@
 
 package de.myreality.acidsnake;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 /**
  * Contains resource locations
  * 
@@ -31,28 +36,29 @@ public class Resources {
 	// Textures
 	// ===========================================================
 	
-	public static final String TEXTURE_ACID_LOGO = "texture-acid-banner";
-	public static final String TEXTURE_GAME_LOGO = "texture-game-logo";
+	public static final Texture TEXTURE_ACID_LOGO = new Texture("data/banner.png");
+	public static final Texture TEXTURE_GAME_LOGO = new Texture("data/logo.png");
+	public static final Texture TEXTURE_BLOCK = new Texture("data/block.png");
 	
 	// ===========================================================
 	// Colors
 	// ===========================================================
 	
-	public static final String COLOR_GREEN = "color-green";
+	public static final Color COLOR_GREEN = Color.valueOf("8af500");
 	
-	public static final String COLOR_VIOLET = "color-violet";
+	public static final Color COLOR_VIOLET = Color.valueOf("6f0076");
 	
 	// ===========================================================
 	// Strings
 	// ===========================================================
 	
-	public static final String STRING_START_GAME = "string-start-game";
+	public static final String STRING_START_GAME = "Touch to start";
 
 	// ===========================================================
 	// Fonts
 	// ===========================================================
 		
-	public static final String BITMAP_FONT_REGULAR = "bitmap-font-regular";
+	public static final BitmapFont BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
 	
 	
 }

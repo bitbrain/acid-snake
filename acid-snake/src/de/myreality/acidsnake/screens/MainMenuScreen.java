@@ -23,10 +23,7 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -37,10 +34,10 @@ import de.myreality.acid.BufferedRenderer;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
+import de.myreality.acidsnake.controls.MainMenuProcessor;
 import de.myreality.acidsnake.graphics.RandomAcid;
 import de.myreality.acidsnake.tweens.LabelTween;
 import de.myreality.acidsnake.ui.FadeLabel;
-import de.myreality.chronos.resources.ResourceManager;
 
 /**
  * Displays a fancy main menu
@@ -59,19 +56,14 @@ public class MainMenuScreen implements Screen {
 	
 	private SpriteBatch batch;
 	
-	private ResourceManager resourceManager = ResourceManager.getInstance();
-	
 	private Label lblStart;
 	
 	private Stage stage;
 
 	private TweenManager tweenManager;
 	
-	private boolean readyForTouch;
-	
 	public MainMenuScreen(SnakeGame game) {
 		this.game = game;
-		readyForTouch = false;
 	}
 
 	@Override
@@ -79,12 +71,6 @@ public class MainMenuScreen implements Screen {
 		float color = 0.0f;
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		if (readyForTouch && Gdx.input.isTouched()) {
-			game.setScreen(new IngameScreen(game));
-		} else if (!Gdx.input.isTouched()) {
-			readyForTouch = true;
-		}
 		
 		tweenManager.update(delta);
 		stage.act(delta);
@@ -106,17 +92,17 @@ public class MainMenuScreen implements Screen {
 			
 			LabelStyle lblStyle = new LabelStyle();
 			
-			lblStyle.font = resourceManager.getResource(Resources.BITMAP_FONT_REGULAR, BitmapFont.class);
-			lblStyle.fontColor = resourceManager.getResource(Resources.COLOR_GREEN, Color.class);
+			lblStyle.font = Resources.BITMAP_FONT_REGULAR;
+			lblStyle.fontColor = Resources.COLOR_GREEN;
 			
-			lblStart = new FadeLabel(resourceManager.getResource(Resources.STRING_START_GAME, String.class),
+			lblStart = new FadeLabel(Resources.STRING_START_GAME,
 					             1f, tweenManager, lblStyle);
 			
 			lblStart.setPosition(Gdx.graphics.getWidth() / 2f - lblStart.getWidth() / 2f,
 								 Gdx.graphics.getHeight() / 2f - lblStart.getHeight() / 2f - Gdx.graphics.getHeight() / 8f);
 			
 			stage.addActor(lblStart);
-			imgLogo = new Image(resourceManager.getResource(Resources.TEXTURE_GAME_LOGO, Texture.class));
+			imgLogo = new Image(Resources.TEXTURE_GAME_LOGO);
 		
 		
 		
@@ -137,7 +123,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(null);
+		Gdx.input.setInputProcessor(new MainMenuProcessor(game));
 		batch = new SpriteBatch();
 		BufferedRenderer renderer = new GdxBufferedRenderer();
 		acdBackground = new RandomAcid(renderer);

@@ -18,33 +18,31 @@
 
 package de.myreality.acidsnake.controls;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 import de.myreality.acidsnake.SnakeGame;
-import de.myreality.acidsnake.screens.IngameScreen;
+import de.myreality.acidsnake.screens.MainMenuScreen;
 
 /**
- * Processor for the main menu
+ * Processor for ingame
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class MainMenuProcessor implements InputProcessor {
+public class IngameProcessor implements InputProcessor {
 	
 	private SnakeGame game;
 	
-	public MainMenuProcessor(SnakeGame game) {
+	public IngameProcessor(SnakeGame game) {
 		this.game = game;
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.BACK || keycode == Keys.ESCAPE){
-			Gdx.app.exit();
-			return true;
+	    	game.setScreen(new MainMenuScreen(game));
 	    }
 	    return false;
 	}
@@ -63,8 +61,8 @@ public class MainMenuProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.setScreen(new IngameScreen(game));
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override

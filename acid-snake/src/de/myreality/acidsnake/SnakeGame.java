@@ -19,35 +19,14 @@
 package de.myreality.acidsnake;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 
 import de.myreality.acidsnake.screens.IntroScreen;
-import de.myreality.chronos.resources.ResourceException;
-import de.myreality.chronos.resources.ResourceManager;
-import de.myreality.chronos.resources.data.XMLSource;
 
 public class SnakeGame extends Game {
 
 	@Override
 	public void create() {
-		loadResources("resources.xml");
 		setScreen(new IntroScreen(this));
-	}
-	
-	private void loadResources(String assetPath) {
-		FileHandle resourceFile = Gdx.files.internal(assetPath);
-		ResourceManager resourceManager = ResourceManager.getInstance();	
-		
-		try {
-			resourceManager.addResourceLoader(ColorLoader.class);
-			resourceManager.addResourceLoader(TextureLoader.class);
-			resourceManager.addResourceLoader(TextureAtlasLoader.class);
-			resourceManager.addResourceLoader(BitmapFontLoader.class);
-			resourceManager.load(new XMLSource(resourceFile.read()));
-		} catch (ResourceException e) {
-			e.printStackTrace();
-		}
 	}
 	
 }

@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.GL10;
 import de.myreality.acid.Acid;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.SnakeGame;
-import de.myreality.acidsnake.controls.MainMenuProcessor;
+import de.myreality.acidsnake.controls.IngameProcessor;
 
 /**
  * Ingame screen which handles the basic game
@@ -83,7 +83,7 @@ public class IngameScreen implements Screen {
 	
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(new MainMenuProcessor(game));
+		Gdx.input.setInputProcessor(new IngameProcessor(game));
         Gdx.input.setCatchBackKey(true);
         
         acid = new Acid(new GdxBufferedRenderer());
