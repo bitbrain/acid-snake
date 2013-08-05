@@ -31,6 +31,8 @@ import de.myreality.acidsnake.core.SnakeListener;
 public enum WorldEntityType implements SnakeListener {
 
 	SNAKE {
+		
+		final int SNAKE_LENGTH = 3;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -40,7 +42,9 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
-			
+			if (target.getType().equals(this)) {
+				snake.kill();
+			}
 		}
 
 		@Override
@@ -50,8 +54,53 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
+			for (int i = 0; i < SNAKE_LENGTH; ++i) {
+				snake.addChunk();
+			}
+		}
+	},
+	
+	SMALL_FOOD {
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
 			
 		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			if (target.getType().equals(this)) {
+				snake.addChunk();
+			}
+		}
+
+		@Override
+		public void onDie(Snake snake) {
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			spawnAtRandomPosition(this, snake.getWorld());
+		}
 		
+	};
+	
+	private static WorldEntityFactory entityFactory = null;
+	
+	private static void spawnAtRandomPosition(WorldEntityType type, World world) {
+		int randomX = 0, randomY = 0;
+		boolean validPosition = false;
+		
+		while (!validPosition) {
+			
+			randomX = (int) (Math.random() * world.getWidth());
+			randomY = (int) (Math.random() * world.getHeight());
+			
+			validPosition = !world.hasEntity(randomX, randomY);
+		}
+		
+		world.putEntity(randomX, randomY, entityFactory.create(type));
 	}
 }

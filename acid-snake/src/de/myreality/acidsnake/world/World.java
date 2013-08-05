@@ -106,5 +106,15 @@ public interface World {
 	 * Build the world (should be called in the create method)
 	 */
 	void build();
+	
+	/**
+	 * @return width of this world
+	 */
+	int getWidth();
+	
+	/**
+	 * @return height of this world
+	 */
+	int getHeight();
 
 }
