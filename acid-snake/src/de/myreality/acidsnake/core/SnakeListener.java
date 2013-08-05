@@ -18,14 +18,16 @@
 
 package de.myreality.acidsnake.core;
 
+import de.myreality.acidsnake.world.WorldEntity;
+
 /**
- * World object which is represented on the world by its position and type
+ * Listens to the movement of a {@link Snake} object
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
- * @version 1.0
+ * @version  1.0
  */
-public interface WorldObject {
+public interface SnakeListener {
 
 	// ===========================================================
 	// Constants
@@ -35,15 +37,13 @@ public interface WorldObject {
 	// Methods
 	// ===========================================================
 	
-	WorldObjectType getType();
+	void onEnterPosition(int indexX, int indexY, Snake snake);
 	
-	int getIndexX();
+	void onCollide(int indexX, int indexY, Snake snake, WorldEntity target);
 	
-	int getIndexY();
+	void onDie(Snake snake);
 	
-	void setIndexX(int indexX);
+	void onSpawn(Snake snake);
 	
-	void setIndexY(int indexY);
 	
-	World getWorld();
 }

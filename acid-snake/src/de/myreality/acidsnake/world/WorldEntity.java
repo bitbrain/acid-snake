@@ -16,16 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
+package de.myreality.acidsnake.world;
 
 /**
- * World event which influences the world
+ * World object which is represented on the world by its position and type
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface WorldEvent {
+public interface WorldEntity {
 
 	// ===========================================================
 	// Constants
@@ -35,10 +35,15 @@ public interface WorldEvent {
 	// Methods
 	// ===========================================================
 	
-	/**
-	 * Proceed the event
-	 * 
-	 * @param world target world
-	 */
-	void proceed(World world);
+	WorldEntityType getType();
+	
+	int getIndexX();
+	
+	int getIndexY();
+	
+	void setIndexX(int indexX);
+	
+	void setIndexY(int indexY);
+	
+	World getWorld();
 }

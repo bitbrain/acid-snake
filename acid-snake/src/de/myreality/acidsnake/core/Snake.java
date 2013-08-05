@@ -18,14 +18,19 @@
 
 package de.myreality.acidsnake.core;
 
+import java.util.List;
+
+import de.myreality.acidsnake.util.Moveable;
+import de.myreality.acidsnake.world.World;
+
 /**
- * 
+ * Snake which can be moved through the world
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface Snake {
+public interface Snake extends Moveable {
 
 	// ===========================================================
 	// Constants
@@ -34,4 +39,62 @@ public interface Snake {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	/**
+	 * Returns all current chunks
+	 * 
+	 * @return
+	 */
+	List<SnakeChunk> getChunks();
+	
+	/**
+	 * Adds a new chunk to the snake
+	 */
+	void addChunk();
+	
+	/**
+	 * Returns the head of the snake
+	 * 
+	 * @return head snake chunk
+	 */
+	SnakeChunk getHead();
+	
+	/**
+	 * Returns the tail of the snake
+	 * 
+	 * @return tail snake chunk
+	 */
+	SnakeChunk getTail();
+	
+	/**
+	 * Returns the world to which the snake belongs to
+	 * 
+	 * @return current world
+	 */
+	World getWorld();
+	
+	/**
+	 * Adds a new listener to the snake
+	 * 
+	 * @param listener listener to add
+	 */
+	void addListener(SnakeListener listener);
+	
+	
+	/**
+	 * Spawns the snake at a random position
+	 */
+	void spawn();
+	
+	/**
+	 * Kills the snake
+	 */
+	void kill();
+	
+	/**
+	 * Returns true when killed
+	 * 
+	 * @return killed when killed
+	 */
+	boolean isKilled();
 }

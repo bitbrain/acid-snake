@@ -16,18 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
-
-import de.myreality.acidsnake.world.WorldEntity;
+package de.myreality.acidsnake.player;
 
 /**
- * Single element of a {link Snake} 
+ * Player of a given game
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface SnakeChunk extends WorldEntity {
+public interface Player {
 
 	// ===========================================================
 	// Constants
@@ -38,21 +36,28 @@ public interface SnakeChunk extends WorldEntity {
 	// ===========================================================
 	
 	/**
-	 * Moves this snake chunk to its sibling
+	 * Returns the current point amount
+	 * 
+	 * @return current points
 	 */
-	void move();
+	int getPoints();
 	
 	/**
-	 * Determines if this chunk is the head of the snake
-	 * 
-	 * @return True when head
+	 * Resets the points
 	 */
-	boolean isHead();
+	void resetPoints();
 	
 	/**
-	 * Returns the next chunk
+	 * Add points to the player
 	 * 
-	 * @return next chunk
+	 * @param points target points to add
 	 */
-	SnakeChunk getNext();
+	void addPoints(int points);
+	
+	/**
+	 * Set a new point amount
+	 * 
+	 * @param points points to set
+	 */
+	void setPoints(int points);
 }

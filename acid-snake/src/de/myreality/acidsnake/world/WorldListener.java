@@ -16,18 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
-
-import de.myreality.acidsnake.world.WorldEntity;
+package de.myreality.acidsnake.world;
 
 /**
- * Single element of a {link Snake} 
+ * Listens events to a given world
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface SnakeChunk extends WorldEntity {
+public interface WorldListener {
 
 	// ===========================================================
 	// Constants
@@ -38,21 +36,27 @@ public interface SnakeChunk extends WorldEntity {
 	// ===========================================================
 	
 	/**
-	 * Moves this snake chunk to its sibling
+	 * Is called before putting an entity target to a given position
+	 * 
+	 * @param indexX
+	 * @param indexY
+	 * @param target
 	 */
-	void move();
+	void onPut(int indexX, int indexY, WorldEntity target);
 	
 	/**
-	 * Determines if this chunk is the head of the snake
+	 * Is called when a specific entity will be removed from the world
 	 * 
-	 * @return True when head
+	 * @param indexX
+	 * @param indexY
+	 * @param target
 	 */
-	boolean isHead();
+	void onRemove(int indexX, int indexY, WorldEntity target);
 	
 	/**
-	 * Returns the next chunk
+	 * Is called when the world builds
 	 * 
-	 * @return next chunk
+	 * @param world target world
 	 */
-	SnakeChunk getNext();
+	void onBuild(World world);
 }

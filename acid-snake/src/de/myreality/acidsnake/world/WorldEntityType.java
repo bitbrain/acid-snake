@@ -16,43 +16,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
+package de.myreality.acidsnake.world;
 
-import de.myreality.acidsnake.world.WorldEntity;
+import de.myreality.acidsnake.core.Snake;
+import de.myreality.acidsnake.core.SnakeListener;
 
 /**
- * Single element of a {link Snake} 
+ * Type of a world object
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface SnakeChunk extends WorldEntity {
+public enum WorldEntityType implements SnakeListener {
 
-	// ===========================================================
-	// Constants
-	// ===========================================================
+	SNAKE {
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-	
-	/**
-	 * Moves this snake chunk to its sibling
-	 */
-	void move();
-	
-	/**
-	 * Determines if this chunk is the head of the snake
-	 * 
-	 * @return True when head
-	 */
-	boolean isHead();
-	
-	/**
-	 * Returns the next chunk
-	 * 
-	 * @return next chunk
-	 */
-	SnakeChunk getNext();
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			
+		}
+
+		@Override
+		public void onDie(Snake snake) {
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			
+		}
+		
+	}
 }

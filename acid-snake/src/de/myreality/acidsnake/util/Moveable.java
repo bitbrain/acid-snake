@@ -16,18 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
-
-import de.myreality.acidsnake.world.WorldEntity;
+package de.myreality.acidsnake.util;
 
 /**
- * Single element of a {link Snake} 
+ * Provides functionality for moving
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface SnakeChunk extends WorldEntity {
+public interface Moveable {
 
 	// ===========================================================
 	// Constants
@@ -38,21 +36,23 @@ public interface SnakeChunk extends WorldEntity {
 	// ===========================================================
 	
 	/**
-	 * Moves this snake chunk to its sibling
+	 * Moves to the given direction by the current speed
+	 * 
+	 * @param direction target direction
 	 */
-	void move();
+	void move(Direction direction);
 	
 	/**
-	 * Determines if this chunk is the head of the snake
+	 * Sets a new speed value
 	 * 
-	 * @return True when head
+	 * @param speed new speed value
 	 */
-	boolean isHead();
+	void setSpeed(float speed);
 	
 	/**
-	 * Returns the next chunk
+	 * Returns the current speed value
 	 * 
-	 * @return next chunk
+	 * @return current speed value
 	 */
-	SnakeChunk getNext();
+	float getSpeed();
 }

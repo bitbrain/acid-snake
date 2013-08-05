@@ -16,43 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
-
-import de.myreality.acidsnake.world.WorldEntity;
+package de.myreality.acidsnake.util;
 
 /**
- * Single element of a {link Snake} 
+ * Direction enum
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface SnakeChunk extends WorldEntity {
+public enum Direction {
 
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-	
-	/**
-	 * Moves this snake chunk to its sibling
-	 */
-	void move();
-	
-	/**
-	 * Determines if this chunk is the head of the snake
-	 * 
-	 * @return True when head
-	 */
-	boolean isHead();
-	
-	/**
-	 * Returns the next chunk
-	 * 
-	 * @return next chunk
-	 */
-	SnakeChunk getNext();
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
 }

@@ -84,11 +84,12 @@ public class IngameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(new IngameProcessor(game));
-        
-        acid = new Acid(new GdxBufferedRenderer());
-        acid.setIndexY(12);
-        acid.setSize(Gdx.graphics.getHeight() / 12);
-        acid.setIndexX((int) (Gdx.graphics.getWidth() / acid.getCellSize()));		
+		
+		final int VERTICAL_INDEX = 12;
+		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
+		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
+		
+        acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, new GdxBufferedRenderer());	
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
         acid.color(1f, 0, 0);

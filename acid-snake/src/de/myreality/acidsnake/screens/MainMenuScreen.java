@@ -125,16 +125,15 @@ public class MainMenuScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(new MainMenuProcessor(game));
 		batch = new SpriteBatch();
-		BufferedRenderer renderer = new GdxBufferedRenderer();
-		acdBackground = new RandomAcid(renderer);
-		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);		
+		BufferedRenderer renderer = new GdxBufferedRenderer();			
 		
-		acdBackground.setIndexY(12);
-
-		acdBackground.setSize(Gdx.graphics.getHeight() / 12);		
-
-		acdBackground.setIndexX((int) (Gdx.graphics.getWidth() / acdBackground.getCellSize()));
+		final int VERTICAL_INDEX = 12;
+		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
+		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
+		acdBackground = new RandomAcid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, renderer);	
+
+		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);		
 	}

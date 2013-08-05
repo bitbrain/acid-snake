@@ -16,16 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
+package de.myreality.acidsnake.world;
 
 /**
- * World which handles all game logic internally
+ * World event which influences the world
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface World {
+public interface WorldEvent {
 
 	// ===========================================================
 	// Constants
@@ -34,4 +34,11 @@ public interface World {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	/**
+	 * Proceed the event
+	 * 
+	 * @param world target world
+	 */
+	void proceed(World world);
 }

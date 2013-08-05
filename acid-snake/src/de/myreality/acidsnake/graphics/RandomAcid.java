@@ -22,8 +22,6 @@ import com.badlogic.gdx.graphics.Color;
 
 import de.myreality.acid.Acid;
 import de.myreality.acid.BufferedRenderer;
-import de.myreality.acid.CellRenderer;
-import de.myreality.acid.gdx.GdxCellRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.util.ColorFader;
 import de.myreality.acidsnake.util.Timer;
@@ -59,6 +57,19 @@ public class RandomAcid extends Acid {
 		super(renderer);
 	}
 	
+	public RandomAcid(float size, BufferedRenderer renderer) {
+		super(size, renderer);
+	}
+
+	public RandomAcid(int indexX, int indexY, BufferedRenderer renderer) {
+		super(indexX, indexY, renderer);
+	}
+
+	public RandomAcid(int indexX, int indexY, float size,
+			BufferedRenderer renderer) {
+		super(indexX, indexY, size, renderer);
+	}
+	
 	// ===========================================================
 	// Getters and Setters
 	// ===========================================================
@@ -66,7 +77,7 @@ public class RandomAcid extends Acid {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
-	
+
 	@Override
 	public void render() {	
 	

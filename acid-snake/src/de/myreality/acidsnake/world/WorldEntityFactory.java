@@ -16,21 +16,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
+package de.myreality.acidsnake.world;
 
 /**
- * Type of a world object
+ * Creates a new world entity
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public enum WorldObjectType {
+public interface WorldEntityFactory {
 
-	SNAKE,
-	SMALL_FOOD,
-	NORMAL_FOOD,
-	BIG_FOOD,
-	EPIC_FOOD,
-	BOMB
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+	
+	/**
+	 * Creates a new world entity by the given type
+	 * 
+	 * @param type world entity type
+	 */
+	WorldEntity create(WorldEntityType type);
 }
