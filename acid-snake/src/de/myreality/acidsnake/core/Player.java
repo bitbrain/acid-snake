@@ -73,19 +73,4 @@ public interface Player {
 	 */
 	void resetTime();
 	
-	/**
-	 * Add time to the player
-	 * 
-	 * @param time target time to add
-	 */
-	void addTime(long time);
-	
-	/**
-	 * Set a new time amount
-	 * 
-	 * @param time time to set
-	 */
-	void setTime(long time);
-	
-	
 }

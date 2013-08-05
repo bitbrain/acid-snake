@@ -19,26 +19,54 @@
 package de.myreality.acidsnake.world;
 
 /**
- * World event which influences the world
+ * Implementation of {@link WorldEntityFactory}
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface WorldEvent {
+public class SimpleWorldEntityFactory implements WorldEntityFactory {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
 	// ===========================================================
-	// Methods
+	// Fields
 	// ===========================================================
 	
-	/**
-	 * Proceed the event
-	 * 
-	 * @param world target world
-	 */
-	void proceed(World world);
+	private World world;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+	
+	public SimpleWorldEntityFactory(World world) {
+		this.world = world;
+	}
+
+	// ===========================================================
+	// Getters and Setters
+	// ===========================================================
+
+	// ===========================================================
+	// Methods from Superclass
+	// ===========================================================
+	
+	@Override
+	public WorldEntity create(WorldEntityType type) {
+		if (!type.equals(WorldEntityType.SNAKE)) {
+			return new SimpleWorldEntity(type, world);
+		} else {
+			return null;
+		}
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	// ===========================================================
+	// Inner classes
+	// ===========================================================
 }
