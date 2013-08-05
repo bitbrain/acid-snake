@@ -42,7 +42,7 @@ public interface WorldListener {
 	 * @param indexY
 	 * @param target
 	 */
-	void onPut(int indexX, int indexY, WorldEntity target);
+	void onPut(int indexX, int indexY, WorldEntity target, World world);
 	
 	/**
 	 * Is called when a specific entity will be removed from the world
@@ -51,7 +51,7 @@ public interface WorldListener {
 	 * @param indexY
 	 * @param target
 	 */
-	void onRemove(int indexX, int indexY, WorldEntity target);
+	void onRemove(int indexX, int indexY, WorldEntity target, World world);
 	
 	/**
 	 * Is called when the world builds

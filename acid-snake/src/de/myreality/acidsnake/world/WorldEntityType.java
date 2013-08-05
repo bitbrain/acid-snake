@@ -87,7 +87,7 @@ public enum WorldEntityType implements SnakeListener {
 		
 	};
 	
-	private static WorldEntityFactory entityFactory = null;
+	private static WorldEntityFactory entityFactory = null; // TODO
 	
 	private static void spawnAtRandomPosition(WorldEntityType type, World world) {
 		int randomX = 0, randomY = 0;

@@ -44,17 +44,24 @@ public class WorldRenderer implements WorldListener {
 	}
 
 	@Override
-	public void onPut(int indexX, int indexY, WorldEntity target) {
+	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
 		
 		manager.setCellRenderer(textureRenderer);
 		
 		switch (target.getType()) {
-			case SMALL_FOOD:
-				
+			case SMALL_FOOD:	
+				// TODO
 				break;
 			case SNAKE:
+				// Render head
+				if (world.getSnake().getHead().equals(target)) {
+					// TODO
+				} else { // Render default snake
+					// TODO
+				}
 				break;
 			default:
+				// TODO
 				break;
 		}
 		
@@ -62,7 +69,7 @@ public class WorldRenderer implements WorldListener {
 	}
 
 	@Override
-	public void onRemove(int indexX, int indexY, WorldEntity target) {
+	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
 		manager.clear(indexX, indexY);
 	}
 
