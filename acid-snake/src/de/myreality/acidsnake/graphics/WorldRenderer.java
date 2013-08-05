@@ -18,9 +18,12 @@
 
 package de.myreality.acidsnake.graphics;
 
+import com.badlogic.gdx.graphics.Color;
+
 import de.myreality.acid.CellManager;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acid.gdx.GdxCellRenderer;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldListener;
@@ -50,18 +53,24 @@ public class WorldRenderer implements WorldListener {
 		
 		switch (target.getType()) {
 			case SMALL_FOOD:	
-				// TODO
+				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
+				manager.color(1f, 1f, 1f);
 				break;
 			case SNAKE:
+				
+				Color color = Resources.COLOR_GREEN;
+				
 				// Render head
 				if (world.getSnake().getHead().equals(target)) {
-					// TODO
-				} else { // Render default snake
-					// TODO
+					color = Resources.COLOR_VIOLET;
 				}
+				
+				manager.color(color.r, color.g, color.b);
+				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
 				break;
 			default:
-				// TODO
+				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
+				manager.color(1f, 1f, 1f);
 				break;
 		}
 		

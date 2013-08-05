@@ -47,6 +47,8 @@ public class IngameScreen implements Screen {
 	private SnakeGame game;
 	
 	private Acid acid;
+	
+	private GdxBufferedRenderer bufferedRenderer;
 
 	// ===========================================================
 	// Constructors
@@ -77,7 +79,6 @@ public class IngameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -89,12 +90,11 @@ public class IngameScreen implements Screen {
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
-        acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, new GdxBufferedRenderer());	
+		bufferedRenderer = new GdxBufferedRenderer();
+        acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);	
+        acid.setPadding(4);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
-        acid.color(1f, 0, 0);
-        acid.put(0, 1);
-        
 	}
 
 	@Override

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.player;
+package de.myreality.acidsnake.core;
 
 /**
  * Player of a given game
@@ -60,4 +60,32 @@ public interface Player {
 	 * @param points points to set
 	 */
 	void setPoints(int points);
+	
+	/**
+	 * Returns the current time amount
+	 * 
+	 * @return current time
+	 */
+	long getTime();
+	
+	/**
+	 * Resets the time
+	 */
+	void resetTime();
+	
+	/**
+	 * Add time to the player
+	 * 
+	 * @param time target time to add
+	 */
+	void addTime(long time);
+	
+	/**
+	 * Set a new time amount
+	 * 
+	 * @param time time to set
+	 */
+	void setTime(long time);
+	
+	
 }

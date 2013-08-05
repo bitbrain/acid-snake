@@ -134,6 +134,7 @@ public class MainMenuScreen implements Screen {
 		acdBackground = new RandomAcid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, renderer);	
 
 		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
+		acdBackground.setPadding(4);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);		
 	}

@@ -18,8 +18,8 @@
 
 package de.myreality.acidsnake.world;
 
+import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.Snake;
-import de.myreality.acidsnake.player.Player;
 
 /**
  * World which handles all game logic internally
