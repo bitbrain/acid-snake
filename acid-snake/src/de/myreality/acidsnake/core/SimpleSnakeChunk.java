@@ -16,18 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.world;
+package de.myreality.acidsnake.core;
 
-import de.myreality.acidsnake.core.SimpleSnakeChunk;
+import de.myreality.acidsnake.world.SimpleWorldEntity;
+import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.world.WorldEntityType;
 
 /**
- * Implementation of {@link WorldEntityFactory}
+ * 
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 
+ * @version 
  */
-public class SimpleWorldEntityFactory implements WorldEntityFactory {
+public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
+
 
 	// ===========================================================
 	// Constants
@@ -37,14 +40,15 @@ public class SimpleWorldEntityFactory implements WorldEntityFactory {
 	// Fields
 	// ===========================================================
 	
-	private World world;
+	private SnakeChunk next;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public SimpleWorldEntityFactory(World world) {
-		this.world = world;
+
+	public SimpleSnakeChunk(World world) {
+		super(WorldEntityType.SNAKE, world);
+		next = world.getSnake().getTail();
 	}
 
 	// ===========================================================
@@ -56,12 +60,19 @@ public class SimpleWorldEntityFactory implements WorldEntityFactory {
 	// ===========================================================
 	
 	@Override
-	public WorldEntity create(WorldEntityType type) {
-		if (!type.equals(WorldEntityType.SNAKE)) {
-			return new SimpleWorldEntity(type, world);
-		} else {
-			return new SimpleSnakeChunk(world);
-		}
+	public void move() {
+		setIndexX(next.getIndexX());
+		setIndexY(next.getIndexY());
+	}
+
+	@Override
+	public boolean isHead() {
+		return getNext() == null;
+	}
+
+	@Override
+	public SnakeChunk getNext() {
+		return next;
 	}
 
 	// ===========================================================

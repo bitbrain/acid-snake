@@ -16,18 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.world;
+package de.myreality.acidsnake.core;
 
-import de.myreality.acidsnake.core.SimpleSnakeChunk;
+import java.util.List;
+import java.util.Set;
+
+import de.myreality.acidsnake.util.Direction;
+import de.myreality.acidsnake.world.World;
 
 /**
- * Implementation of {@link WorldEntityFactory}
+ * Implementation of {@link Snake}
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class SimpleWorldEntityFactory implements WorldEntityFactory {
+public class SimpleSnake implements Snake {
 
 	// ===========================================================
 	// Constants
@@ -37,15 +41,21 @@ public class SimpleWorldEntityFactory implements WorldEntityFactory {
 	// Fields
 	// ===========================================================
 	
+	private Direction direction;
+	
+	private float speed;
+	
+	private List<SnakeChunk> chunks;
+	
 	private World world;
+	
+	private boolean killed;
+	
+	private Set<SnakeListener> listeners;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public SimpleWorldEntityFactory(World world) {
-		this.world = world;
-	}
 
 	// ===========================================================
 	// Getters and Setters
@@ -54,14 +64,83 @@ public class SimpleWorldEntityFactory implements WorldEntityFactory {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
-	
+
 	@Override
-	public WorldEntity create(WorldEntityType type) {
-		if (!type.equals(WorldEntityType.SNAKE)) {
-			return new SimpleWorldEntity(type, world);
-		} else {
-			return new SimpleSnakeChunk(world);
-		}
+	public void setDirection(Direction direction) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setSpeed(float speed) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public float getSpeed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<SnakeChunk> getChunks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addChunk() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public SnakeChunk getHead() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SnakeChunk getTail() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public World getWorld() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addListener(SnakeListener listener) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void spawn() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void kill() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isKilled() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	// ===========================================================

@@ -35,12 +35,7 @@ public interface Moveable {
 	// Methods
 	// ===========================================================
 	
-	/**
-	 * Moves to the given direction by the current speed
-	 * 
-	 * @param direction target direction
-	 */
-	void move(Direction direction);
+	void setDirection(Direction direction);
 	
 	/**
 	 * Sets a new speed value
@@ -55,4 +50,6 @@ public interface Moveable {
 	 * @return current speed value
 	 */
 	float getSpeed();
+	
+	void move();
 }
