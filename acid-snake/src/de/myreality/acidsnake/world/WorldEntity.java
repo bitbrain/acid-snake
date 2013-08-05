@@ -35,15 +35,59 @@ public interface WorldEntity {
 	// Methods
 	// ===========================================================
 	
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
 	WorldEntityType getType();
 	
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
 	int getIndexX();
 	
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
 	int getIndexY();
 	
+	/**
+	 * 
+	 * 
+	 * @param indexX
+	 */
 	void setIndexX(int indexX);
 	
+	/**
+	 * 
+	 * 
+	 * @param indexY
+	 */
 	void setIndexY(int indexY);
 	
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	int getLastIndexX();
+	
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	int getLastIndexY();
+	
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
 	World getWorld();
 }
