@@ -109,13 +109,31 @@ public class SimpleWorld implements World {
 
 	@Override
 	public boolean putEntity(int indexX, int indexY, WorldEntity entity) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		WorldEntity old = getEntity(indexX, indexY);
+		boolean oldExists = old != null;
+		boolean isTheSame = oldExists && old.equals(entity);
+		
+		if (oldExists && !isTheSame) {
+			removeEntity(old);
+		} 
+		
+		if (!oldExists || !isTheSame) {
+			for (WorldListener listener : listeners) {
+				listener.onPut(indexX, indexY, entity, this);
+			}
+			
+			entities.add(entity);
+			area[indexX][indexY] = entity;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public void removeEntity(WorldEntity entity) {
-		if (entities.contains(entity)) {
+		if (entity != null && entities.contains(entity)) {
 			
 			int indexX = entity.getIndexX(), indexY = entity.getIndexY();
 			

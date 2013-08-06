@@ -26,6 +26,9 @@ import de.myreality.acid.Acid;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
+import de.myreality.acidsnake.graphics.WorldRenderer;
+import de.myreality.acidsnake.world.SimpleWorld;
+import de.myreality.acidsnake.world.World;
 
 /**
  * Ingame screen which handles the basic game
@@ -47,6 +50,10 @@ public class IngameScreen implements Screen {
 	private SnakeGame game;
 	
 	private Acid acid;
+	
+	private World world;
+	
+	private WorldRenderer worldRenderer;
 	
 	private GdxBufferedRenderer bufferedRenderer;
 
@@ -95,6 +102,13 @@ public class IngameScreen implements Screen {
         acid.setPadding(4);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
+        
+        world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);
+        
+        worldRenderer = new WorldRenderer(acid);
+        world.addListener(worldRenderer);
+
+        world.build();
 	}
 
 	@Override

@@ -113,8 +113,16 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	public void addChunk() {
 		SnakeChunk chunk = (SnakeChunk) factory.create(WorldEntityType.SNAKE);
 		
-		if (!chunks.isEmpty()) {
+		if (chunks.isEmpty()) {
 			head = chunk;
+		}
+		
+		SnakeChunk next = chunk.getNext();
+		
+		if (next != null) {
+			chunk.setIndex(next.getLastIndexX(), next.getLastIndexY());
+		} else {
+			chunk.setIndex(getIndexX(), getIndexY());
 		}
 		
 		chunks.add(chunk);

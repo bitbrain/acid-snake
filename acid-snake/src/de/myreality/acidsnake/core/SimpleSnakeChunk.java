@@ -52,12 +52,6 @@ public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 		super(WorldEntityType.SNAKE, world);
 		this.snake = world.getSnake();
 		next = snake.getTail();
-		
-		if (next != null) {
-			setIndex(next.getLastIndexX(), next.getLastIndexY());
-		} else {
-			setIndex(snake.getIndexX(), snake.getIndexY());
-		}
 	}
 
 	// ===========================================================
