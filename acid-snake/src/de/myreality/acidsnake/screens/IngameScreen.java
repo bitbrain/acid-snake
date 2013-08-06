@@ -62,7 +62,7 @@ public class IngameScreen implements Screen {
 	
 	private GdxBufferedRenderer bufferedRenderer;
 	
-	private Label lblPoints, lblTime;
+	private Label lblPoints, lblTime, lblLevel;
 	
 	private Stage stage;
 
@@ -96,7 +96,8 @@ public class IngameScreen implements Screen {
 		}
 		
 		lblPoints.setText(world.getPlayer().getPoints() + " points");
-		
+		lblLevel.setText("Level " + world.getPlayer().getLevel());
+		lblTime.setText(world.getPlayer().getTime());
 		stage.act(delta);
 		
 		acid.render();
@@ -114,16 +115,15 @@ public class IngameScreen implements Screen {
 			
 			lblPoints = new Label("0 points", style);
 			lblTime = new Label("00:00", style);
+			lblLevel = new Label("Level 1", style);
 			stage.addActor(lblPoints);
+			stage.addActor(lblLevel);
 			stage.addActor(lblTime);
 			
-			lblPoints.setX(30);
-			lblPoints.setY(Gdx.graphics.getHeight() - lblPoints.getHeight() - 30);
-			
-			lblTime.setX(Gdx.graphics.getWidth() - lblTime.getWidth() - 30);
-			lblTime.setY(Gdx.graphics.getHeight() - lblTime.getHeight() - 30);
+			applyUI();
 		} else {
 			stage.setViewport(width, height, false);
+			applyUI();
 		}
 	}
 	
@@ -180,6 +180,17 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	private void applyUI() {
+		lblPoints.setX(30);
+		lblPoints.setY(Gdx.graphics.getHeight() - lblPoints.getHeight() - 30);
+		
+		lblLevel.setX(30);
+		lblLevel.setY(Gdx.graphics.getHeight() - lblPoints.getHeight() * 2 - 30);
+		
+		lblTime.setX(Gdx.graphics.getWidth() - lblTime.getWidth() - 30);
+		lblTime.setY(Gdx.graphics.getHeight() - lblTime.getHeight() - 30);
+	}
 
 	// ===========================================================
 	// Inner classes

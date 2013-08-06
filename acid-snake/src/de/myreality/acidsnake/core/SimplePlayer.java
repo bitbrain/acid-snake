@@ -40,12 +40,15 @@ public class SimplePlayer implements Player {
 	private Timer timer;
 	
 	private int points;
+	
+	private int level;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
 	public SimplePlayer() {
+		level = 1;
 		timer = new Timer();
 		timer.start();
 	}
@@ -70,17 +73,19 @@ public class SimplePlayer implements Player {
 
 	@Override
 	public void addPoints(int points) {
-		this.points += points;
+		setPoints(getPoints() + points);
 	}
 
 	@Override
 	public void setPoints(int points) {
 		this.points = points;
+		
+		level = calculateLevel(points);
 	}
 
 	@Override
-	public long getTime() {
-		return timer.getTicks();
+	public String getTime() {
+		return timer.toString();
 	}
 
 	@Override
@@ -88,9 +93,18 @@ public class SimplePlayer implements Player {
 		timer.reset();
 	}
 
+	@Override
+	public int getLevel() {
+		return level;
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	private int calculateLevel(int points) {
+		return points % 100 + 1;
+	}
 
 	// ===========================================================
 	// Inner classes

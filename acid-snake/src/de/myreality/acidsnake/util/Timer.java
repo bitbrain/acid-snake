@@ -55,6 +55,13 @@ public class Timer {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
+	
+	@Override
+	public String toString() {
+		String minute = convertValue(getTicks() / 1000 / 60);
+		String second = convertValue(getTicks() / 1000);
+		return minute + ":" + second;
+	}
 
 	// ===========================================================
 	// Methods
@@ -81,7 +88,16 @@ public class Timer {
 		return running;
 	}
 
+	private String convertValue(long time) {
+		if (time < 10) {
+			return "0" + time;
+		} else {
+			return "" + time;
+		}
+	}
+
 	// ===========================================================
 	// Inner classes
 	// ===========================================================
+	
 }

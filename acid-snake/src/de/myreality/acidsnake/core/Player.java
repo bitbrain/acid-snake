@@ -62,11 +62,18 @@ public interface Player {
 	void setPoints(int points);
 	
 	/**
+	 * Get the level of this player
+	 * 
+	 * @return
+	 */
+	int getLevel();
+	
+	/**
 	 * Returns the current time amount
 	 * 
 	 * @return current time
 	 */
-	long getTime();
+	String getTime();
 	
 	/**
 	 * Resets the time
