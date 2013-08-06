@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.myreality.acidsnake.util.AbstractIndexable;
 import de.myreality.acidsnake.util.Direction;
 import de.myreality.acidsnake.world.SimpleWorldEntityFactory;
 import de.myreality.acidsnake.world.World;
@@ -36,7 +37,7 @@ import de.myreality.acidsnake.world.WorldEntityType;
  * @since 1.0
  * @version 1.0
  */
-public class SimpleSnake implements Snake {
+public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	// ===========================================================
 	// Constants
@@ -47,8 +48,6 @@ public class SimpleSnake implements Snake {
 	// ===========================================================
 	
 	private Direction direction;
-	
-	private float speed;
 	
 	private List<SnakeChunk> chunks;
 	
@@ -66,12 +65,12 @@ public class SimpleSnake implements Snake {
 	// Constructors
 	// ===========================================================
 	
-	public SimpleSnake(World world) {
+	public SimpleSnake(int indexX, int indexY, World world) {
+		super(indexX, indexY);
 		this.world = world;
 		listeners = new HashSet<SnakeListener>();
 		chunks = new ArrayList<SnakeChunk>();
-		factory = new SimpleWorldEntityFactory(world);
-		addChunk();
+		factory = new SimpleWorldEntityFactory(world);		
 	}
 
 	// ===========================================================
@@ -88,19 +87,21 @@ public class SimpleSnake implements Snake {
 	}
 
 	@Override
-	public void setSpeed(float speed) {
-		this.speed = speed;
-	}
-
-	@Override
-	public float getSpeed() {
-		return speed;
-	}
-
-	@Override
 	public void move() {
-		// TODO Auto-generated method stub
-
+		switch (direction) {
+			case DOWN:
+				setIndexY(getIndexY() - 1);
+				break;
+			case LEFT:
+				setIndexX(getIndexX() - 1);
+				break;
+			case RIGHT:
+				setIndexX(getIndexX() + 1);
+				break;
+			case UP:
+				setIndexY(getIndexX() + 1);
+				break;
+		}
 	}
 
 	@Override
@@ -159,6 +160,32 @@ public class SimpleSnake implements Snake {
 	@Override
 	public boolean isKilled() {
 		return killed;
+	}
+
+	@Override
+	public void setIndex(int indexX, int indexY) {
+		
+		if (world.hasEntity(indexX, indexY)) {
+			for (SnakeListener listener : listeners) {
+				listener.onCollide(indexX, indexY, this, world.getEntity(indexX, indexY));
+			}
+		}
+		
+		super.setIndex(indexX, indexY);
+		
+		for (SnakeListener listener : listeners) {
+			listener.onEnterPosition(indexX, indexY, this);
+		}
+		
+		for (int index = chunks.size() - 1; index >= 0; --index) {
+			SnakeChunk chunk = chunks.get(index);
+			chunk.move();
+		}
+	}
+
+	@Override
+	public void build() {
+		addChunk();
 	}
 
 	// ===========================================================

@@ -19,13 +19,13 @@
 package de.myreality.acidsnake.util;
 
 /**
- * Provides functionality for moving
+ * Is called after a constructor call
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public interface Moveable {
+public interface Buildable {
 
 	// ===========================================================
 	// Constants
@@ -35,7 +35,5 @@ public interface Moveable {
 	// Methods
 	// ===========================================================
 	
-	void setDirection(Direction direction);
-	
-	void move();
+	void build();
 }

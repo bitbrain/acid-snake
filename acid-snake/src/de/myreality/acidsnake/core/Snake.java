@@ -20,6 +20,7 @@ package de.myreality.acidsnake.core;
 
 import java.util.List;
 
+import de.myreality.acidsnake.util.Buildable;
 import de.myreality.acidsnake.util.Indexable;
 import de.myreality.acidsnake.util.Moveable;
 import de.myreality.acidsnake.world.World;
@@ -31,7 +32,7 @@ import de.myreality.acidsnake.world.World;
  * @since 1.0
  * @version 1.0
  */
-public interface Snake extends Moveable, Indexable {
+public interface Snake extends Moveable, Indexable, Buildable {
 
 	// ===========================================================
 	// Constants

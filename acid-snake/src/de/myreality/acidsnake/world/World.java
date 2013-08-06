@@ -20,6 +20,7 @@ package de.myreality.acidsnake.world;
 
 import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.Snake;
+import de.myreality.acidsnake.util.Buildable;
 
 /**
  * World which handles all game logic internally
@@ -28,7 +29,7 @@ import de.myreality.acidsnake.core.Snake;
  * @since 1.0
  * @version 1.0
  */
-public interface World {
+public interface World extends Buildable {
 
 	// ===========================================================
 	// Constants

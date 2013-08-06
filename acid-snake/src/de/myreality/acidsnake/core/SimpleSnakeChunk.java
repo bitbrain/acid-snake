@@ -41,6 +41,8 @@ public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 	// ===========================================================
 	
 	private SnakeChunk next;
+	
+	private Snake snake;
 
 	// ===========================================================
 	// Constructors
@@ -48,8 +50,14 @@ public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 
 	public SimpleSnakeChunk(World world) {
 		super(WorldEntityType.SNAKE, world);
-		Snake snake = world.getSnake();
+		this.snake = world.getSnake();
 		next = snake.getTail();
+		
+		if (next != null) {
+			setIndex(next.getLastIndexX(), next.getLastIndexY());
+		} else {
+			setIndex(snake.getIndexX(), snake.getIndexY());
+		}
 	}
 
 	// ===========================================================
@@ -62,7 +70,11 @@ public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 	
 	@Override
 	public void move() {
-		setIndex(next.getIndexX(), next.getIndexY());
+		if (next != null) {
+			setIndex(next.getIndexX(), next.getIndexY());
+		} else {
+			setIndex(snake.getIndexX(), snake.getIndexY());
+		}
 	}
 
 	@Override
