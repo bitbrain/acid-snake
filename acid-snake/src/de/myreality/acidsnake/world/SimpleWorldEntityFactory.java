@@ -56,11 +56,11 @@ public class SimpleWorldEntityFactory implements WorldEntityFactory {
 	// ===========================================================
 	
 	@Override
-	public WorldEntity create(WorldEntityType type) {
+	public WorldEntity create(int indexX, int indexY, WorldEntityType type) {
 		if (!type.equals(WorldEntityType.SNAKE)) {
-			return new SimpleWorldEntity(type, world);
+			return new SimpleWorldEntity(indexX, indexY, type, world);
 		} else {
-			return new SimpleSnakeChunk(world);
+			return new SimpleSnakeChunk(indexX, indexY, world);
 		}
 	}
 

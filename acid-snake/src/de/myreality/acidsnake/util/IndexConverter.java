@@ -16,21 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
-
-import de.myreality.acidsnake.world.SimpleWorldEntity;
-import de.myreality.acidsnake.world.World;
-import de.myreality.acidsnake.world.WorldEntityType;
+package de.myreality.acidsnake.util;
 
 /**
- * Implementation of {@link SnakeChunk}
+ * Converts a movable for further calculations
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
-
+public class IndexConverter {
 
 	// ===========================================================
 	// Constants
@@ -40,50 +35,53 @@ public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 	// Fields
 	// ===========================================================
 	
-	private SnakeChunk next;
-	
-	private Snake snake;
+	private Indexable indexable;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public SimpleSnakeChunk(int indexX, int indexY, World world) {
-		super(indexX, indexY, WorldEntityType.SNAKE, world);
-		this.snake = world.getSnake();
-		next = snake.getTail();
+	
+	public IndexConverter(Indexable indexable) {
+		this.indexable = indexable;
 	}
-
+	
 	// ===========================================================
 	// Getters and Setters
 	// ===========================================================
+	
+	public Indexable getIndexable() {
+		return indexable;
+	}
 
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
-	
-	@Override
-	public void move() {
-		if (next != null) {
-			setIndex(next.getIndexX(), next.getIndexY());
-		} else {
-			setIndex(snake.getIndexX(), snake.getIndexY());
-		}
-	}
-
-	@Override
-	public boolean isHead() {
-		return getNext() == null;
-	}
-
-	@Override
-	public SnakeChunk getNext() {
-		return next;
-	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public int getInvertedIndexX(Direction direction) {
+		switch (direction) {
+		case LEFT:
+			return indexable.getIndexX() + 1;
+		case RIGHT:
+			return indexable.getIndexX() - 1;
+		default:
+			return indexable.getIndexX();
+		}
+	}
+	
+	public int getInvertedIndexY(Direction direction) {
+		switch (direction) {
+		case UP:
+			return indexable.getIndexY() + 1;
+		case DOWN:
+			return indexable.getIndexY() - 1;
+		default:
+			return indexable.getIndexY();
+		}
+	}
 
 	// ===========================================================
 	// Inner classes

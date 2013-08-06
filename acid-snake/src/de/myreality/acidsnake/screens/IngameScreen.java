@@ -94,7 +94,6 @@ public class IngameScreen implements Screen {
 	
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(new IngameProcessor(game));
 		
 		final int VERTICAL_INDEX = 12;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
@@ -112,6 +111,8 @@ public class IngameScreen implements Screen {
         world.addListener(worldRenderer);
 
         world.build();
+        
+        Gdx.input.setInputProcessor(new IngameProcessor(game, world));
 	}
 
 	@Override

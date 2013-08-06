@@ -18,15 +18,18 @@
 
 package de.myreality.acidsnake.controls;
 
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 import de.myreality.acidsnake.SnakeGame;
+import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.screens.MainMenuScreen;
+import de.myreality.acidsnake.util.Direction;
+import de.myreality.acidsnake.world.World;
 
 /**
- * Processor for ingame
+ * Processor for ingame input handling
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
@@ -36,16 +39,51 @@ public class IngameProcessor implements InputProcessor {
 	
 	private SnakeGame game;
 	
-	public IngameProcessor(SnakeGame game) {
+	private World world;
+	
+	public IngameProcessor(SnakeGame game, World world) {
 		this.game = game;
+		this.world = world;
 		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if(keycode == Keys.BACK || keycode == Keys.ESCAPE){
-	    	game.setScreen(new MainMenuScreen(game));
-	    }
+		
+		Snake snake = world.getSnake();
+		
+		switch (keycode) {
+		
+			// ABORT GAME
+			case Keys.BACK: case Keys.ESCAPE:
+				game.setScreen(new MainMenuScreen(game));
+				break;
+				
+			// MOVE SNAKE UP
+			case Keys.W: case Keys.UP:
+				snake.setDirection(Direction.UP);
+				snake.move();
+				break;
+				
+			// MOVE SNAKE DOWN
+			case Keys.S: case Keys.DOWN:
+				snake.setDirection(Direction.DOWN);
+				snake.move();
+				break;
+				
+			// MOVE SNAKE LEFT
+			case Keys.A: case Keys.LEFT:
+				snake.setDirection(Direction.LEFT);
+				snake.move();
+			break;
+			
+			// MOVE SNAKE LEFT
+			case Keys.D: case Keys.RIGHT:
+				snake.setDirection(Direction.RIGHT);
+				snake.move();
+			break;
+		}
+		
 	    return false;
 	}
 

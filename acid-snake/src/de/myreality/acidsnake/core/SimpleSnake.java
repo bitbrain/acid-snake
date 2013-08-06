@@ -25,6 +25,7 @@ import java.util.Set;
 
 import de.myreality.acidsnake.util.AbstractIndexable;
 import de.myreality.acidsnake.util.Direction;
+import de.myreality.acidsnake.util.IndexConverter;
 import de.myreality.acidsnake.world.SimpleWorldEntityFactory;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntityFactory;
@@ -86,6 +87,10 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
+	@Override
+	public Direction getDirection() {
+		return direction;
+	}
 
 	@Override
 	public void move() {
@@ -112,18 +117,19 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void addChunk() {
-		SnakeChunk chunk = (SnakeChunk) factory.create(WorldEntityType.SNAKE);
+		
+		int chunkX = getIndexX(), chunkY = getIndexY();
+		
+		if (tail != null) {
+			IndexConverter converter = new IndexConverter(tail);
+			chunkX = converter.getInvertedIndexX(getDirection());
+			chunkY = converter.getInvertedIndexY(getDirection());
+		}
+		
+		SnakeChunk chunk = (SnakeChunk) factory.create(chunkX, chunkY, WorldEntityType.SNAKE);
 		
 		if (chunks.isEmpty()) {
 			head = chunk;
-		}
-		
-		SnakeChunk next = chunk.getNext();
-		
-		if (next != null) {
-			chunk.setIndex(next.getLastIndexX(), next.getLastIndexY());
-		} else {
-			chunk.setIndex(getIndexX(), getIndexY());
 		}
 		
 		chunks.add(chunk);
@@ -194,6 +200,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void build() {
+		addChunk();
 		addChunk();
 		addChunk();
 	}

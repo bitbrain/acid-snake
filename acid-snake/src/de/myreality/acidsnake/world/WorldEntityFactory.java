@@ -40,5 +40,5 @@ public interface WorldEntityFactory {
 	 * 
 	 * @param type world entity type
 	 */
-	WorldEntity create(WorldEntityType type);
+	WorldEntity create(int indexX, int indexY, WorldEntityType type);
 }

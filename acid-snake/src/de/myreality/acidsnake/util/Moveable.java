@@ -37,5 +37,7 @@ public interface Moveable {
 	
 	void setDirection(Direction direction);
 	
+	Direction getDirection();
+	
 	void move();
 }

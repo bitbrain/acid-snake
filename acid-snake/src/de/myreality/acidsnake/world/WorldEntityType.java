@@ -90,6 +90,12 @@ public enum WorldEntityType implements SnakeListener {
 	private static WorldEntityFactory entityFactory = null; // TODO
 	
 	private static void spawnAtRandomPosition(WorldEntityType type, World world) {
+		
+		if (entityFactory == null) {
+			entityFactory = new SimpleWorldEntityFactory(world);
+		}
+		
+		
 		int randomX = 0, randomY = 0;
 		boolean validPosition = false;
 		
@@ -101,6 +107,6 @@ public enum WorldEntityType implements SnakeListener {
 			validPosition = !world.hasEntity(randomX, randomY);
 		}
 		
-		world.putEntity(randomX, randomY, entityFactory.create(type));
+		entityFactory.create(randomX, randomY, type);
 	}
 }
