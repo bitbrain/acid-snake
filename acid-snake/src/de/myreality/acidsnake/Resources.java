@@ -55,15 +55,10 @@ public class Resources {
 			TEXTURE_BLOCK.dispose();
 		}
 		
-		if (SHADER_BLUR != null) {
-			SHADER_BLUR.dispose();
-		}
-		
 		TEXTURE_ACID_LOGO  = new Texture("data/banner.png");
 		TEXTURE_GAME_LOGO = new Texture("data/logo.png");
 		TEXTURE_BLOCK = new Texture("data/block.png");
 		
-		SHADER_BLUR = new ShaderProgram(Gdx.files.internal("data/blur.frag"), Gdx.files.internal("data/blur.vert"));
 	}
 	
 	// ===========================================================
@@ -71,6 +66,15 @@ public class Resources {
 	// ===========================================================
 	
 	public static ShaderProgram SHADER_BLUR;
+	
+	public static void reloadShaders() {
+		
+		if (SHADER_BLUR != null) {
+			SHADER_BLUR.dispose();
+		}
+
+		SHADER_BLUR = new ShaderProgram(Gdx.files.internal("data/blur.frag"), Gdx.files.internal("data/blur.vert"));
+	}
 	
 	// ===========================================================
 	// Colors
@@ -91,6 +95,7 @@ public class Resources {
 	// ===========================================================
 		
 	public static BitmapFont BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
+	public static BitmapFont BITMAP_FONT_LARGE = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
 	
 	public static void reloadFonts() {
 		
@@ -98,6 +103,11 @@ public class Resources {
 			BITMAP_FONT_REGULAR.dispose();
 		}
 		
+		if (BITMAP_FONT_LARGE != null) {
+			BITMAP_FONT_LARGE.dispose();
+		}
+		
 		BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
+		BITMAP_FONT_LARGE = new BitmapFont(Gdx.files.internal("data/large.fnt"), false);
 	}
 }

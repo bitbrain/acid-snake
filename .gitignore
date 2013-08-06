@@ -5,6 +5,7 @@
 acid-snake-android/bin/
 acid-snake-html/war/
 acid-snake-html/gwt-unitCache/
+acid-snake-desktop/bin/
 
 # Package Files #
 *.jar
