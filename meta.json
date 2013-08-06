@@ -1,0 +1,11 @@
+{
+    "name" : "AcidSnake",
+    "author" : "Miguel Gonzalez",
+    "url" : "http://acidsnake.my-reality.de",
+    "version" : "1.0",
+    "phase" : "release",
+    "progress" : "45",
+    "phaselist" : [
+        "release"
+    ]
+}
