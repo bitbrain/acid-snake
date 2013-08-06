@@ -71,6 +71,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		listeners = new HashSet<SnakeListener>();
 		chunks = new ArrayList<SnakeChunk>();
 		factory = new SimpleWorldEntityFactory(world);		
+		setDirection(Direction.RIGHT);
 	}
 
 	// ===========================================================

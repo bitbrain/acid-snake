@@ -20,6 +20,7 @@ package de.myreality.acidsnake.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 
 import de.myreality.acid.Acid;
@@ -80,6 +81,10 @@ public class IngameScreen implements Screen {
 		float color = 0.0f;
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		if (Gdx.input.isKeyPressed(Keys.D)) {
+			world.getSnake().move();
+		}
 		
 		acid.render();
 	}
