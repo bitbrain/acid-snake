@@ -22,6 +22,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 /**
  * Contains resource locations
@@ -54,10 +55,22 @@ public class Resources {
 			TEXTURE_BLOCK.dispose();
 		}
 		
+		if (SHADER_BLUR != null) {
+			SHADER_BLUR.dispose();
+		}
+		
 		TEXTURE_ACID_LOGO  = new Texture("data/banner.png");
 		TEXTURE_GAME_LOGO = new Texture("data/logo.png");
 		TEXTURE_BLOCK = new Texture("data/block.png");
+		
+		SHADER_BLUR = new ShaderProgram(Gdx.files.internal("data/blur.frag"), Gdx.files.internal("data/blur.vert"));
 	}
+	
+	// ===========================================================
+	// Shader
+	// ===========================================================
+	
+	public static ShaderProgram SHADER_BLUR;
 	
 	// ===========================================================
 	// Colors

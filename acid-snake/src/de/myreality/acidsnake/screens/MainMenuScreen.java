@@ -74,12 +74,10 @@ public class MainMenuScreen implements Screen {
 		
 		tweenManager.update(delta);
 		stage.act(delta);
-
-		acdBackground.render();
+		acdBackground.render();		
 		batch.begin();
 			stage.draw();
 		batch.end();
-		
 	}
 
 	@Override
@@ -136,7 +134,7 @@ public class MainMenuScreen implements Screen {
 		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
 		acdBackground.setPadding(1);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
-							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);		
+							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);	
 	}
 
 	@Override

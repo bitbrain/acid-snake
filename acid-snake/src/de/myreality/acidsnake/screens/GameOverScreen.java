@@ -21,27 +21,22 @@ package de.myreality.acidsnake.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
-import de.myreality.acid.Acid;
+import de.myreality.acid.BufferedRenderer;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
-import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
-import de.myreality.acidsnake.controls.IngameProcessor;
-import de.myreality.acidsnake.graphics.WorldRenderer;
-import de.myreality.acidsnake.world.SimpleWorld;
-import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.controls.GameOverProcessor;
+import de.myreality.acidsnake.core.Player;
+import de.myreality.acidsnake.graphics.RandomAcid;
 
 /**
- * Ingame screen which handles the basic game
+ * Shows the game result
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class IngameScreen implements Screen {
+public class GameOverScreen implements Screen {
 
 	// ===========================================================
 	// Constants
@@ -51,25 +46,18 @@ public class IngameScreen implements Screen {
 	// Fields
 	// ===========================================================
 	
+	private Player player;
+	
 	private SnakeGame game;
-	
-	private Acid acid;
-	
-	private World world;
-	
-	private WorldRenderer worldRenderer;
-	
-	private GdxBufferedRenderer bufferedRenderer;
-	
-	private Label lblPoints, lblTime, lblLevel;
-	
-	private Stage stage;
+
+	private RandomAcid acdBackground;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public IngameScreen(SnakeGame game) {
+	public GameOverScreen(SnakeGame game, Player player) {
+		this.player = player;
 		this.game = game;
 	}
 
@@ -80,9 +68,6 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
-	
-
-	boolean pressed;
 
 	@Override
 	public void render(float delta) {
@@ -91,68 +76,32 @@ public class IngameScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		
-		world.update(delta);
-		stage.act(delta);
-		
-		acid.render();
-		
-		lblPoints.setText(world.getPlayer().getPoints() + " points");
-		lblLevel.setText("Level " + world.getPlayer().getLevel());
-		lblTime.setText(world.getPlayer().getTime());
-		
-		stage.draw();
-		
-		if (world.getSnake().isKilled()) {
-			game.setScreen(new GameOverScreen(game, world.getPlayer()));
-		}
+		acdBackground.render();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		if (stage == null) {
-			stage = new Stage(width, height, false);
-			LabelStyle style = new LabelStyle();
-			style.font = Resources.BITMAP_FONT_REGULAR;
-			style.fontColor = Resources.COLOR_GREEN;
-			
-			lblPoints = new Label("0 points", style);
-			lblTime = new Label("00:00", style);
-			lblLevel = new Label("Level 1", style);
-			stage.addActor(lblPoints);
-			stage.addActor(lblLevel);
-			stage.addActor(lblTime);
-			
-			applyUI();
-		} else {
-			stage.setViewport(width, height, false);
-			applyUI();
-		}
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
 	public void show() {
+		
+		BufferedRenderer renderer = new GdxBufferedRenderer();			
 		
 		final int VERTICAL_INDEX = 32;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
-		bufferedRenderer = new GdxBufferedRenderer();
-        acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);	
-        acid.setPadding(1);
-        acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
-							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
-        
-        world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);
-        
-        worldRenderer = new WorldRenderer(acid);
-        world.addListener(worldRenderer);
-        
-        world.build();
-        
-        //world.getSnake().addListener(new WorldDebugger(world));
-        
-        Gdx.input.setInputProcessor(new IngameProcessor(game, world));
+		acdBackground = new RandomAcid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, renderer);	
+
+		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
+		acdBackground.setPadding(1);
+		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
+							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);
+		
+		Gdx.input.setInputProcessor(new GameOverProcessor(game));
 	}
 
 	@Override
@@ -179,21 +128,9 @@ public class IngameScreen implements Screen {
 
 	}
 
-	
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	private void applyUI() {
-		lblPoints.setX(30);
-		lblPoints.setY(Gdx.graphics.getHeight() - lblPoints.getHeight() - 30);
-		
-		lblLevel.setX(30);
-		lblLevel.setY(Gdx.graphics.getHeight() - lblPoints.getHeight() * 2 - 30);
-		
-		lblTime.setX(Gdx.graphics.getWidth() - lblTime.getWidth() - 30);
-		lblTime.setY(Gdx.graphics.getHeight() - lblTime.getHeight() - 30);
-	}
 
 	// ===========================================================
 	// Inner classes

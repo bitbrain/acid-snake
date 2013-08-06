@@ -23,63 +23,30 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 import de.myreality.acidsnake.SnakeGame;
-import de.myreality.acidsnake.core.Snake;
-import de.myreality.acidsnake.screens.GameOverScreen;
-import de.myreality.acidsnake.util.Direction;
-import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.screens.MainMenuScreen;
 
 /**
- * Processor for ingame input handling
+ * Processor for the main menu
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class IngameProcessor implements InputProcessor {
+public class GameOverProcessor implements InputProcessor {
 	
 	private SnakeGame game;
 	
-	private World world;
-	
-	public IngameProcessor(SnakeGame game, World world) {
+	public GameOverProcessor(SnakeGame game) {
 		this.game = game;
-		this.world = world;
 		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		
-		Snake snake = world.getSnake();
-		
-		switch (keycode) {
-		
-			// ABORT GAME
-			case Keys.BACK: case Keys.ESCAPE:
-				game.setScreen(new GameOverScreen(game, world.getPlayer()));
-				break;
-				
-			// MOVE SNAKE UP
-			case Keys.W: case Keys.UP:
-				snake.setDirection(Direction.UP);
-				break;
-				
-			// MOVE SNAKE DOWN
-			case Keys.S: case Keys.DOWN:
-				snake.setDirection(Direction.DOWN);
-				break;
-				
-			// MOVE SNAKE LEFT
-			case Keys.A: case Keys.LEFT:
-				snake.setDirection(Direction.LEFT);
-			break;
-			
-			// MOVE SNAKE LEFT
-			case Keys.D: case Keys.RIGHT:
-				snake.setDirection(Direction.RIGHT);
-			break;
-		}
-		
+		if(keycode == Keys.BACK || keycode == Keys.ESCAPE){
+			game.setScreen(new MainMenuScreen(game));
+			return true;
+	    }
 	    return false;
 	}
 
@@ -97,46 +64,20 @@ public class IngameProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		
-		return false;
+		game.setScreen(new MainMenuScreen(game));
+		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		
-		final int TOLERANCE = 5;
-		
-		int deltaX = Gdx.input.getDeltaX(pointer);
-		int deltaY = Gdx.input.getDeltaY(pointer);
-		
-		int absDeltaX = Math.abs(deltaX);
-		int absDeltaY = Math.abs(deltaY);
-				
-	    Snake snake = world.getSnake();
-		
-		if (absDeltaX > TOLERANCE && absDeltaX > absDeltaY) {
-			
-			
-			
-			if (deltaX < 0) {
-				snake.setDirection(Direction.LEFT);
-			} else {
-				snake.setDirection(Direction.RIGHT);
-			}
-		} else if (absDeltaY > TOLERANCE){
-			if (deltaY < 0) {
-				snake.setDirection(Direction.UP);
-			} else {
-				snake.setDirection(Direction.DOWN);
-			}
-		}
-		
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
