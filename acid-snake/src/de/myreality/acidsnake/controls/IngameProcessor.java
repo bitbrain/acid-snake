@@ -62,25 +62,21 @@ public class IngameProcessor implements InputProcessor {
 			// MOVE SNAKE UP
 			case Keys.W: case Keys.UP:
 				snake.setDirection(Direction.UP);
-				snake.move();
 				break;
 				
 			// MOVE SNAKE DOWN
 			case Keys.S: case Keys.DOWN:
 				snake.setDirection(Direction.DOWN);
-				snake.move();
 				break;
 				
 			// MOVE SNAKE LEFT
 			case Keys.A: case Keys.LEFT:
 				snake.setDirection(Direction.LEFT);
-				snake.move();
 			break;
 			
 			// MOVE SNAKE LEFT
 			case Keys.D: case Keys.RIGHT:
 				snake.setDirection(Direction.RIGHT);
-				snake.move();
 			break;
 		}
 		

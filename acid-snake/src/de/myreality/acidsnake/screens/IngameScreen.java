@@ -33,7 +33,6 @@ import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
-import de.myreality.acidsnake.world.WorldDebugger;
 
 /**
  * Ingame screen which handles the basic game
@@ -88,21 +87,25 @@ public class IngameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		float color = 0.0f;
+		
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		if (world.getSnake().isKilled()) {
-			game.setScreen(new MainMenuScreen(game));
-		}
 		
-		lblPoints.setText(world.getPlayer().getPoints() + " points");
-		lblLevel.setText("Level " + world.getPlayer().getLevel());
-		lblTime.setText(world.getPlayer().getTime());
+		world.update(delta);
 		stage.act(delta);
 		
 		acid.render();
 		
+		lblPoints.setText(world.getPlayer().getPoints() + " points");
+		lblLevel.setText("Level " + world.getPlayer().getLevel());
+		lblTime.setText(world.getPlayer().getTime());
+		
 		stage.draw();
+		
+		if (world.getSnake().isKilled()) {
+			game.setScreen(new MainMenuScreen(game));
+		}
 	}
 
 	@Override
@@ -130,13 +133,13 @@ public class IngameScreen implements Screen {
 	@Override
 	public void show() {
 		
-		final int VERTICAL_INDEX = 12;
+		final int VERTICAL_INDEX = 32;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		bufferedRenderer = new GdxBufferedRenderer();
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);	
-        acid.setPadding(3);
+        acid.setPadding(1);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
         
@@ -147,7 +150,7 @@ public class IngameScreen implements Screen {
         
         world.build();
         
-        world.getSnake().addListener(new WorldDebugger(world));
+        //world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
 	}

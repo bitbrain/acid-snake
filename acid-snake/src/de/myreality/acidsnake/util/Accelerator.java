@@ -16,39 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
+package de.myreality.acidsnake.util;
 
-import de.myreality.acidsnake.util.Timer;
 
 /**
- * Implementation of {@link Player}
+ * Moves movable objects by a given speed rate
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class SimplePlayer implements Player {
+public class Accelerator implements Updateable {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
+	private static final long MAX_INTERVAL = 2000;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
+	private Moveable moveable;
+
+	private float speedRate;
+
 	private Timer timer;
-	
-	private int points;
-	
-	private int level;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public SimplePlayer() {
-		level = 1;
+
+	public Accelerator(Moveable moveable) {
+		this.moveable = moveable;
+		speedRate = 30;
 		timer = new Timer();
 		timer.start();
 	}
@@ -62,48 +64,31 @@ public class SimplePlayer implements Player {
 	// ===========================================================
 
 	@Override
-	public int getPoints() {
-		return points;
-	}
-
-	@Override
-	public void resetPoints() {
-		points = 0;
-	}
-
-	@Override
-	public void addPoints(int points) {
-		setPoints(getPoints() + points);
-	}
-
-	@Override
-	public void setPoints(int points) {
-		this.points = points;
-		
-		level = calculateLevel(points);
-	}
-
-	@Override
-	public String getTime() {
-		return timer.toString();
-	}
-
-	@Override
-	public void resetTime() {
-		timer.reset();
-	}
-
-	@Override
-	public int getLevel() {
-		return level;
+	public void update(float delta) {
+		if (timer.getTicks() > getRequiredTime()) {
+			timer.reset();
+			moveable.move();
+		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public Moveable getMoveable() {
+		return moveable;
+	}
+
+	public float getSpeedRate() {
+		return speedRate;
+	}
+
+	public void setSpeedRate(float rate) {
+		this.speedRate = rate;
+	}
 	
-	private int calculateLevel(int points) {
-		return points / 1000 + 1;
+	private long getRequiredTime() {
+		return (long) (MAX_INTERVAL / speedRate);
 	}
 
 	// ===========================================================

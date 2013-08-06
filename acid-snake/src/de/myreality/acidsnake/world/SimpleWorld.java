@@ -25,6 +25,7 @@ import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.SimplePlayer;
 import de.myreality.acidsnake.core.SimpleSnake;
 import de.myreality.acidsnake.core.Snake;
+import de.myreality.acidsnake.util.Accelerator;
 import de.myreality.acidsnake.util.WorldBinder;
 
 /**
@@ -57,6 +58,8 @@ public class SimpleWorld implements World {
 	private Set<WorldEntity> entities;
 	
 	private WorldBinder binder;
+	
+	private Accelerator snakeAccelerator;
 
 	// ===========================================================
 	// Constructors
@@ -176,6 +179,7 @@ public class SimpleWorld implements World {
 	public void build() {
 		player = new SimplePlayer();
 		snake = new SimpleSnake(5, 5, this);	
+		snakeAccelerator = new Accelerator(snake);
 		
 		for (WorldEntityType entityType : WorldEntityType.values()) {
 			snake.addListener(entityType);
@@ -201,6 +205,12 @@ public class SimpleWorld implements World {
 	private boolean validIndex(int indexX, int indexY) {
 		return indexX >= 0 && indexX < getWidth() &&
 			   indexY >= 0 && indexY < getHeight();
+	}
+
+	@Override
+	public void update(float delta) {
+		snakeAccelerator.setSpeedRate(20 + player.getLevel() * 2);
+		snakeAccelerator.update(delta);
 	}
 
 	// ===========================================================
