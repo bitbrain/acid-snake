@@ -2,7 +2,7 @@
     "name" : "AcidSnake",
     "author" : "Miguel Gonzalez",
     "url" : "http://acidsnake.my-reality.de",
-    "version" : "1.0",
+    "version" : "0.9beta",
     "phase" : "release",
     "progress" : "45",
     "phaselist" : [
