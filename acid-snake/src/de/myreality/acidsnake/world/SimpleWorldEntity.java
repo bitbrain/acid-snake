@@ -19,6 +19,7 @@
 package de.myreality.acidsnake.world;
 
 import de.myreality.acidsnake.util.AbstractIndexable;
+import de.myreality.acidsnake.util.WorldBinder;
 
 /**
  * Implementation of {@link WorldEntity}
@@ -41,6 +42,8 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 	
 	private World world;
 	
+	private WorldBinder binder;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -49,6 +52,7 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 		super(indexX, indexY);
 		this.type = type;
 		this.world = world;
+		binder = new WorldBinder(world);
 	}
 	
 	public SimpleWorldEntity(WorldEntityType type, World world) {
@@ -76,6 +80,8 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 	@Override
 	public void setIndex(int indexX, int indexY) {
 		world.putEntity(indexX, indexY, this);
+		indexX = binder.bindIndexX(indexX);
+		indexY = binder.bindIndexY(indexY);
 		super.setIndex(indexX, indexY);
 	}
 

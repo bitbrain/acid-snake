@@ -26,6 +26,7 @@ import java.util.Set;
 import de.myreality.acidsnake.util.AbstractIndexable;
 import de.myreality.acidsnake.util.Direction;
 import de.myreality.acidsnake.util.IndexConverter;
+import de.myreality.acidsnake.util.WorldBinder;
 import de.myreality.acidsnake.world.SimpleWorldEntityFactory;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntityFactory;
@@ -43,8 +44,6 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static final int INITIAL_SIZE = 5;
 
 	// ===========================================================
 	// Fields
@@ -63,6 +62,8 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	private Set<SnakeListener> listeners;
 	
 	private WorldEntityFactory factory;
+	
+	private WorldBinder binder;
 
 	// ===========================================================
 	// Constructors
@@ -75,6 +76,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		chunks = new ArrayList<SnakeChunk>();
 		factory = new SimpleWorldEntityFactory(world);		
 		setDirection(Direction.RIGHT);
+		binder = new WorldBinder(world);
 	}
 
 	// ===========================================================
@@ -186,6 +188,9 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	@Override
 	public void setIndex(int indexX, int indexY) {
 		
+		indexX = binder.bindIndexX(indexX);
+		indexY = binder.bindIndexY(indexY);
+		
 		if (world.hasEntity(indexX, indexY)) {
 			for (SnakeListener listener : listeners) {
 				listener.onCollide(indexX, indexY, this, world.getEntity(indexX, indexY));
@@ -214,9 +219,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void build() {
-		for (int i = 0; i < INITIAL_SIZE; ++i) {
-			addChunk();
-		}
+		spawn();
 	}
 
 	// ===========================================================

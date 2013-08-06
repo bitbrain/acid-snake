@@ -72,7 +72,9 @@ public enum WorldEntityType implements SnakeListener {
 				WorldEntity target) {
 			if (target.getType().equals(this)) {
 				snake.addChunk();
-				snake.getWorld().removeEntity(target);
+				snake.getWorld().getPlayer().addPoints(10);
+				//snake.getWorld().removeEntity(target);
+				spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
 

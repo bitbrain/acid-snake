@@ -21,9 +21,13 @@ package de.myreality.acidsnake.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import de.myreality.acid.Acid;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.graphics.WorldRenderer;
@@ -57,6 +61,10 @@ public class IngameScreen implements Screen {
 	private WorldRenderer worldRenderer;
 	
 	private GdxBufferedRenderer bufferedRenderer;
+	
+	private Label lblPoints, lblTime;
+	
+	private Stage stage;
 
 	// ===========================================================
 	// Constructors
@@ -87,18 +95,42 @@ public class IngameScreen implements Screen {
 			game.setScreen(new MainMenuScreen(game));
 		}
 		
+		lblPoints.setText(world.getPlayer().getPoints() + " points");
+		
+		stage.act(delta);
+		
 		acid.render();
+		
+		stage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-
+		if (stage == null) {
+			stage = new Stage(width, height, false);
+			LabelStyle style = new LabelStyle();
+			style.font = Resources.BITMAP_FONT_REGULAR;
+			style.fontColor = Resources.COLOR_GREEN;
+			
+			lblPoints = new Label("0 points", style);
+			lblTime = new Label("00:00", style);
+			stage.addActor(lblPoints);
+			stage.addActor(lblTime);
+			
+			lblPoints.setX(30);
+			lblPoints.setY(Gdx.graphics.getHeight() - lblPoints.getHeight() - 30);
+			
+			lblTime.setX(Gdx.graphics.getWidth() - lblTime.getWidth() - 30);
+			lblTime.setY(Gdx.graphics.getHeight() - lblTime.getHeight() - 30);
+		} else {
+			stage.setViewport(width, height, false);
+		}
 	}
 	
 	@Override
 	public void show() {
 		
-		final int VERTICAL_INDEX = 8;
+		final int VERTICAL_INDEX = 12;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		

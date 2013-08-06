@@ -18,15 +18,16 @@
 
 package de.myreality.acidsnake.util;
 
+import de.myreality.acidsnake.world.World;
 
 /**
- * Converts a movable for further calculations
+ * 
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 
+ * @version 
  */
-public class IndexConverter {
+public class WorldBinder {
 
 	// ===========================================================
 	// Constants
@@ -36,23 +37,19 @@ public class IndexConverter {
 	// Fields
 	// ===========================================================
 	
-	private Indexable indexable;
+	private World world;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public IndexConverter(Indexable indexable) {
-		this.indexable = indexable;
+
+	public WorldBinder(World world) {
+		this.world = world;
 	}
-	
+
 	// ===========================================================
 	// Getters and Setters
 	// ===========================================================
-	
-	public Indexable getIndexable() {
-		return indexable;
-	}
 
 	// ===========================================================
 	// Methods from Superclass
@@ -62,25 +59,23 @@ public class IndexConverter {
 	// Methods
 	// ===========================================================
 	
-	public int getInvertedIndexX(Direction direction) {
-		switch (direction) {
-		case LEFT:
-			return indexable.getIndexX() + 1;
-		case RIGHT:
-			return indexable.getIndexX() - 1;
-		default:
-			return indexable.getIndexX();
+	public int bindIndexX(int indexX) {
+		if (indexX >= world.getWidth()) {
+			return 0;
+		} else if (indexX < 0) {
+			return world.getWidth() - 1;
+		} else {
+			return indexX;
 		}
 	}
 	
-	public int getInvertedIndexY(Direction direction) {
-		switch (direction) {
-		case UP:
-			return indexable.getIndexY() + 1;
-		case DOWN:
-			return indexable.getIndexY() - 1;
-		default:
-			return indexable.getIndexY();
+	public int bindIndexY(int indexY) {
+		if (indexY >= world.getHeight()) {
+			return 0;
+		} else if (indexY < 0) {
+			return world.getHeight() - 1;
+		} else {
+			return indexY;
 		}
 	}
 

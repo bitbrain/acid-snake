@@ -25,6 +25,7 @@ import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.SimplePlayer;
 import de.myreality.acidsnake.core.SimpleSnake;
 import de.myreality.acidsnake.core.Snake;
+import de.myreality.acidsnake.util.WorldBinder;
 
 /**
  * World class which handles the entire game
@@ -54,6 +55,8 @@ public class SimpleWorld implements World {
 	WorldEntity[][] area;
 	
 	private Set<WorldEntity> entities;
+	
+	private WorldBinder binder;
 
 	// ===========================================================
 	// Constructors
@@ -65,6 +68,7 @@ public class SimpleWorld implements World {
 		listeners = new HashSet<WorldListener>();
 		entities = new HashSet<WorldEntity>();
 		area = new WorldEntity[width][height];
+		binder = new WorldBinder(this);
 	}
 
 	// ===========================================================
@@ -104,43 +108,40 @@ public class SimpleWorld implements World {
 
 	@Override
 	public WorldEntity getEntity(int indexX, int indexY) {
-		if (validIndex(indexX, indexY)) {
-			return area[indexX][indexY];
-		} else {
-			return null;
-		}
+		indexX = binder.bindIndexX(indexX);
+		indexY = binder.bindIndexY(indexY);
+		return area[indexX][indexY];
 	}
 
 	@Override
 	public boolean putEntity(int indexX, int indexY, WorldEntity entity) {
 		
-		if (validIndex(indexX, indexY)) {
+		indexX = binder.bindIndexX(indexX);
+		indexY = binder.bindIndexY(indexY);
 			
-			WorldEntity old = getEntity(indexX, indexY);
-			boolean oldExists = old != null;
-			boolean isTheSame = oldExists && old.equals(entity);
-			
-			if (oldExists && !isTheSame) {
-				removeEntity(old);
-			} 
-			
-			if (!oldExists || !isTheSame) {
+		WorldEntity old = getEntity(indexX, indexY);
+		boolean oldExists = old != null;
+		boolean isTheSame = oldExists && old.equals(entity);
+		
+		if (oldExists && !isTheSame) {
+			removeEntity(old);
+		} 
+		
+		if (!oldExists || !isTheSame) {
 
-				removeEntity(entity);
-				
-				for (WorldListener listener : listeners) {
-					listener.onPut(indexX, indexY, entity, this);
-				}
-				
-				entities.add(entity);
-				area[indexX][indexY] = entity;
-				return true;
-			} else {
-				return false;
+			removeEntity(entity);
+			
+			for (WorldListener listener : listeners) {
+				listener.onPut(indexX, indexY, entity, this);
 			}
+			
+			entities.add(entity);
+			area[indexX][indexY] = entity;
+			return true;
 		} else {
 			return false;
 		}
+		
 	}
 
 	@Override
@@ -148,6 +149,9 @@ public class SimpleWorld implements World {
 		if (entity != null && entities.contains(entity)) {
 			
 			int indexX = entity.getIndexX(), indexY = entity.getIndexY();
+			
+			indexX = binder.bindIndexX(indexX);
+			indexY = binder.bindIndexY(indexY);
 			
 			for (WorldListener listener : listeners) {
 				listener.onRemove(indexX, indexY, entity, this);
