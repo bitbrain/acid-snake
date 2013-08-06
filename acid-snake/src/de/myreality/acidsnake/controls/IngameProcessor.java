@@ -97,20 +97,42 @@ public class IngameProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		
+		int deltaX = Gdx.input.getDeltaX(pointer);
+		int deltaY = Gdx.input.getDeltaY(pointer);
+		
+		Snake snake = world.getSnake();
+		
+		if (Math.abs(deltaX) > Math.abs(deltaY)) {
+			
+			
+			
+			if (deltaX < 0) {
+				snake.setDirection(Direction.LEFT);
+			} else {
+				snake.setDirection(Direction.RIGHT);
+			}
+		} else {
+			if (deltaY < 0) {
+				snake.setDirection(Direction.UP);
+			} else {
+				snake.setDirection(Direction.DOWN);
+			}
+		}
+		
+		return true;
 	}
 
 	@Override

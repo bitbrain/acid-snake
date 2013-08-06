@@ -42,7 +42,7 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
-			if (target.getType().equals(this)) {
+			if (target != null && target.getType().equals(this)) {
 				snake.kill();
 			}
 		}
@@ -85,6 +85,8 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
+			spawnAtRandomPosition(this, snake.getWorld());
+			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 		}
 		
