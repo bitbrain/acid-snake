@@ -120,6 +120,7 @@ public class SimpleWorld implements World {
 		
 		if (!oldExists || !isTheSame) {
 			for (WorldListener listener : listeners) {
+				listener.onRemove(entity.getIndexX(), entity.getIndexY(), entity, this);
 				listener.onPut(indexX, indexY, entity, this);
 			}
 			
