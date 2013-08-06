@@ -72,6 +72,7 @@ public enum WorldEntityType implements SnakeListener {
 				WorldEntity target) {
 			if (target.getType().equals(this)) {
 				snake.addChunk();
+				snake.getWorld().removeEntity(target);
 			}
 		}
 
@@ -107,6 +108,6 @@ public enum WorldEntityType implements SnakeListener {
 			validPosition = !world.hasEntity(randomX, randomY);
 		}
 		
-		entityFactory.create(randomX, randomY, type);
+		world.putEntity(randomX, randomY, entityFactory.create(randomX, randomY, type));
 	}
 }

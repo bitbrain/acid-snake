@@ -28,7 +28,6 @@ import de.myreality.acidsnake.util.Direction;
 import de.myreality.acidsnake.util.IndexConverter;
 import de.myreality.acidsnake.world.SimpleWorldEntityFactory;
 import de.myreality.acidsnake.world.World;
-import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityFactory;
 import de.myreality.acidsnake.world.WorldEntityType;
 
@@ -175,6 +174,8 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		for (SnakeListener listener : listeners) {
 			listener.onKill(this);
 		}
+		
+		killed = true;
 	}
 
 	@Override

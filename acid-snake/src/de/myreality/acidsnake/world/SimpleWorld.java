@@ -104,13 +104,18 @@ public class SimpleWorld implements World {
 
 	@Override
 	public WorldEntity getEntity(int indexX, int indexY) {
-		return area[indexX][indexY];
+		if (validIndex(indexX, indexY)) {
+			return area[indexX][indexY];
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public boolean putEntity(int indexX, int indexY, WorldEntity entity) {
 		
 		if (validIndex(indexX, indexY)) {
+			
 			WorldEntity old = getEntity(indexX, indexY);
 			boolean oldExists = old != null;
 			boolean isTheSame = oldExists && old.equals(entity);
@@ -120,13 +125,14 @@ public class SimpleWorld implements World {
 			} 
 			
 			if (!oldExists || !isTheSame) {
+
+				removeEntity(entity);
+				
 				for (WorldListener listener : listeners) {
-					listener.onRemove(entity.getIndexX(), entity.getIndexY(), entity, this);
 					listener.onPut(indexX, indexY, entity, this);
 				}
 				
 				entities.add(entity);
-				area[entity.getIndexX()][entity.getIndexY()] = null;
 				area[indexX][indexY] = entity;
 				return true;
 			} else {
@@ -148,7 +154,10 @@ public class SimpleWorld implements World {
 			}
 			
 			entities.remove(entity);
-			area[indexX][indexY] = null;
+
+			if (validIndex(indexX, indexY)) {
+				area[indexX][indexY] = null;
+			}
 		}
 	}
 
@@ -162,7 +171,12 @@ public class SimpleWorld implements World {
 	@Override
 	public void build() {
 		player = new SimplePlayer();
-		snake = new SimpleSnake(5, 5, this);		
+		snake = new SimpleSnake(5, 5, this);	
+		
+		for (WorldEntityType entityType : WorldEntityType.values()) {
+			snake.addListener(entityType);
+		}
+		
 		snake.build();
 	}
 
