@@ -18,11 +18,16 @@
 
 package de.myreality.acidsnake.core;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import de.myreality.acidsnake.util.Direction;
+import de.myreality.acidsnake.world.SimpleWorldEntityFactory;
 import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.world.WorldEntityFactory;
+import de.myreality.acidsnake.world.WorldEntityType;
 
 /**
  * Implementation of {@link Snake}
@@ -47,15 +52,27 @@ public class SimpleSnake implements Snake {
 	
 	private List<SnakeChunk> chunks;
 	
+	private SnakeChunk head, tail;
+	
 	private World world;
 	
 	private boolean killed;
 	
 	private Set<SnakeListener> listeners;
+	
+	private WorldEntityFactory factory;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public SimpleSnake(World world) {
+		this.world = world;
+		listeners = new HashSet<SnakeListener>();
+		chunks = new ArrayList<SnakeChunk>();
+		factory = new SimpleWorldEntityFactory(world);
+		addChunk();
+	}
 
 	// ===========================================================
 	// Getters and Setters
@@ -67,20 +84,17 @@ public class SimpleSnake implements Snake {
 
 	@Override
 	public void setDirection(Direction direction) {
-		// TODO Auto-generated method stub
-
+		this.direction = direction;
 	}
 
 	@Override
 	public void setSpeed(float speed) {
-		// TODO Auto-generated method stub
-
+		this.speed = speed;
 	}
 
 	@Override
 	public float getSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
+		return speed;
 	}
 
 	@Override
@@ -91,56 +105,60 @@ public class SimpleSnake implements Snake {
 
 	@Override
 	public List<SnakeChunk> getChunks() {
-		// TODO Auto-generated method stub
-		return null;
+		return chunks;
 	}
 
 	@Override
 	public void addChunk() {
-		// TODO Auto-generated method stub
-
+		SnakeChunk chunk = (SnakeChunk) factory.create(WorldEntityType.SNAKE);
+		
+		if (!chunks.isEmpty()) {
+			head = chunk;
+		}
+		
+		chunks.add(chunk);
+		tail = chunk;
 	}
 
 	@Override
 	public SnakeChunk getHead() {
-		// TODO Auto-generated method stub
-		return null;
+		return head;
 	}
 
 	@Override
 	public SnakeChunk getTail() {
-		// TODO Auto-generated method stub
-		return null;
+		return tail;
 	}
 
 	@Override
 	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+		return world;
 	}
 
 	@Override
 	public void addListener(SnakeListener listener) {
-		// TODO Auto-generated method stub
-
+		if (!listeners.contains(listener)) {
+			listeners.add(listener);
+		}
 	}
 
 	@Override
 	public void spawn() {
-		// TODO Auto-generated method stub
-
+		for (SnakeListener listener : listeners) {
+			listener.onSpawn(this);
+		}
 	}
 
 	@Override
 	public void kill() {
-		// TODO Auto-generated method stub
-
+		for (SnakeListener listener : listeners) {
+			listener.onKill(this);
+		}
 	}
 
 	@Override
 	public boolean isKilled() {
-		// TODO Auto-generated method stub
-		return false;
+		return killed;
 	}
 
 	// ===========================================================

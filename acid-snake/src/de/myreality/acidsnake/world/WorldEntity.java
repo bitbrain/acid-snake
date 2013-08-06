@@ -18,6 +18,8 @@
 
 package de.myreality.acidsnake.world;
 
+import de.myreality.acidsnake.util.Indexable;
+
 /**
  * World object which is represented on the world by its position and type
  * 
@@ -25,7 +27,7 @@ package de.myreality.acidsnake.world;
  * @since 1.0
  * @version 1.0
  */
-public interface WorldEntity {
+public interface WorldEntity extends Indexable {
 
 	// ===========================================================
 	// Constants
@@ -41,48 +43,6 @@ public interface WorldEntity {
 	 * @return
 	 */
 	WorldEntityType getType();
-	
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	int getIndexX();
-	
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	int getIndexY();
-	
-	/**
-	 * 
-	 * 
-	 * @param indexX
-	 */
-	void setIndexX(int indexX);
-	
-	/**
-	 * 
-	 * 
-	 * @param indexY
-	 */
-	void setIndexY(int indexY);
-	
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	int getLastIndexX();
-	
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	int getLastIndexY();
 	
 	/**
 	 * 

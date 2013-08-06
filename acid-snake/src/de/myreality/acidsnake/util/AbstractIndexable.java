@@ -16,18 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.world;
+package de.myreality.acidsnake.util;
 
-import de.myreality.acidsnake.util.AbstractIndexable;
 
 /**
- * Implementation of {@link WorldEntity}
+ * Abstract implementation of {@link Indexable}
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity {
+public class AbstractIndexable implements Indexable {
 
 	// ===========================================================
 	// Constants
@@ -36,23 +35,20 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private int indexX, indexY;
+	
+	private int lastIndexX, lastIndexY;
 
-	private WorldEntityType type;
-	
-	private World world;
-	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public SimpleWorldEntity(int indexX, int indexY, WorldEntityType type, World world) {
-		super(indexX, indexY);
-		this.type = type;
-		this.world = world;
-	}
-	
-	public SimpleWorldEntity(WorldEntityType type, World world) {
-		this(0, 0, type, world);
+	public AbstractIndexable(int indexX, int indexY) {
+		this.indexX = indexX;
+		this.indexY = indexY;
+		this.lastIndexX = indexX;
+		this.lastIndexY = indexY;
 	}
 
 	// ===========================================================
@@ -64,19 +60,47 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 	// ===========================================================
 
 	@Override
-	public WorldEntityType getType() {
-		return type;
+	public int getIndexX() {
+		return indexX;
 	}
 
 	@Override
-	public World getWorld() {
-		return world;
+	public int getIndexY() {
+		return indexY;
+	}
+
+	@Override
+	public void setIndexX(int indexX) {
+		setIndex(indexX, indexY);
+	}
+
+	@Override
+	public void setIndexY(int indexY) {
+		setIndex(indexX, indexY);
+	}
+
+	@Override
+	public int getLastIndexX() {
+		return lastIndexX;
+	}
+
+	@Override
+	public int getLastIndexY() {
+		return lastIndexY;
 	}
 
 	@Override
 	public void setIndex(int indexX, int indexY) {
-		super.setIndex(indexX, indexY);
-		world.putEntity(indexX, indexY, this);
+		
+		if (this.indexY != indexY) {
+			this.lastIndexY = this.indexY;
+			this.indexY = indexY;			
+		}
+		
+		if (this.indexX != indexX) {
+			this.lastIndexX = this.indexX;
+			this.indexX = indexX;
+		}
 	}
 
 	// ===========================================================

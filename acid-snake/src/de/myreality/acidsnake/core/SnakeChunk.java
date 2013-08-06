@@ -55,4 +55,5 @@ public interface SnakeChunk extends WorldEntity {
 	 * @return next chunk
 	 */
 	SnakeChunk getNext();
+	
 }

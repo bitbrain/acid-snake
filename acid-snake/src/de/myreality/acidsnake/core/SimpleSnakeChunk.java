@@ -23,11 +23,11 @@ import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntityType;
 
 /**
- * 
+ * Implementation of {@link SnakeChunk}
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 
- * @version 
+ * @since 1.0
+ * @version 1.0
  */
 public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 
@@ -48,7 +48,8 @@ public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 
 	public SimpleSnakeChunk(World world) {
 		super(WorldEntityType.SNAKE, world);
-		next = world.getSnake().getTail();
+		Snake snake = world.getSnake();
+		next = snake.getTail();
 	}
 
 	// ===========================================================
@@ -61,8 +62,7 @@ public class SimpleSnakeChunk extends SimpleWorldEntity implements SnakeChunk {
 	
 	@Override
 	public void move() {
-		setIndexX(next.getIndexX());
-		setIndexY(next.getIndexY());
+		setIndex(next.getIndexX(), next.getIndexY());
 	}
 
 	@Override

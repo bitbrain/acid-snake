@@ -48,7 +48,7 @@ public enum WorldEntityType implements SnakeListener {
 		}
 
 		@Override
-		public void onDie(Snake snake) {
+		public void onKill(Snake snake) {
 			
 		}
 
@@ -76,7 +76,7 @@ public enum WorldEntityType implements SnakeListener {
 		}
 
 		@Override
-		public void onDie(Snake snake) {
+		public void onKill(Snake snake) {
 			
 		}
 
