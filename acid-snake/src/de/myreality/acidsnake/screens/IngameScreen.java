@@ -20,7 +20,6 @@ package de.myreality.acidsnake.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 
 import de.myreality.acid.Acid;
@@ -28,7 +27,6 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.graphics.WorldRenderer;
-import de.myreality.acidsnake.util.Direction;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
 

@@ -43,6 +43,8 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	public static final int INITIAL_SIZE = 3;
 
 	// ===========================================================
 	// Fields
@@ -127,12 +129,12 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		}
 		
 		SnakeChunk chunk = (SnakeChunk) factory.create(chunkX, chunkY, WorldEntityType.SNAKE);
-		
 		if (chunks.isEmpty()) {
 			head = chunk;
 		}
 		
 		chunks.add(chunk);
+		chunk.setIndex(chunkX, chunkY);
 		tail = chunk;
 	}
 
@@ -200,9 +202,9 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void build() {
-		addChunk();
-		addChunk();
-		addChunk();
+		for (int i = 0; i < INITIAL_SIZE; ++i) {
+			addChunk();
+		}
 	}
 
 	// ===========================================================
