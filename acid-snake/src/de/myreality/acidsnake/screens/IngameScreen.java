@@ -28,6 +28,7 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.graphics.WorldRenderer;
+import de.myreality.acidsnake.util.Direction;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
 
@@ -75,16 +76,13 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	
 
+	boolean pressed;
 
 	@Override
 	public void render(float delta) {
 		float color = 0.0f;
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		if (Gdx.input.isKeyPressed(Keys.D)) {
-			world.getSnake().move();
-		}
 		
 		acid.render();
 	}

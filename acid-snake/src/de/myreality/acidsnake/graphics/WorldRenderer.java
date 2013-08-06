@@ -49,7 +49,7 @@ public class WorldRenderer implements WorldListener {
 	@Override
 	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
 		
-		manager.setCellRenderer(textureRenderer);
+		//manager.setCellRenderer(textureRenderer);
 		
 		switch (target.getType()) {
 			case SMALL_FOOD:	

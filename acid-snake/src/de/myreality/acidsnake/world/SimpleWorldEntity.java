@@ -75,8 +75,8 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 
 	@Override
 	public void setIndex(int indexX, int indexY) {
-		super.setIndex(indexX, indexY);
 		world.putEntity(indexX, indexY, this);
+		super.setIndex(indexX, indexY);
 	}
 
 	// ===========================================================

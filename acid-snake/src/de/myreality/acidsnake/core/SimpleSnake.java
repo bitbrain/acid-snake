@@ -91,7 +91,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	public void move() {
 		switch (direction) {
 			case DOWN:
-				setIndexY(getIndexY() - 1);
+				setIndexY(getIndexY() + 1);
 				break;
 			case LEFT:
 				setIndexX(getIndexX() - 1);
@@ -100,7 +100,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 				setIndexX(getIndexX() + 1);
 				break;
 			case UP:
-				setIndexY(getIndexX() + 1);
+				setIndexY(getIndexY() - 1);
 				break;
 		}
 	}
@@ -194,6 +194,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void build() {
+		addChunk();
 		addChunk();
 	}
 
