@@ -27,8 +27,42 @@ package de.myreality.acidsnake.util;
  */
 public enum Direction {
 
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
+	UP{
+
+		@Override
+		public Direction getOpposite() {
+			return DOWN;
+		}
+		
+	},
+	DOWN {
+
+		@Override
+		public Direction getOpposite() {
+			return UP;
+		}
+		
+	},
+	LEFT {
+
+		@Override
+		public Direction getOpposite() {
+			return RIGHT;
+		}
+		
+	},
+	RIGHT {
+
+		@Override
+		public Direction getOpposite() {
+			return LEFT;
+		}
+		
+	};
+	
+	public abstract Direction getOpposite();
+	
+	public boolean isValid(Direction direction) {
+		return !getOpposite().equals(direction);
+	}
 }

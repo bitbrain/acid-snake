@@ -51,7 +51,7 @@ public class SimpleWorld implements World {
 	
 	private int width, height;
 	
-	private WorldEntity[][] area;
+	WorldEntity[][] area;
 	
 	private Set<WorldEntity> entities;
 
@@ -110,23 +110,28 @@ public class SimpleWorld implements World {
 	@Override
 	public boolean putEntity(int indexX, int indexY, WorldEntity entity) {
 		
-		WorldEntity old = getEntity(indexX, indexY);
-		boolean oldExists = old != null;
-		boolean isTheSame = oldExists && old.equals(entity);
-		
-		if (oldExists && !isTheSame) {
-			removeEntity(old);
-		} 
-		
-		if (!oldExists || !isTheSame) {
-			for (WorldListener listener : listeners) {
-				listener.onRemove(entity.getIndexX(), entity.getIndexY(), entity, this);
-				listener.onPut(indexX, indexY, entity, this);
-			}
+		if (validIndex(indexX, indexY)) {
+			WorldEntity old = getEntity(indexX, indexY);
+			boolean oldExists = old != null;
+			boolean isTheSame = oldExists && old.equals(entity);
 			
-			entities.add(entity);
-			area[indexX][indexY] = entity;
-			return true;
+			if (oldExists && !isTheSame) {
+				removeEntity(old);
+			} 
+			
+			if (!oldExists || !isTheSame) {
+				for (WorldListener listener : listeners) {
+					listener.onRemove(entity.getIndexX(), entity.getIndexY(), entity, this);
+					listener.onPut(indexX, indexY, entity, this);
+				}
+				
+				entities.add(entity);
+				area[entity.getIndexX()][entity.getIndexY()] = null;
+				area[indexX][indexY] = entity;
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -174,6 +179,11 @@ public class SimpleWorld implements World {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	private boolean validIndex(int indexX, int indexY) {
+		return indexX >= 0 && indexX < getWidth() &&
+			   indexY >= 0 && indexY < getHeight();
+	}
 
 	// ===========================================================
 	// Inner classes

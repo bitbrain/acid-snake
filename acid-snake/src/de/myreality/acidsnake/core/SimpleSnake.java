@@ -28,6 +28,7 @@ import de.myreality.acidsnake.util.Direction;
 import de.myreality.acidsnake.util.IndexConverter;
 import de.myreality.acidsnake.world.SimpleWorldEntityFactory;
 import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityFactory;
 import de.myreality.acidsnake.world.WorldEntityType;
 
@@ -44,7 +45,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	// Constants
 	// ===========================================================
 	
-	public static final int INITIAL_SIZE = 3;
+	public static final int INITIAL_SIZE = 5;
 
 	// ===========================================================
 	// Fields
@@ -87,7 +88,9 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void setDirection(Direction direction) {
-		this.direction = direction;
+		if (this.direction == null || this.direction.isValid(direction)) {
+			this.direction = direction;
+		}
 	}
 	@Override
 	public Direction getDirection() {
@@ -188,15 +191,23 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 			}
 		}
 		
-		super.setIndex(indexX, indexY);
+		
 		
 		for (SnakeListener listener : listeners) {
-			listener.onEnterPosition(indexX, indexY, this);
+			listener.onEnterPosition(indexX, indexY, this);			
+			
+			if (world.hasEntity(indexX, indexY)) {
+				listener.onCollide(indexX, indexY, this, world.getEntity(indexX, indexY));
+			}
 		}
 		
-		for (int index = chunks.size() - 1; index >= 0; --index) {
-			SnakeChunk chunk = chunks.get(index);
-			chunk.move();
+		if (!isKilled()) {
+			super.setIndex(indexX, indexY);
+			
+			for (int index = chunks.size() - 1; index >= 0; --index) {
+				SnakeChunk chunk = chunks.get(index);
+				chunk.move();
+		}
 		}
 	}
 

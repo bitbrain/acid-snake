@@ -29,6 +29,7 @@ import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.world.WorldDebugger;
 
 /**
  * Ingame screen which handles the basic game
@@ -82,6 +83,10 @@ public class IngameScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		if (world.getSnake().isKilled()) {
+			game.setScreen(new MainMenuScreen(game));
+		}
+		
 		acid.render();
 	}
 
@@ -93,13 +98,13 @@ public class IngameScreen implements Screen {
 	@Override
 	public void show() {
 		
-		final int VERTICAL_INDEX = 12;
+		final int VERTICAL_INDEX = 8;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		bufferedRenderer = new GdxBufferedRenderer();
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);	
-        acid.setPadding(4);
+        acid.setPadding(3);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
         
@@ -107,8 +112,10 @@ public class IngameScreen implements Screen {
         
         worldRenderer = new WorldRenderer(acid);
         world.addListener(worldRenderer);
-
+        
         world.build();
+        
+        world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
 	}
