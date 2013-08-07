@@ -125,14 +125,14 @@ public class MainMenuScreen implements Screen {
 		batch = new SpriteBatch();
 		BufferedRenderer renderer = new GdxBufferedRenderer();			
 		
-		final int VERTICAL_INDEX = 32;
+		final int VERTICAL_INDEX = 8;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		acdBackground = new RandomAcid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, renderer);	
 
 		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
-		acdBackground.setPadding(1);
+		acdBackground.setPadding(5);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);	
 	}

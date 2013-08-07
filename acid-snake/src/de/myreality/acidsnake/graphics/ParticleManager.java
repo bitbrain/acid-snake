@@ -16,18 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.util;
+package de.myreality.acidsnake.graphics;
 
-import java.util.concurrent.TimeUnit;
+import de.myreality.acidsnake.core.Snake;
+import de.myreality.acidsnake.core.SnakeListener;
+import de.myreality.acidsnake.world.WorldEntity;
 
 /**
- * Simple timer implementation
+ * Listens to a snake to spawn particles on collisions
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class Timer {
+public class ParticleManager implements SnakeListener {
 
 	// ===========================================================
 	// Constants
@@ -36,19 +38,10 @@ public class Timer {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private long startTime;
 
-	private boolean running;
-	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public Timer() {
-		reset();
-		running = false;
-	}
 
 	// ===========================================================
 	// Getters and Setters
@@ -57,50 +50,37 @@ public class Timer {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
-	
+
 	@Override
-	public String toString() {
-		return convertValue(TimeUnit.MILLISECONDS.toMinutes(getTicks())) + ":" +
-		convertValue(TimeUnit.MILLISECONDS.toSeconds(getTicks()) - 
-			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(getTicks()))
-			);
+	public void onEnterPosition(int indexX, int indexY, Snake snake) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onCollide(int indexX, int indexY, Snake snake,
+			WorldEntity target) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onKill(Snake snake) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSpawn(Snake snake) {
+		// TODO Auto-generated method stub
+
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	public void start() {
-		running = true;
-	}
-	
-	public void stop() {
-		running = false;
-		reset();
-	}
-	
-	public void reset() {
-		startTime = System.currentTimeMillis();
-	}
-	
-	public long getTicks() {
-		return System.currentTimeMillis() - startTime;
-	}
-	
-	public boolean isRunning() {
-		return running;
-	}
-
-	private String convertValue(long time) {
-		if (time < 10) {
-			return "0" + time;
-		} else {
-			return "" + time;
-		}
-	}
 
 	// ===========================================================
 	// Inner classes
 	// ===========================================================
-	
 }

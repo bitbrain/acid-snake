@@ -49,7 +49,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	// Fields
 	// ===========================================================
 	
-	private Direction direction;
+	private Direction direction, fixedDirection;
 	
 	private List<SnakeChunk> chunks;
 	
@@ -64,6 +64,8 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	private WorldEntityFactory factory;
 	
 	private WorldBinder binder;
+	
+	private boolean directionApplied;
 
 	// ===========================================================
 	// Constructors
@@ -74,7 +76,8 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		this.world = world;
 		listeners = new HashSet<SnakeListener>();
 		chunks = new ArrayList<SnakeChunk>();
-		factory = new SimpleWorldEntityFactory(world);		
+		factory = new SimpleWorldEntityFactory(world);	
+		fixedDirection = Direction.RIGHT;
 		setDirection(Direction.RIGHT);
 		binder = new WorldBinder(world);
 	}
@@ -89,7 +92,13 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void setDirection(Direction direction) {
-		if (this.direction == null || this.direction.isValid(direction)) {
+		
+		if (directionApplied) {
+			fixedDirection = this.direction;
+			directionApplied = false;
+		}
+		
+		if (this.direction == null || fixedDirection.isValid(direction)) {
 			this.direction = direction;
 		}
 	}
@@ -213,7 +222,9 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 			for (int index = chunks.size() - 1; index >= 0; --index) {
 				SnakeChunk chunk = chunks.get(index);
 				chunk.move();
-		}
+			}
+			
+			directionApplied = true;
 		}
 	}
 

@@ -21,6 +21,7 @@ package de.myreality.acidsnake.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import de.myreality.acid.BufferedRenderer;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
@@ -28,6 +29,7 @@ import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.GameOverProcessor;
 import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.graphics.RandomAcid;
+import de.myreality.acidsnake.ui.PlayerTable;
 
 /**
  * Shows the game result
@@ -51,6 +53,8 @@ public class GameOverScreen implements Screen {
 	private SnakeGame game;
 
 	private RandomAcid acdBackground;
+	
+	private Stage stage;
 
 	// ===========================================================
 	// Constructors
@@ -76,13 +80,23 @@ public class GameOverScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		stage.act(delta);
+		
 		acdBackground.render();
+		stage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		if (stage == null) {
+			stage = new Stage(width, height, false);
+			PlayerTable results = new PlayerTable(player);
+			stage.addActor(results);
+			results.setX(Gdx.graphics.getWidth() / 2f - results.getWidth() / 2f);
+			results.setY(Gdx.graphics.getHeight() / 2f - results.getHeight() / 2f);
+		} else {
+			stage.setViewport(width, height, false);
+		}
 	}
 
 	@Override
@@ -90,14 +104,14 @@ public class GameOverScreen implements Screen {
 		
 		BufferedRenderer renderer = new GdxBufferedRenderer();			
 		
-		final int VERTICAL_INDEX = 32;
+		final int VERTICAL_INDEX = 8;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		acdBackground = new RandomAcid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, renderer);	
 
 		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
-		acdBackground.setPadding(1);
+		acdBackground.setPadding(5);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);
 		
@@ -124,8 +138,7 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		stage.dispose();
 	}
 
 	// ===========================================================

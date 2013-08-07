@@ -109,8 +109,6 @@ public class IngameProcessor implements InputProcessor {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		
-		final int TOLERANCE = 5;
-		
 		int deltaX = Gdx.input.getDeltaX(pointer);
 		int deltaY = Gdx.input.getDeltaY(pointer);
 		
@@ -119,7 +117,7 @@ public class IngameProcessor implements InputProcessor {
 				
 	    Snake snake = world.getSnake();
 		
-		if (absDeltaX > TOLERANCE && absDeltaX > absDeltaY) {
+		if (absDeltaX > absDeltaY) {
 			
 			
 			
@@ -128,7 +126,7 @@ public class IngameProcessor implements InputProcessor {
 			} else {
 				snake.setDirection(Direction.RIGHT);
 			}
-		} else if (absDeltaY > TOLERANCE){
+		} else {
 			if (deltaY < 0) {
 				snake.setDirection(Direction.UP);
 			} else {

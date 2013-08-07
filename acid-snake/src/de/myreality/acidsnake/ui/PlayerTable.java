@@ -16,18 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.util;
+package de.myreality.acidsnake.ui;
 
-import java.util.concurrent.TimeUnit;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
+import de.myreality.acidsnake.Resources;
+import de.myreality.acidsnake.core.Player;
 
 /**
- * Simple timer implementation
+ * Shows information/statistics of the player's game
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class Timer {
+public class PlayerTable extends Table {
 
 	// ===========================================================
 	// Constants
@@ -36,18 +41,41 @@ public class Timer {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private long startTime;
 
-	private boolean running;
-	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public Timer() {
-		reset();
-		running = false;
+	public PlayerTable(Player player) {
+		
+		LabelStyle valueStyle = new LabelStyle();
+		valueStyle.font = Resources.BITMAP_FONT_LARGE;
+		valueStyle.fontColor = Resources.COLOR_GREEN;
+		
+		LabelStyle infoStyle = new LabelStyle();
+		infoStyle.font = Resources.BITMAP_FONT_LARGE;
+		infoStyle.fontColor = Resources.COLOR_VIOLET;
+		
+		// LEVEL
+		Label lblLevel = new Label(player.getLevel() + "", valueStyle);
+		Label lblLevelInfo = new Label("Level: ", infoStyle);
+		add(lblLevelInfo).left();
+		add(lblLevel).left();
+		row();
+		
+		// POINTS
+		Label lblPoints = new Label(player.getPoints() + "", valueStyle);
+		Label lblPointsInfo = new Label("Points: ", infoStyle);
+		add(lblPointsInfo).left();
+		add(lblPoints).left();
+		row();
+		
+		// TIME
+		Label lblTime = new Label(player.getTime(), valueStyle);
+		Label lblTimeInfo = new Label("Time: ", infoStyle);
+		add(lblTimeInfo).left();
+		add(lblTime).left();
+		row();
 	}
 
 	// ===========================================================
@@ -58,49 +86,13 @@ public class Timer {
 	// Methods from Superclass
 	// ===========================================================
 	
-	@Override
-	public String toString() {
-		return convertValue(TimeUnit.MILLISECONDS.toMinutes(getTicks())) + ":" +
-		convertValue(TimeUnit.MILLISECONDS.toSeconds(getTicks()) - 
-			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(getTicks()))
-			);
-	}
+	
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	public void start() {
-		running = true;
-	}
-	
-	public void stop() {
-		running = false;
-		reset();
-	}
-	
-	public void reset() {
-		startTime = System.currentTimeMillis();
-	}
-	
-	public long getTicks() {
-		return System.currentTimeMillis() - startTime;
-	}
-	
-	public boolean isRunning() {
-		return running;
-	}
-
-	private String convertValue(long time) {
-		if (time < 10) {
-			return "0" + time;
-		} else {
-			return "" + time;
-		}
-	}
 
 	// ===========================================================
 	// Inner classes
 	// ===========================================================
-	
 }

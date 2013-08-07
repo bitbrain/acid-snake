@@ -50,30 +50,30 @@ public class WorldRenderer implements WorldListener {
 	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
 		
 		//manager.setCellRenderer(textureRenderer);
+		Color color = Resources.COLOR_GREEN;
 		
 		switch (target.getType()) {
 			case SMALL_FOOD:	
 				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
-				manager.color(1f, 1f, 1f);
+				color = Resources.COLOR_ORANGE;
 				break;
 			case SNAKE:
 				
-				Color color = Resources.COLOR_GREEN;
+				color = Resources.COLOR_GREEN;
 				
 				// Render head
 				if (world.getSnake().getHead().equals(target)) {
 					color = Resources.COLOR_VIOLET;
 				}
 				
-				manager.color(color.r, color.g, color.b);
 				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
 				break;
 			default:
 				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
-				manager.color(1f, 1f, 1f);
 				break;
 		}
 		
+		manager.color(color.r, color.g, color.b);
 		manager.put(indexX, indexY);
 	}
 

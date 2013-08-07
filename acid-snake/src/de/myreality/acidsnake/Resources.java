@@ -80,9 +80,9 @@ public class Resources {
 	// Colors
 	// ===========================================================
 	
-	public static final Color COLOR_GREEN = Color.valueOf("8af500");
-	
+	public static final Color COLOR_GREEN = Color.valueOf("8af500");	
 	public static final Color COLOR_VIOLET = Color.valueOf("6f0076");
+	public static final Color COLOR_ORANGE = Color.valueOf("ff3600");
 	
 	// ===========================================================
 	// Strings
@@ -95,7 +95,7 @@ public class Resources {
 	// ===========================================================
 		
 	public static BitmapFont BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
-	public static BitmapFont BITMAP_FONT_LARGE = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
+	public static BitmapFont BITMAP_FONT_LARGE = new BitmapFont(Gdx.files.internal("data/large.fnt"), false);
 	
 	public static void reloadFonts() {
 		

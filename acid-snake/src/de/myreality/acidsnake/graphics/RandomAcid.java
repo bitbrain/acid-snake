@@ -41,7 +41,7 @@ public class RandomAcid extends Acid {
 	
 	private CellEffect[][] fadeEffects;
 	
-	private int randomWaitTime = 56000;
+	private int randomWaitTime = 5000;
 	
 	private int randomFadeTime = 5600;
 	
@@ -185,7 +185,7 @@ public class RandomAcid extends Acid {
 				if (refreshTimer.getTicks() >= REFRESH_INTERVAL) {
 					fader.setRatio(timer.getTicks() / (float) fadeTime);
 					Color color = fader.getColor();
-					acid.color(color.r, color.g, color.b);
+					acid.color(color.r, color.g, color.b, 0.5f);
 					acid.put(indexX, indexY);
 					refreshTimer.reset();
 				}
