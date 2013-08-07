@@ -21,6 +21,7 @@ package de.myreality.acidsnake.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -30,6 +31,7 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
+import de.myreality.acidsnake.graphics.ParticleRenderer;
 import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
@@ -59,11 +61,15 @@ public class IngameScreen implements Screen {
 	
 	private WorldRenderer worldRenderer;
 	
+	private ParticleRenderer particleRenderer;
+	
 	private GdxBufferedRenderer bufferedRenderer;
 	
 	private Label lblPoints, lblLevel;
 	
 	private Stage stage;
+	
+	private SpriteBatch batch;
 
 	// ===========================================================
 	// Constructors
@@ -102,6 +108,10 @@ public class IngameScreen implements Screen {
 		
 		stage.draw();
 		
+		batch.begin();
+		particleRenderer.render(batch, delta);
+		batch.end();
+		
 		if (world.getSnake().isKilled()) {
 			game.setScreen(new GameOverScreen(game, world.getPlayer()));
 		}
@@ -130,6 +140,8 @@ public class IngameScreen implements Screen {
 	@Override
 	public void show() {
 		
+		batch = new SpriteBatch();
+		
 		final int VERTICAL_INDEX = 26;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
@@ -147,6 +159,8 @@ public class IngameScreen implements Screen {
         
         world.build();
         
+        particleRenderer = new ParticleRenderer(acid);
+        world.getSnake().addListener(particleRenderer);
         //world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));

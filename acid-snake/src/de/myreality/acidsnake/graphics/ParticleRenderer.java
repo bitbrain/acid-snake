@@ -18,6 +18,12 @@
 
 package de.myreality.acidsnake.graphics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import de.myreality.acid.CellManager;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.world.WorldEntity;
@@ -29,7 +35,7 @@ import de.myreality.acidsnake.world.WorldEntity;
  * @since 1.0
  * @version 1.0
  */
-public class ParticleManager implements SnakeListener {
+public class ParticleRenderer implements SnakeListener {
 
 	// ===========================================================
 	// Constants
@@ -38,10 +44,16 @@ public class ParticleManager implements SnakeListener {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private CellManager manager;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public ParticleRenderer(CellManager manager) {
+		this.manager = manager;
+	}
 
 	// ===========================================================
 	// Getters and Setters
@@ -53,15 +65,33 @@ public class ParticleManager implements SnakeListener {
 
 	@Override
 	public void onEnterPosition(int indexX, int indexY, Snake snake) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
-		// TODO Auto-generated method stub
-
+		switch (target.getType()) {
+		case SMALL_FOOD:
+			ParticleEffect effect = Resources.PARTICLE_EXPLOSION_ORANGE;
+			effect.setPosition(
+					manager.translateIndexX(indexX), 
+					Gdx.graphics.getHeight() - indexY * manager.getCellSize());
+			effect.reset();
+			break;
+		case RARE_FOOD:
+			effect = Resources.PARTICLE_EXPLOSION_VIOLET;
+			effect.setPosition(
+					manager.translateIndexX(indexX), 
+					Gdx.graphics.getHeight() - indexY * manager.getCellSize());
+			effect.reset();
+			break;
+		case SNAKE:
+			break;
+		default:
+			break;
+		
+		}
 	}
 
 	@Override
@@ -79,6 +109,12 @@ public class ParticleManager implements SnakeListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void render(SpriteBatch batch, float delta) {
+		Resources.PARTICLE_EXPLOSION_GREEN.draw(batch, delta);
+		Resources.PARTICLE_EXPLOSION_VIOLET.draw(batch, delta);
+		Resources.PARTICLE_EXPLOSION_ORANGE.draw(batch, delta);
+	}
 
 	// ===========================================================
 	// Inner classes

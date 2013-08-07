@@ -57,14 +57,13 @@ public class WorldRenderer implements WorldListener {
 				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
 				color = Resources.COLOR_ORANGE;
 				break;
+			case RARE_FOOD:
+				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
+				color = Resources.COLOR_VIOLET;
+				break;
 			case SNAKE:
 				
 				color = Resources.COLOR_GREEN;
-				
-				// Render head
-				if (world.getSnake().getHead().equals(target)) {
-					color = Resources.COLOR_VIOLET;
-				}
 				
 				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
 				break;

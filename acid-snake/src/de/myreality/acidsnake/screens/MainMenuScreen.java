@@ -24,6 +24,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -62,6 +63,8 @@ public class MainMenuScreen implements Screen {
 
 	private TweenManager tweenManager;
 	
+	private ParticleEffect greenExplosion, violetExplosion;
+	
 	public MainMenuScreen(SnakeGame game) {
 		this.game = game;
 	}
@@ -75,9 +78,23 @@ public class MainMenuScreen implements Screen {
 		tweenManager.update(delta);
 		stage.act(delta);
 		acdBackground.render();		
+
 		batch.begin();
-			stage.draw();
+		greenExplosion.draw(batch, delta);
+		violetExplosion.draw(batch, delta);
 		batch.end();
+
+		stage.draw();
+		
+		if (greenExplosion.isComplete()) {
+			greenExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
+			greenExplosion.reset();
+		}
+		
+		if (violetExplosion.isComplete()) {
+			violetExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
+			violetExplosion.reset();
+		}
 	}
 
 	@Override
@@ -135,6 +152,15 @@ public class MainMenuScreen implements Screen {
 		acdBackground.setPadding(5);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);	
+		
+		greenExplosion = Resources.PARTICLE_EXPLOSION_GREEN;
+		violetExplosion = Resources.PARTICLE_EXPLOSION_VIOLET;
+		greenExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
+		greenExplosion.start();
+		
+		violetExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
+		violetExplosion.start();
+		
 	}
 
 	@Override

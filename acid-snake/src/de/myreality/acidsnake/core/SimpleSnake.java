@@ -29,6 +29,7 @@ import de.myreality.acidsnake.util.IndexConverter;
 import de.myreality.acidsnake.util.WorldBinder;
 import de.myreality.acidsnake.world.SimpleWorldEntityFactory;
 import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityFactory;
 import de.myreality.acidsnake.world.WorldEntityType;
 
@@ -201,8 +202,9 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		indexY = binder.bindIndexY(indexY);
 		
 		if (world.hasEntity(indexX, indexY)) {
+			WorldEntity entity = world.getEntity(indexX, indexY);
 			for (SnakeListener listener : listeners) {
-				listener.onCollide(indexX, indexY, this, world.getEntity(indexX, indexY));
+				listener.onCollide(indexX, indexY, this, entity);
 			}
 		}
 		

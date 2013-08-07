@@ -29,6 +29,7 @@ public class SnakeGame extends Game {
 		Resources.reloadTextures();
 		Resources.reloadFonts();
 		Resources.reloadShaders();
+		Resources.reloadParticles();
 		setScreen(new IntroScreen(this));
 	}
 	

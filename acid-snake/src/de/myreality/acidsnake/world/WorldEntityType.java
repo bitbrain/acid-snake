@@ -90,6 +90,49 @@ public enum WorldEntityType implements SnakeListener {
 			spawnAtRandomPosition(this, snake.getWorld());
 		}
 		
+	},
+	
+	RARE_FOOD {
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			
+			if (target.getType().equals(this)) {
+				snake.addChunk();
+				snake.getWorld().getPlayer().addPoints(50);
+				snake.getWorld().removeEntity(target);
+				if (Math.random() * 100 > 10) {
+					spawnAtRandomPosition(this, snake.getWorld());
+				}
+			}
+			
+			
+			
+			if (Math.random() * 1000 < 50) {
+				spawnAtRandomPosition(this, snake.getWorld());
+			}
+			
+		}
+
+		@Override
+		public void onKill(Snake snake) {
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			if (Math.random() * 100 > 50) {
+				spawnAtRandomPosition(this, snake.getWorld());
+			}
+		}
+		
 	};
 	
 	private static WorldEntityFactory entityFactory = null; // TODO

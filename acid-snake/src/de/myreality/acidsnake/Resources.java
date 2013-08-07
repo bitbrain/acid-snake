@@ -22,6 +22,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 /**
@@ -109,5 +110,37 @@ public class Resources {
 		
 		BITMAP_FONT_REGULAR = new BitmapFont(Gdx.files.internal("data/regular.fnt"), false);
 		BITMAP_FONT_LARGE = new BitmapFont(Gdx.files.internal("data/large.fnt"), false);
+	}
+	
+	// ===========================================================
+	// Particles
+	// ===========================================================
+	
+	public static ParticleEffect PARTICLE_EXPLOSION_GREEN = new ParticleEffect();
+	public static ParticleEffect PARTICLE_EXPLOSION_ORANGE = new ParticleEffect();
+	public static ParticleEffect PARTICLE_EXPLOSION_VIOLET = new ParticleEffect();
+	
+	public static void reloadParticles() {
+		
+		if (PARTICLE_EXPLOSION_GREEN != null) {
+			PARTICLE_EXPLOSION_GREEN.dispose();
+		}
+		
+		if (PARTICLE_EXPLOSION_ORANGE != null) {
+			PARTICLE_EXPLOSION_ORANGE.dispose();
+		}
+		
+		if (PARTICLE_EXPLOSION_VIOLET != null) {
+			PARTICLE_EXPLOSION_VIOLET.dispose();
+		}
+		
+		PARTICLE_EXPLOSION_GREEN.load(Gdx.files.internal("data/particleExplosionGreen.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_EXPLOSION_ORANGE.load(Gdx.files.internal("data/particleExplosionOrange.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_EXPLOSION_VIOLET.load(Gdx.files.internal("data/particleExplosionViolet.p"), 
+	            Gdx.files.internal("data"));
 	}
 }
