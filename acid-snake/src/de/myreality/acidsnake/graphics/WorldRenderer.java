@@ -41,13 +41,10 @@ public class WorldRenderer implements WorldListener {
 	
 	private CellManager manager;
 	
-	private GdxCellRenderer textureRenderer;
-	
 	private CellRenderer orangeCellRenderer, violetCellRenderer, greenCellRenderer;
 	
 	public WorldRenderer(CellManager manager) {
 		this.manager = manager;
-		textureRenderer = new GdxCellRenderer((GdxBufferedRenderer) manager.getBufferedRenderer());
 		orangeCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_ORANGE, (GdxBufferedRenderer)manager.getBufferedRenderer());
 		greenCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_GREEN, (GdxBufferedRenderer)manager.getBufferedRenderer());
 		violetCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_VIOLET, (GdxBufferedRenderer)manager.getBufferedRenderer());
