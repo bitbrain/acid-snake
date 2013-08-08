@@ -18,24 +18,21 @@
 
 package de.myreality.acidsnake.graphics;
 
-import com.badlogic.gdx.Gdx;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import de.myreality.acid.CellManager;
-import de.myreality.acidsnake.Resources;
-import de.myreality.acidsnake.core.Snake;
-import de.myreality.acidsnake.core.SnakeListener;
-import de.myreality.acidsnake.world.WorldEntity;
-
 /**
- * Listens to a snake to spawn particles on collisions
+ * Handles particle systems
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
  * @version 1.0
  */
-public class ParticleRenderer implements SnakeListener {
+public class ParticleManager {
 
 	// ===========================================================
 	// Constants
@@ -45,17 +42,14 @@ public class ParticleRenderer implements SnakeListener {
 	// Fields
 	// ===========================================================
 	
-	private CellManager manager;
-	
-	private ParticleManager particleManager;
+	private Map<ParticleEffect, Boolean> effects;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public ParticleRenderer(CellManager manager) {
-		this.manager = manager;
-		particleManager = new ParticleManager();
+	public ParticleManager() {
+		effects = new ConcurrentHashMap<ParticleEffect, Boolean>();
 	}
 
 	// ===========================================================
@@ -66,55 +60,30 @@ public class ParticleRenderer implements SnakeListener {
 	// Methods from Superclass
 	// ===========================================================
 
-	@Override
-	public void onEnterPosition(int indexX, int indexY, Snake snake) {
-		
-	}
-
-	@Override
-	public void onCollide(int indexX, int indexY, Snake snake,
-			WorldEntity target) {
-		switch (target.getType()) {
-		case SMALL_FOOD:
-			ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_ORANGE, false);
-			effect.setPosition(
-					manager.translateIndexX(indexX), 
-					Gdx.graphics.getHeight() - indexY * manager.getCellSize());
-			effect.reset();
-			break;
-		case RARE_FOOD:
-			effect = particleManager.create(Resources.PARTICLE_EXPLOSION_VIOLET, false);
-			effect.setPosition(
-					manager.translateIndexX(indexX), 
-					Gdx.graphics.getHeight() - indexY * manager.getCellSize());
-			effect.reset();
-			break;
-		case SNAKE:
-			break;
-		default:
-			break;
-		
-		}
-	}
-
-	@Override
-	public void onKill(Snake snake) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onSpawn(Snake snake) {
-		// TODO Auto-generated method stub
-
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
 	
+	public ParticleEffect create(ParticleEffect original, boolean endless) {
+		ParticleEffect copy = new ParticleEffect(original);		
+		effects.put(copy, endless);
+		return copy;
+	}
+	
 	public void render(SpriteBatch batch, float delta) {
-		particleManager.render(batch, delta);
+		for (Entry<ParticleEffect, Boolean> entries : effects.entrySet()) {
+			if (!entries.getValue() && entries.getKey().isComplete()) {
+				effects.remove(entries.getKey());
+			} else {
+				entries.getKey().draw(batch, delta);
+			}
+		}
+		
+		System.out.println(effects.size());
+	}
+	
+	public void remove(ParticleEffect effect) {
+		effects.remove(effect);
 	}
 
 	// ===========================================================

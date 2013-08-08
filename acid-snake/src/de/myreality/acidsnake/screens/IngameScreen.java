@@ -147,8 +147,7 @@ public class IngameScreen implements Screen {
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		bufferedRenderer = new GdxBufferedRenderer();
-        acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);	
-        acid.setPadding(0);
+        acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
         
