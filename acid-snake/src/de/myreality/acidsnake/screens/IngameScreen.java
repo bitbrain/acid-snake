@@ -142,13 +142,13 @@ public class IngameScreen implements Screen {
 		
 		batch = new SpriteBatch();
 		
-		final int VERTICAL_INDEX = 26;
+		final int VERTICAL_INDEX = 22;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		bufferedRenderer = new GdxBufferedRenderer();
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);	
-        acid.setPadding(1);
+        acid.setPadding(0);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
         

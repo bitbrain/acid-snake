@@ -21,11 +21,13 @@ package de.myreality.acidsnake.graphics;
 import com.badlogic.gdx.graphics.Color;
 
 import de.myreality.acid.CellManager;
+import de.myreality.acid.CellRenderer;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acid.gdx.GdxCellRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
+import de.myreality.acidsnake.world.WorldEntityType;
 import de.myreality.acidsnake.world.WorldListener;
 
 /**
@@ -41,34 +43,33 @@ public class WorldRenderer implements WorldListener {
 	
 	private GdxCellRenderer textureRenderer;
 	
+	private CellRenderer orangeCellRenderer, violetCellRenderer, greenCellRenderer;
+	
 	public WorldRenderer(CellManager manager) {
 		this.manager = manager;
 		textureRenderer = new GdxCellRenderer((GdxBufferedRenderer) manager.getBufferedRenderer());
+		orangeCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_ORANGE, (GdxBufferedRenderer)manager.getBufferedRenderer());
+		greenCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_GREEN, (GdxBufferedRenderer)manager.getBufferedRenderer());
+		violetCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_VIOLET, (GdxBufferedRenderer)manager.getBufferedRenderer());
 	}
 
 	@Override
 	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
 		
-		//manager.setCellRenderer(textureRenderer);
 		Color color = Resources.COLOR_GREEN;
 		
 		switch (target.getType()) {
 			case SMALL_FOOD:	
-				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
-				color = Resources.COLOR_ORANGE;
+				manager.setCellRenderer(orangeCellRenderer);
 				break;
 			case RARE_FOOD:
-				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
-				color = Resources.COLOR_VIOLET;
+				manager.setCellRenderer(violetCellRenderer);
 				break;
 			case SNAKE:
-				
-				color = Resources.COLOR_GREEN;
-				
-				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
+				manager.setCellRenderer(greenCellRenderer);
 				break;
 			default:
-				textureRenderer.setTexture(Resources.TEXTURE_BLOCK);
+				manager.setCellRenderer(greenCellRenderer);
 				break;
 		}
 		
@@ -78,7 +79,9 @@ public class WorldRenderer implements WorldListener {
 
 	@Override
 	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
-		manager.clear(indexX, indexY);
+		if (!(target.getType().equals(WorldEntityType.SNAKE) && !world.getSnake().getTail().equals(target))) {
+			manager.clear(indexX, indexY);
+		}
 	}
 
 	@Override
