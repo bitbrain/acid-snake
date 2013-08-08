@@ -43,6 +43,7 @@ public class Resources {
 	public static Texture TEXTURE_BLOCK_GREEN;
 	public static Texture TEXTURE_BLOCK_VIOLET;
 	public static Texture TEXTURE_BLOCK_ORANGE;
+	public static Texture TEXTURE_BLOCK;
 	
 	public static void reloadTextures() {
 		
@@ -66,8 +67,13 @@ public class Resources {
 			TEXTURE_BLOCK_ORANGE.dispose();
 		}
 		
+		if (TEXTURE_BLOCK != null) {
+			TEXTURE_BLOCK.dispose();
+		}
+		
 		TEXTURE_ACID_LOGO  = new Texture("data/banner.png");
 		TEXTURE_GAME_LOGO = new Texture("data/logo.png");
+		TEXTURE_BLOCK = new Texture("data/block.png");
 		TEXTURE_BLOCK_GREEN = new Texture("data/block-green.png");
 		TEXTURE_BLOCK_VIOLET = new Texture("data/block-violet.png");
 		TEXTURE_BLOCK_ORANGE = new Texture("data/block-orange.png");

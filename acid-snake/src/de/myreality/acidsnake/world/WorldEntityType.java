@@ -18,6 +18,8 @@
 
 package de.myreality.acidsnake.world;
 
+import java.util.Set;
+
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 
@@ -134,7 +136,9 @@ public enum WorldEntityType implements SnakeListener {
 	
 	TELEPORTER {
 		
-		private static final double CHANCE = 1.0;
+		private static final double SPAWN_CHANCE = 40.0;
+		
+		private static final int ALLOWED_COUNT = 2;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -146,7 +150,37 @@ public enum WorldEntityType implements SnakeListener {
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
 			
+			World world = snake.getWorld();
 			
+			if (target.getType().equals(this)) {
+				
+				WorldEntity targetPortal = null;
+				
+				// 1. Fetch the other portal
+				
+				Set<WorldEntity> portals = world.getEntitiesOfType(this);				
+				
+				for (WorldEntity tempPortal : portals) {
+					if (!tempPortal.equals(target)) {
+						targetPortal = tempPortal;
+						break;
+					}
+				}
+
+				// 2. Cleanup
+				
+				world.removeEntity(target);
+				world.removeEntity(targetPortal);
+				
+				// 3. Move snake to portal
+				
+				snake.setIndex(targetPortal.getIndexX(), targetPortal.getIndexY());
+				
+				
+			} else if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, world); // TELEPORT A
+				spawnAtRandomPosition(this, world); // TELEPORT B
+			}
 		}
 
 		@Override

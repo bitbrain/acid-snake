@@ -246,6 +246,11 @@ public class SimpleWorld implements World {
 		return getEntityCount(entity.getType()) > 0;
 	}
 
+	@Override
+	public Set<WorldEntity> getEntitiesOfType(WorldEntityType type) {
+		return types.get(type) != null ? types.get(type) : new HashSet<WorldEntity>();
+	}
+
 	// ===========================================================
 	// Inner classes
 	// ===========================================================
