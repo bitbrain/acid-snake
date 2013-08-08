@@ -118,5 +118,10 @@ public interface World extends Buildable, Updateable {
 	 * @return height of this world
 	 */
 	int getHeight();
+	
+	
+	int getEntityCount(WorldEntityType type);
+	
+	boolean hasEntity(WorldEntity entity);
 
 }

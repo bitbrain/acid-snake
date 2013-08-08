@@ -78,8 +78,6 @@ public class ParticleManager {
 				entries.getKey().draw(batch, delta);
 			}
 		}
-		
-		System.out.println(effects.size());
 	}
 	
 	public void remove(ParticleEffect effect) {

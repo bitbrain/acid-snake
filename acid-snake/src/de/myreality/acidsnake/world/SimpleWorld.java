@@ -18,7 +18,9 @@
 
 package de.myreality.acidsnake.world;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import de.myreality.acidsnake.core.Player;
@@ -57,6 +59,8 @@ public class SimpleWorld implements World {
 	
 	private Set<WorldEntity> entities;
 	
+	private Map<WorldEntityType, Set<WorldEntity> > types;
+	
 	private WorldBinder binder;
 	
 	private Accelerator snakeAccelerator;
@@ -72,6 +76,7 @@ public class SimpleWorld implements World {
 		entities = new HashSet<WorldEntity>();
 		area = new WorldEntity[width][height];
 		binder = new WorldBinder(this);
+		types = new HashMap<WorldEntityType, Set<WorldEntity> >();
 	}
 
 	// ===========================================================
@@ -140,6 +145,16 @@ public class SimpleWorld implements World {
 			
 			entities.add(entity);
 			area[indexX][indexY] = entity;
+			
+			Set<WorldEntity> targets = types.get(entity.getType());
+			
+			if (targets == null) {
+				targets = new HashSet<WorldEntity>();
+				types.put(entity.getType(), targets);
+			}
+			
+			targets.add(entity);
+			
 			return true;
 		} else {
 			return false;
@@ -161,6 +176,12 @@ public class SimpleWorld implements World {
 			}
 			
 			entities.remove(entity);
+			
+			Set<WorldEntity> targets = types.get(entity.getType());
+			targets.remove(entity);			
+			if (targets.isEmpty()) {
+				types.remove(targets);
+			}
 
 			if (validIndex(indexX, indexY)) {
 				area[indexX][indexY] = null;
@@ -211,6 +232,18 @@ public class SimpleWorld implements World {
 	public void update(float delta) {
 		snakeAccelerator.setSpeedRate(30 + player.getLevel() * 4);
 		snakeAccelerator.update(delta);
+	}
+
+	@Override
+	public int getEntityCount(WorldEntityType type) {
+		Set<WorldEntity> targets = types.get(type);
+		
+		return targets != null ? targets.size() : 0;
+	}
+
+	@Override
+	public boolean hasEntity(WorldEntity entity) {
+		return getEntityCount(entity.getType()) > 0;
 	}
 
 	// ===========================================================

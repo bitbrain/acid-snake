@@ -93,6 +93,8 @@ public enum WorldEntityType implements SnakeListener {
 	},
 	
 	RARE_FOOD {
+		
+		private static final double CHANCE = 10.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -106,16 +108,11 @@ public enum WorldEntityType implements SnakeListener {
 			
 			if (target.getType().equals(this)) {
 				snake.addChunk();
-				snake.getWorld().getPlayer().addPoints(50);
+				snake.getWorld().getPlayer().addPoints(25);
 				snake.getWorld().removeEntity(target);
-				if (Math.random() * 100 > 10) {
-					spawnAtRandomPosition(this, snake.getWorld());
-				}
 			}
 			
-			
-			
-			if (Math.random() * 1000 < 50) {
+			if (isChance(CHANCE)) {
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
 			
@@ -128,9 +125,39 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
-			if (Math.random() * 100 > 50) {
+			if (isChance(CHANCE)) {
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
+		}
+		
+	},
+	
+	TELEPORTER {
+		
+		private static final double CHANCE = 1.0;
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			
+			
+		}
+
+		@Override
+		public void onKill(Snake snake) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			
 		}
 		
 	};
@@ -156,5 +183,9 @@ public enum WorldEntityType implements SnakeListener {
 		}
 		
 		world.putEntity(randomX, randomY, entityFactory.create(randomX, randomY, type));
+	}
+	
+	private static boolean isChance(double chance) {
+		return Math.random() * 100.0 <= chance;
 	}
 }
