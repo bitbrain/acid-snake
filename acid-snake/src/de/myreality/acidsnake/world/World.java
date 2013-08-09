@@ -18,6 +18,8 @@
 
 package de.myreality.acidsnake.world;
 
+import java.util.Set;
+
 import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.util.Buildable;
@@ -118,5 +120,12 @@ public interface World extends Buildable, Updateable {
 	 * @return height of this world
 	 */
 	int getHeight();
+	
+	
+	int getEntityCount(WorldEntityType type);
+	
+	boolean hasEntity(WorldEntity entity);
+	
+	Set<WorldEntity> getEntitiesOfType(WorldEntityType type);
 
 }

@@ -160,6 +160,7 @@ public class IngameScreen implements Screen {
         
         particleRenderer = new ParticleRenderer(acid);
         world.getSnake().addListener(particleRenderer);
+        world.addListener(particleRenderer);
         //world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));

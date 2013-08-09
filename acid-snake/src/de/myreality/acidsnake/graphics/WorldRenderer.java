@@ -41,13 +41,20 @@ public class WorldRenderer implements WorldListener {
 	
 	private CellManager manager;
 	
-	private CellRenderer orangeCellRenderer, violetCellRenderer, greenCellRenderer;
+	@SuppressWarnings("unused")
+	private CellRenderer orangeCellRenderer, 
+					     blueCellRenderer, 
+					     violetCellRenderer, 
+					     greenCellRenderer, 
+					     normalCellRenderer;
 	
 	public WorldRenderer(CellManager manager) {
 		this.manager = manager;
 		orangeCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_ORANGE, (GdxBufferedRenderer)manager.getBufferedRenderer());
 		greenCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_GREEN, (GdxBufferedRenderer)manager.getBufferedRenderer());
 		violetCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_VIOLET, (GdxBufferedRenderer)manager.getBufferedRenderer());
+		normalCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK, (GdxBufferedRenderer)manager.getBufferedRenderer());
+		blueCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_BLUE, (GdxBufferedRenderer)manager.getBufferedRenderer());
 	}
 
 	@Override
@@ -57,13 +64,16 @@ public class WorldRenderer implements WorldListener {
 		
 		switch (target.getType()) {
 			case SMALL_FOOD:	
-				manager.setCellRenderer(orangeCellRenderer);
+				manager.setCellRenderer(violetCellRenderer);
 				break;
 			case RARE_FOOD:
 				manager.setCellRenderer(violetCellRenderer);
 				break;
 			case SNAKE:
 				manager.setCellRenderer(greenCellRenderer);
+				break;
+			case TELEPORTER:
+				manager.setCellRenderer(blueCellRenderer);
 				break;
 			default:
 				manager.setCellRenderer(greenCellRenderer);
