@@ -20,6 +20,10 @@ package de.myreality.acidsnake.world;
 
 import java.util.Set;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+
+import de.myreality.acid.CellRenderer;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 
@@ -60,6 +64,21 @@ public enum WorldEntityType implements SnakeListener {
 				snake.addChunk();
 			}
 		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return null;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return null;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_GREEN;
+		}
 	},
 	
 	SMALL_FOOD {
@@ -90,6 +109,26 @@ public enum WorldEntityType implements SnakeListener {
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return null;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return Resources.PARTICLE_EXPLOSION_VIOLET;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_VIOLET;
+		}
+		
+		@Override
+		public int getParticleDecreaseFactor() {
+			return 5;
 		}
 		
 	},
@@ -130,6 +169,21 @@ public enum WorldEntityType implements SnakeListener {
 			if (isChance(CHANCE)) {
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return Resources.PARTICLE_FIELD_VIOLET;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return Resources.PARTICLE_EXPLOSION_VIOLET;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_VIOLET;
 		}
 		
 	},
@@ -189,11 +243,104 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onSpawn(Snake snake) {
 			
+			World world = snake.getWorld();
+			
+			if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, world); // TELEPORT A
+				spawnAtRandomPosition(this, world); // TELEPORT B
+			}
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return Resources.PARTICLE_FIELD_BLUE;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return Resources.PARTICLE_EXPLOSION_BLUE;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_BLUE;
+		}
+		
+	},
+	
+	ACID {
+		
+		private static final double SPAWN_CHANCE = 50.0;
+		
+		private static final int MIN_SNAKE_LENGTH = 8;
+		
+		private static final int MAX_FACTOR = 3;
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			
+			if (target.getType().equals(this)) {
+				
+				snake.getWorld().removeEntity(target);
+				
+				int amount = (int) (MAX_FACTOR * Math.random() + 1);
+				
+				while (amount-- > 0 && snake.getLength() > MIN_SNAKE_LENGTH) {
+					snake.removeChunk();
+				}
+				
+			}
+			
+			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, snake.getWorld());
+			}
+		}
+
+		@Override
+		public void onKill(Snake snake) {
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, snake.getWorld());
+			}
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return Resources.PARTICLE_FIELD_GREEN;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return Resources.PARTICLE_EXPLOSION_GREEN;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_GREEN;
 		}
 		
 	};
 	
 	private static WorldEntityFactory entityFactory = null; // TODO
+	
+	public abstract ParticleEffect getFieldEffect();
+	public abstract ParticleEffect getExplodeEffect();
+	public abstract CellRenderer getCellRenderer();
+	
+	public int getParticleDecreaseFactor() {
+		return 1;
+	}
 	
 	private static void spawnAtRandomPosition(WorldEntityType type, World world) {
 		

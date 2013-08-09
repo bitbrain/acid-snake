@@ -22,6 +22,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -97,7 +98,6 @@ public class IngameScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		
 		world.update(delta);
 		stage.act(delta);
 		
@@ -139,7 +139,7 @@ public class IngameScreen implements Screen {
 	
 	@Override
 	public void show() {
-		
+		ShaderProgram.pedantic = false;
 		batch = new SpriteBatch();
 		
 		final int VERTICAL_INDEX = 22;
@@ -150,7 +150,7 @@ public class IngameScreen implements Screen {
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
-        
+        Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
         world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);
         
         worldRenderer = new WorldRenderer(acid);
@@ -164,6 +164,10 @@ public class IngameScreen implements Screen {
         //world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
+		
+		//if (bufferedRenderer.getSpriteBatch() != null) {
+		//	bufferedRenderer.getSpriteBatch().setShader(Resources.SHADER_BLUR);
+		//}
 	}
 
 	@Override

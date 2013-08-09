@@ -43,6 +43,8 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 	private World world;
 	
 	private WorldBinder binder;
+
+	private boolean removeRequest;
 	
 	// ===========================================================
 	// Constructors
@@ -85,6 +87,18 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 		super.setIndex(indexX, indexY);
 	}
 
+
+	@Override
+	public boolean removeRequested() {
+		return removeRequest;
+	}
+
+	@Override
+	public void setRemoveRequested(boolean state) {
+		this.removeRequest = state;
+	}
+
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================
