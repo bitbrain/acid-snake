@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -72,18 +73,22 @@ public class ParticleManager {
 	
 	public void render(SpriteBatch batch, float delta) {
 		for (Entry<ParticleEffect, Boolean> entries : effects.entrySet()) {
+			
+			System.out.println(entries.getKey().isComplete());
 			if (!entries.getValue() && entries.getKey().isComplete()) {
 				effects.remove(entries.getKey());
 			} else {
 				entries.getKey().draw(batch, delta);
 			}
 		}
-		
-		System.out.println(effects.size());
 	}
 	
-	public void remove(ParticleEffect effect) {
-		effects.remove(effect);
+	public void setEndless(ParticleEffect effect, boolean endless) {
+		effects.put(effect, endless);
+		
+		for (ParticleEmitter emitter : effect.getEmitters()) {
+			emitter.setContinuous(endless);
+		}
 	}
 
 	// ===========================================================

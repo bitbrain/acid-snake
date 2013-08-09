@@ -18,6 +18,8 @@
 
 package de.myreality.acidsnake.world;
 
+import java.util.Set;
+
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 
@@ -93,6 +95,8 @@ public enum WorldEntityType implements SnakeListener {
 	},
 	
 	RARE_FOOD {
+		
+		private static final double CHANCE = 10.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -106,16 +110,11 @@ public enum WorldEntityType implements SnakeListener {
 			
 			if (target.getType().equals(this)) {
 				snake.addChunk();
-				snake.getWorld().getPlayer().addPoints(50);
+				snake.getWorld().getPlayer().addPoints(25);
 				snake.getWorld().removeEntity(target);
-				if (Math.random() * 100 > 10) {
-					spawnAtRandomPosition(this, snake.getWorld());
-				}
 			}
 			
-			
-			
-			if (Math.random() * 1000 < 50) {
+			if (isChance(CHANCE)) {
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
 			
@@ -128,9 +127,68 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
-			if (Math.random() * 100 > 50) {
+			if (isChance(CHANCE)) {
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
+		}
+		
+	},
+	
+	TELEPORTER {
+		
+		private static final double SPAWN_CHANCE = 40.0;
+		
+		private static final int ALLOWED_COUNT = 2;
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			
+			World world = snake.getWorld();
+			
+			if (target.getType().equals(this)) {
+				
+				WorldEntity targetPortal = null;
+				
+				// 1. Fetch the other portal
+				
+				Set<WorldEntity> portals = world.getEntitiesOfType(this);				
+				
+				for (WorldEntity tempPortal : portals) {
+					if (!tempPortal.equals(target)) {
+						targetPortal = tempPortal;
+						break;
+					}
+				}
+
+				// 2. Cleanup
+				
+				world.removeEntity(target);
+				world.removeEntity(targetPortal);
+				
+				// 3. Move snake to portal
+				snake.setIndex(targetPortal.getIndexX(), targetPortal.getIndexY());
+				
+			} else if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, world); // TELEPORT A
+				spawnAtRandomPosition(this, world); // TELEPORT B
+			}
+		}
+
+		@Override
+		public void onKill(Snake snake) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			
 		}
 		
 	};
@@ -156,5 +214,9 @@ public enum WorldEntityType implements SnakeListener {
 		}
 		
 		world.putEntity(randomX, randomY, entityFactory.create(randomX, randomY, type));
+	}
+	
+	private static boolean isChance(double chance) {
+		return Math.random() * 100.0 <= chance;
 	}
 }
