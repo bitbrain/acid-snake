@@ -18,13 +18,8 @@
 
 package de.myreality.acidsnake.graphics;
 
-import com.badlogic.gdx.graphics.Color;
-
 import de.myreality.acid.CellManager;
 import de.myreality.acid.CellRenderer;
-import de.myreality.acid.gdx.GdxBufferedRenderer;
-import de.myreality.acid.gdx.GdxCellRenderer;
-import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityType;
@@ -50,37 +45,17 @@ public class WorldRenderer implements WorldListener {
 	
 	public WorldRenderer(CellManager manager) {
 		this.manager = manager;
-		orangeCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_ORANGE, (GdxBufferedRenderer)manager.getBufferedRenderer());
-		greenCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_GREEN, (GdxBufferedRenderer)manager.getBufferedRenderer());
-		violetCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_VIOLET, (GdxBufferedRenderer)manager.getBufferedRenderer());
-		normalCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK, (GdxBufferedRenderer)manager.getBufferedRenderer());
-		blueCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_BLUE, (GdxBufferedRenderer)manager.getBufferedRenderer());
 	}
 
 	@Override
-	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
+	public void onPut(int indexX, int indexY, WorldEntity target, World world) {		
 		
-		Color color = Resources.COLOR_GREEN;
+		CellRenderer cellRenderer = target.getType().getCellRenderer();
 		
-		switch (target.getType()) {
-			case SMALL_FOOD:	
-				manager.setCellRenderer(violetCellRenderer);
-				break;
-			case RARE_FOOD:
-				manager.setCellRenderer(violetCellRenderer);
-				break;
-			case SNAKE:
-				manager.setCellRenderer(greenCellRenderer);
-				break;
-			case TELEPORTER:
-				manager.setCellRenderer(blueCellRenderer);
-				break;
-			default:
-				manager.setCellRenderer(greenCellRenderer);
-				break;
+		if (cellRenderer != null) {
+			manager.setCellRenderer(cellRenderer);
 		}
 		
-		manager.color(color.r, color.g, color.b);
 		manager.put(indexX, indexY);
 	}
 
@@ -95,32 +70,4 @@ public class WorldRenderer implements WorldListener {
 	public void onBuild(World world) {
 		
 	}
-
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	// ===========================================================
-	// Fields
-	// ===========================================================
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getters and Setters
-	// ===========================================================
-
-	// ===========================================================
-	// Methods from Superclass
-	// ===========================================================
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	// ===========================================================
-	// Inner classes
-	// ===========================================================
 }
