@@ -144,7 +144,11 @@ public class Resources {
 	public static ParticleEffect PARTICLE_EXPLOSION_ORANGE = new ParticleEffect();
 	public static ParticleEffect PARTICLE_EXPLOSION_VIOLET = new ParticleEffect();
 	public static ParticleEffect PARTICLE_EXPLOSION_BLUE = new ParticleEffect();
+	
 	public static ParticleEffect PARTICLE_FIELD_BLUE = new ParticleEffect();
+	public static ParticleEffect PARTICLE_FIELD_ORANGE = new ParticleEffect();
+	public static ParticleEffect PARTICLE_FIELD_GREEN = new ParticleEffect();
+	public static ParticleEffect PARTICLE_FIELD_VIOLET = new ParticleEffect();
 	
 	public static void reloadParticles() {
 		
@@ -168,6 +172,18 @@ public class Resources {
 			PARTICLE_EXPLOSION_BLUE.dispose();
 		}
 		
+		if (PARTICLE_FIELD_ORANGE != null) {
+			PARTICLE_FIELD_ORANGE.dispose();
+		}
+		
+		if (PARTICLE_FIELD_GREEN != null) {
+			PARTICLE_FIELD_GREEN.dispose();
+		}
+		
+		if (PARTICLE_FIELD_VIOLET != null) {
+			PARTICLE_FIELD_VIOLET.dispose();
+		}
+		
 		PARTICLE_EXPLOSION_GREEN.load(Gdx.files.internal("data/particleExplosionGreen.p"), 
 	            Gdx.files.internal("data"));
 		
@@ -181,6 +197,15 @@ public class Resources {
 	            Gdx.files.internal("data"));
 		
 		PARTICLE_FIELD_BLUE.load(Gdx.files.internal("data/particleFieldBlue.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_FIELD_ORANGE.load(Gdx.files.internal("data/particleFieldOrange.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_FIELD_GREEN.load(Gdx.files.internal("data/particleFieldGreen.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_FIELD_VIOLET.load(Gdx.files.internal("data/particleFieldViolet.p"), 
 	            Gdx.files.internal("data"));
 	}
 }

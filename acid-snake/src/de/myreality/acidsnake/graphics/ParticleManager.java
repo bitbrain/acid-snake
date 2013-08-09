@@ -74,7 +74,6 @@ public class ParticleManager {
 	public void render(SpriteBatch batch, float delta) {
 		for (Entry<ParticleEffect, Boolean> entries : effects.entrySet()) {
 			
-			System.out.println(entries.getKey().isComplete());
 			if (!entries.getValue() && entries.getKey().isComplete()) {
 				effects.remove(entries.getKey());
 			} else {
@@ -84,10 +83,13 @@ public class ParticleManager {
 	}
 	
 	public void setEndless(ParticleEffect effect, boolean endless) {
-		effects.put(effect, endless);
 		
-		for (ParticleEmitter emitter : effect.getEmitters()) {
-			emitter.setContinuous(endless);
+		if (effect != null) {
+			effects.put(effect, endless);
+			
+			for (ParticleEmitter emitter : effect.getEmitters()) {
+				emitter.setContinuous(endless);
+			}
 		}
 	}
 

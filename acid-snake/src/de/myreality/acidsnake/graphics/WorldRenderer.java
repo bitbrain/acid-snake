@@ -41,6 +41,7 @@ public class WorldRenderer implements WorldListener {
 	
 	private CellManager manager;
 	
+	@SuppressWarnings("unused")
 	private CellRenderer orangeCellRenderer, 
 					     blueCellRenderer, 
 					     violetCellRenderer, 
@@ -63,7 +64,7 @@ public class WorldRenderer implements WorldListener {
 		
 		switch (target.getType()) {
 			case SMALL_FOOD:	
-				manager.setCellRenderer(orangeCellRenderer);
+				manager.setCellRenderer(violetCellRenderer);
 				break;
 			case RARE_FOOD:
 				manager.setCellRenderer(violetCellRenderer);

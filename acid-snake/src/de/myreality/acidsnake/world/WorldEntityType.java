@@ -110,7 +110,7 @@ public enum WorldEntityType implements SnakeListener {
 			
 			if (target.getType().equals(this)) {
 				snake.addChunk();
-				snake.getWorld().getPlayer().addPoints(25);
+				snake.getWorld().getPlayer().addPoints(50);
 				snake.getWorld().removeEntity(target);
 			}
 			
@@ -136,7 +136,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	TELEPORTER {
 		
-		private static final double SPAWN_CHANCE = 40.0;
+		private static final double SPAWN_CHANCE = 3.0;
 		
 		private static final int ALLOWED_COUNT = 2;
 

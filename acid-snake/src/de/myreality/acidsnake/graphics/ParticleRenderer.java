@@ -23,6 +23,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.myreality.acid.CellManager;
@@ -84,8 +85,13 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 			WorldEntity target) {
 		switch (target.getType()) {
 		case SMALL_FOOD:
-			ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_ORANGE, false);
+			ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_VIOLET, false);
 			alignOnIndex(indexX, indexY, effect);
+			
+			for (ParticleEmitter emitter : effect.getEmitters()) {
+				emitter.setMaxParticleCount(emitter.getMaxParticleCount() / 5);
+			}
+			
 			effect.reset();
 			break;
 		case RARE_FOOD:
@@ -126,15 +132,21 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	@Override
 	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
 		
+		ParticleEffect effect = null;
+		
 		switch (target.getType()) {
 		case RARE_FOOD:
+			effect = particleManager.create(Resources.PARTICLE_FIELD_VIOLET, true);
+			alignOnIndex(indexX, indexY, effect);
+			effect.start();
+			effects.put(target, effect);
 			break;
 		case SMALL_FOOD:
 			break;
 		case SNAKE:
 			break;
 		case TELEPORTER:
-			ParticleEffect effect = particleManager.create(Resources.PARTICLE_FIELD_BLUE, true);
+			effect = particleManager.create(Resources.PARTICLE_FIELD_BLUE, true);
 			alignOnIndex(indexX, indexY, effect);
 			effect.start();
 			effects.put(target, effect);
@@ -149,6 +161,8 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
 		switch (target.getType()) {
 		case RARE_FOOD:
+			particleManager.setEndless(effects.get(target), false);
+			effects.remove(target);
 			break;
 		case SMALL_FOOD:
 			break;
