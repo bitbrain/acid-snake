@@ -6,7 +6,7 @@ lowMin: 0.0
 lowMax: 500.0
 - Count - 
 min: 5
-max: 60
+max: 20
 - Emission - 
 lowMin: 20.0
 lowMax: 20.0
@@ -41,9 +41,9 @@ active: false
 shape: square
 - Spawn Width - 
 lowMin: 0.0
-lowMax: 0.0
+lowMax: 5.0
 highMin: 0.0
-highMax: 0.0
+highMax: 5.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -51,12 +51,12 @@ timelineCount: 1
 timeline0: 0.0
 - Spawn Height - 
 lowMin: 0.0
-lowMax: 360.0
-highMin: 39.0
-highMax: 39.0
+lowMax: 5.0
+highMin: 0.0
+highMax: 5.0
 relative: false
 scalingCount: 1
-scaling0: 1.0
+scaling0: 0.18367347
 timelineCount: 1
 timeline0: 0.0
 - Scale - 
@@ -73,8 +73,8 @@ timeline0: 0.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 100.0
-highMax: 100.0
+highMin: 40.0
+highMax: 40.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -127,12 +127,12 @@ highMax: 1.0
 relative: false
 scalingCount: 4
 scaling0: 0.0
-scaling1: 1.0
+scaling1: 0.94736844
 scaling2: 0.31578946
 scaling3: 0.0
 timelineCount: 4
 timeline0: 0.0
-timeline1: 0.07534247
+timeline1: 0.38356164
 timeline2: 0.65068495
 timeline3: 1.0
 - Options - 
@@ -142,4 +142,4 @@ aligned: false
 additive: true
 behind: false
 - Image Path -
-/home/miguel/git/acid-snake/acid-snake-android/assets/data/block.png
+block.png
