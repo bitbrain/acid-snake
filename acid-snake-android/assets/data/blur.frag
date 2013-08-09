@@ -1,19 +1,28 @@
-#version 120
- 
-uniform sampler2D uTexture;
-uniform vec2 uShift
- 
-const int gaussRadius = 11;
-const float gaussFilter[gaussRadius] = float[gaussRadius](
-	0.0402,0.0623,0.0877,0.1120,0.1297,0.1362,0.1297,0.1120,0.0877,0.0623,0.0402
-);
- 
-void main() {
-	vec2 texCoord = gl_TexCoord[0].xy - float(int(gaussRadius/2)) * uShift;
-	vec3 color = vec3(0.0, 0.0, 0.0); 
-	for (int i=0; i<gaussRadius; ++i) { 
-		color += gaussFilter[i] * texture2D(uTexture, texCoord).xyz;
-		texCoord += uShift;
+#ifdef GL_ES
+    precision mediump float;
+#endif
+
+varying vec4 v_color;
+varying vec2 v_texCoords;
+uniform sampler2D u_texture;
+
+uniform int steps = 5;
+uniform float radius = 0.0010f;
+
+void main()
+{
+	vec4 sum = vec4(0);
+	vec2 texcoord = v_texCoords;
+	int j;
+	int i;
+
+	for( i= -steps ;i < steps; i++)
+	{
+		for (j = -steps; j < steps; j++)
+		{
+			sum += texture2D(u_texture, texcoord + vec2(j, i)*radius) * 0.20; 
+		}
 	}
-	gl_FragColor = vec4(color,1.0);
+
+	gl_FragColor = sum*sum*0.006+texture2D(u_texture, texcoord);
 }

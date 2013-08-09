@@ -54,6 +54,8 @@ public interface Snake extends Moveable, Indexable, Buildable {
 	 */
 	void addChunk();
 	
+	void removeChunk();
+	
 	/**
 	 * Returns the head of the snake
 	 * 
@@ -99,4 +101,6 @@ public interface Snake extends Moveable, Indexable, Buildable {
 	 * @return killed when killed
 	 */
 	boolean isKilled();
+	
+	int getLength();
 }

@@ -109,7 +109,7 @@ public class IngameProcessor implements InputProcessor {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		
-		final int TOLERANCE = 4;
+		final int TOLERANCE = 3;
 		
 		int deltaX = Gdx.input.getDeltaX(pointer);
 		int deltaY = Gdx.input.getDeltaY(pointer);

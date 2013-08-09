@@ -25,6 +25,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+import de.myreality.acid.CellRenderer;
+import de.myreality.acid.gdx.GdxBufferedRenderer;
+import de.myreality.acid.gdx.GdxCellRenderer;
+
 /**
  * Contains resource locations
  * 
@@ -207,5 +211,23 @@ public class Resources {
 		
 		PARTICLE_FIELD_VIOLET.load(Gdx.files.internal("data/particleFieldViolet.p"), 
 	            Gdx.files.internal("data"));
+	}
+	
+	// ===========================================================
+	// Cell renderers
+	// ===========================================================
+	
+	public static CellRenderer CELL_RENDERER_ORANGE;
+	public static CellRenderer CELL_RENDERER_BLUE;
+	public static CellRenderer CELL_RENDERER_GREEN;
+	public static CellRenderer CELL_RENDERER_VIOLET;
+	public static CellRenderer CELL_RENDERER_WHITE;
+	
+	public static final void reloadCellRenderer(GdxBufferedRenderer renderer) {
+		CELL_RENDERER_ORANGE = new GdxCellRenderer(TEXTURE_BLOCK_ORANGE, renderer);
+		CELL_RENDERER_BLUE = new GdxCellRenderer(TEXTURE_BLOCK_BLUE, renderer);
+		CELL_RENDERER_GREEN = new GdxCellRenderer(TEXTURE_BLOCK_GREEN, renderer);
+		CELL_RENDERER_VIOLET = new GdxCellRenderer(TEXTURE_BLOCK_VIOLET, renderer);
+		CELL_RENDERER_WHITE = new GdxCellRenderer(TEXTURE_BLOCK, renderer);
 	}
 }
