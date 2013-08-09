@@ -164,6 +164,7 @@ public class IngameScreen implements Screen {
         //world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
+        Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
 	}
 
 	@Override

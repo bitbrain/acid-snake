@@ -27,7 +27,6 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.myreality.acid.CellManager;
-import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.world.World;
@@ -83,33 +82,19 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	@Override
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
-		switch (target.getType()) {
-		case SMALL_FOOD:
-			ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_VIOLET, false);
+		
+		ParticleEffect explodeEffect = target.getType().getExplodeEffect();
+		
+		if (explodeEffect != null) {
+			ParticleEffect effect = particleManager.create(explodeEffect, false);
 			alignOnIndex(indexX, indexY, effect);
-			
 			for (ParticleEmitter emitter : effect.getEmitters()) {
-				emitter.setMaxParticleCount(emitter.getMaxParticleCount() / 5);
+				emitter.setMaxParticleCount(emitter.getMaxParticleCount() / target.getType().getParticleDecreaseFactor());
 			}
 			
-			effect.reset();
-			break;
-		case RARE_FOOD:
-			effect = particleManager.create(Resources.PARTICLE_EXPLOSION_VIOLET, false);
-			alignOnIndex(indexX, indexY, effect);
-			effect.reset();
-			break;
-		case SNAKE:
-			break;
-		case TELEPORTER:
-			effect = particleManager.create(Resources.PARTICLE_EXPLOSION_BLUE, false);
-			alignOnIndex(indexX, indexY, effect);
-			effect.reset();
-			break;
-		default:
-			break;
-		
+			effect.start();
 		}
+		
 	}
 	
 	// ===========================================================
@@ -132,49 +117,21 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	@Override
 	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
 		
-		ParticleEffect effect = null;
+		ParticleEffect effect = target.getType().getFieldEffect();
 		
-		switch (target.getType()) {
-		case RARE_FOOD:
-			effect = particleManager.create(Resources.PARTICLE_FIELD_VIOLET, true);
+		if (effect != null) {
+			effect = particleManager.create(target.getType().getFieldEffect(), true);
 			alignOnIndex(indexX, indexY, effect);
 			effect.start();
 			effects.put(target, effect);
-			break;
-		case SMALL_FOOD:
-			break;
-		case SNAKE:
-			break;
-		case TELEPORTER:
-			effect = particleManager.create(Resources.PARTICLE_FIELD_BLUE, true);
-			alignOnIndex(indexX, indexY, effect);
-			effect.start();
-			effects.put(target, effect);
-			break;
-		default:
-			break;
-		
 		}
 	}
 
 	@Override
 	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
-		switch (target.getType()) {
-		case RARE_FOOD:
+		if (effects.get(target) != null) {
 			particleManager.setEndless(effects.get(target), false);
 			effects.remove(target);
-			break;
-		case SMALL_FOOD:
-			break;
-		case SNAKE:
-			break;
-		case TELEPORTER:
-			particleManager.setEndless(effects.get(target), false);
-			effects.remove(target);
-			break;
-		default:
-			break;
-		
 		}
 	}
 
