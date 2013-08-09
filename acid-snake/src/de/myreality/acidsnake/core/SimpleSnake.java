@@ -153,6 +153,22 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	}
 
 	@Override
+	public void removeChunk() {
+		
+		SnakeChunk tail = getTail();		
+		
+		if (tail != null) {
+			
+			SnakeChunk newTail = tail.getNext();
+			world.removeEntity(tail);
+			chunks.remove(tail);
+			
+			tail = newTail;
+		}
+		
+	}
+
+	@Override
 	public SnakeChunk getHead() {
 		return head;
 	}
@@ -227,6 +243,11 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	@Override
 	public void build() {
 		spawn();
+	}
+
+	@Override
+	public int getLength() {
+		return chunks.size();
 	}
 
 	// ===========================================================
