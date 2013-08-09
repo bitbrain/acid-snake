@@ -142,7 +142,6 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
-			// TODO Auto-generated method stub
 			
 		}
 
@@ -173,9 +172,7 @@ public enum WorldEntityType implements SnakeListener {
 				world.removeEntity(targetPortal);
 				
 				// 3. Move snake to portal
-				
 				snake.setIndex(targetPortal.getIndexX(), targetPortal.getIndexY());
-				
 				
 			} else if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
 				spawnAtRandomPosition(this, world); // TELEPORT A

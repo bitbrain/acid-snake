@@ -201,25 +201,17 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		indexX = binder.bindIndexX(indexX);
 		indexY = binder.bindIndexY(indexY);
 		
-		if (world.hasEntity(indexX, indexY)) {
+		super.setIndex(indexX, indexY);
+		
+		for (SnakeListener listener : listeners) {
+			listener.onEnterPosition(indexX, indexY, this);			
 			WorldEntity entity = world.getEntity(indexX, indexY);
-			for (SnakeListener listener : listeners) {
+			if (world.hasEntity(indexX, indexY)) {
 				listener.onCollide(indexX, indexY, this, entity);
 			}
 		}
 		
-		
-		
-		for (SnakeListener listener : listeners) {
-			listener.onEnterPosition(indexX, indexY, this);			
-			
-			if (world.hasEntity(indexX, indexY)) {
-				listener.onCollide(indexX, indexY, this, world.getEntity(indexX, indexY));
-			}
-		}
-		
 		if (!isKilled()) {
-			super.setIndex(indexX, indexY);
 			
 			for (int index = chunks.size() - 1; index >= 0; --index) {
 				SnakeChunk chunk = chunks.get(index);
