@@ -91,6 +91,13 @@ public class ParticleRenderer implements SnakeListener {
 			break;
 		case SNAKE:
 			break;
+		case TELEPORTER:
+			effect = particleManager.create(Resources.PARTICLE_EXPLOSION_BLUE, false);
+			effect.setPosition(
+					manager.translateIndexX(indexX), 
+					Gdx.graphics.getHeight() - indexY * manager.getCellSize());
+			effect.reset();
+			break;
 		default:
 			break;
 		

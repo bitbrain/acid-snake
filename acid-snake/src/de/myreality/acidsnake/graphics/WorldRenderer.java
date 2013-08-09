@@ -41,7 +41,11 @@ public class WorldRenderer implements WorldListener {
 	
 	private CellManager manager;
 	
-	private CellRenderer orangeCellRenderer, violetCellRenderer, greenCellRenderer, normalCellRenderer;
+	private CellRenderer orangeCellRenderer, 
+					     blueCellRenderer, 
+					     violetCellRenderer, 
+					     greenCellRenderer, 
+					     normalCellRenderer;
 	
 	public WorldRenderer(CellManager manager) {
 		this.manager = manager;
@@ -49,6 +53,7 @@ public class WorldRenderer implements WorldListener {
 		greenCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_GREEN, (GdxBufferedRenderer)manager.getBufferedRenderer());
 		violetCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_VIOLET, (GdxBufferedRenderer)manager.getBufferedRenderer());
 		normalCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK, (GdxBufferedRenderer)manager.getBufferedRenderer());
+		blueCellRenderer = new GdxCellRenderer(Resources.TEXTURE_BLOCK_BLUE, (GdxBufferedRenderer)manager.getBufferedRenderer());
 	}
 
 	@Override
@@ -67,7 +72,7 @@ public class WorldRenderer implements WorldListener {
 				manager.setCellRenderer(greenCellRenderer);
 				break;
 			case TELEPORTER:
-				manager.setCellRenderer(normalCellRenderer);
+				manager.setCellRenderer(blueCellRenderer);
 				break;
 			default:
 				manager.setCellRenderer(greenCellRenderer);

@@ -200,14 +200,16 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		
 		indexX = binder.bindIndexX(indexX);
 		indexY = binder.bindIndexY(indexY);
+		boolean collision = world.hasEntity(indexX, indexY);		
+		WorldEntity collisionTarget = world.getEntity(indexX, indexY);
 		
 		super.setIndex(indexX, indexY);
 		
+		
 		for (SnakeListener listener : listeners) {
-			listener.onEnterPosition(indexX, indexY, this);			
-			WorldEntity entity = world.getEntity(indexX, indexY);
-			if (world.hasEntity(indexX, indexY)) {
-				listener.onCollide(indexX, indexY, this, entity);
+			listener.onEnterPosition(indexX, indexY, this);		
+			if (collision) {
+				listener.onCollide(indexX, indexY, this, collisionTarget);
 			}
 		}
 		

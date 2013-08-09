@@ -43,6 +43,7 @@ public class Resources {
 	public static Texture TEXTURE_BLOCK_GREEN;
 	public static Texture TEXTURE_BLOCK_VIOLET;
 	public static Texture TEXTURE_BLOCK_ORANGE;
+	public static Texture TEXTURE_BLOCK_BLUE;
 	public static Texture TEXTURE_BLOCK;
 	
 	public static void reloadTextures() {
@@ -67,6 +68,10 @@ public class Resources {
 			TEXTURE_BLOCK_ORANGE.dispose();
 		}
 		
+		if (TEXTURE_BLOCK_BLUE != null) {
+			TEXTURE_BLOCK_BLUE.dispose();
+		}
+		
 		if (TEXTURE_BLOCK != null) {
 			TEXTURE_BLOCK.dispose();
 		}
@@ -77,6 +82,7 @@ public class Resources {
 		TEXTURE_BLOCK_GREEN = new Texture("data/block-green.png");
 		TEXTURE_BLOCK_VIOLET = new Texture("data/block-violet.png");
 		TEXTURE_BLOCK_ORANGE = new Texture("data/block-orange.png");
+		TEXTURE_BLOCK_BLUE = new Texture("data/block-blue.png");
 		
 	}
 	
@@ -137,6 +143,8 @@ public class Resources {
 	public static ParticleEffect PARTICLE_EXPLOSION_GREEN = new ParticleEffect();
 	public static ParticleEffect PARTICLE_EXPLOSION_ORANGE = new ParticleEffect();
 	public static ParticleEffect PARTICLE_EXPLOSION_VIOLET = new ParticleEffect();
+	public static ParticleEffect PARTICLE_EXPLOSION_BLUE = new ParticleEffect();
+	public static ParticleEffect PARTICLE_FIELD_BLUE = new ParticleEffect();
 	
 	public static void reloadParticles() {
 		
@@ -152,6 +160,14 @@ public class Resources {
 			PARTICLE_EXPLOSION_VIOLET.dispose();
 		}
 		
+		if (PARTICLE_FIELD_BLUE != null) {
+			PARTICLE_FIELD_BLUE.dispose();
+		}
+		
+		if (PARTICLE_EXPLOSION_BLUE != null) {
+			PARTICLE_EXPLOSION_BLUE.dispose();
+		}
+		
 		PARTICLE_EXPLOSION_GREEN.load(Gdx.files.internal("data/particleExplosionGreen.p"), 
 	            Gdx.files.internal("data"));
 		
@@ -159,6 +175,12 @@ public class Resources {
 	            Gdx.files.internal("data"));
 		
 		PARTICLE_EXPLOSION_VIOLET.load(Gdx.files.internal("data/particleExplosionViolet.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_EXPLOSION_BLUE.load(Gdx.files.internal("data/particleExplosionBlue.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_FIELD_BLUE.load(Gdx.files.internal("data/particleFieldBlue.p"), 
 	            Gdx.files.internal("data"));
 	}
 }
