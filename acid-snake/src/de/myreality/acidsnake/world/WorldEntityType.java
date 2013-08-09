@@ -299,7 +299,7 @@ public enum WorldEntityType implements SnakeListener {
 			}
 			
 			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
-				//spawnAtRandomPosition(this, snake.getWorld());
+				spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
 
@@ -311,7 +311,7 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onSpawn(Snake snake) {
 			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
-				//spawnAtRandomPosition(this, snake.getWorld());
+				spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
 
