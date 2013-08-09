@@ -190,7 +190,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	TELEPORTER {
 		
-		private static final double SPAWN_CHANCE = 3.0;
+		private static final double SPAWN_CHANCE = 4.0;
 		
 		private static final int ALLOWED_COUNT = 2;
 
@@ -299,7 +299,7 @@ public enum WorldEntityType implements SnakeListener {
 			}
 			
 			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
-				spawnAtRandomPosition(this, snake.getWorld());
+				//spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
 
@@ -311,7 +311,7 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onSpawn(Snake snake) {
 			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
-				spawnAtRandomPosition(this, snake.getWorld());
+				//spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
 
@@ -328,6 +328,77 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public CellRenderer getCellRenderer() {
 			return Resources.CELL_RENDERER_GREEN;
+		}
+		
+	},
+	
+	BOMB {
+		
+		private static final int MAX_COUNT = 5;
+		
+		private static final double SPAWN_CHANCE = 10.0;
+		
+		private static final double REMOVE_CHANCE = 9.0;
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			
+			World world = snake.getWorld();
+			
+			if (target.getType().equals(this)) {
+				snake.kill();
+			}
+			
+			if (isChance(REMOVE_CHANCE)) {
+				Set<WorldEntity> bombs = world.getEntitiesOfType(this);
+				int randomIndex = (int) (Math.random() * bombs.size());
+				int currentIndex = 0;
+				for (WorldEntity bomb : bombs) {
+					if (currentIndex++ == randomIndex) {
+						world.removeEntity(bomb);
+						break;
+					}
+				}
+				
+			}
+			
+			
+			if (isChance(SPAWN_CHANCE) && world.getEntityCount(this) < MAX_COUNT) {
+				spawnAtRandomPosition(this, world);
+			}
+		}
+
+		@Override
+		public void onKill(Snake snake) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return Resources.PARTICLE_FIELD_ORANGE;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return Resources.PARTICLE_EXPLOSION_ORANGE;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_ORANGE;
 		}
 		
 	};

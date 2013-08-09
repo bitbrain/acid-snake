@@ -27,6 +27,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.myreality.acid.CellManager;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.world.World;
@@ -45,6 +46,8 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int SPECIAL_SNAKE_LENGTH = 15;
 
 	// ===========================================================
 	// Fields
@@ -55,6 +58,8 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	private ParticleManager particleManager;
 	
 	private Map<WorldEntity, ParticleEffect> effects;
+	
+	private ParticleEffect snakeEffect;
 
 	// ===========================================================
 	// Constructors
@@ -77,6 +82,18 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	@Override
 	public void onEnterPosition(int indexX, int indexY, Snake snake) {
 		
+		if (snakeEffect == null && snake.getLength() > SPECIAL_SNAKE_LENGTH) {
+			snakeEffect = particleManager.create(Resources.PARTICLE_FIELD_GREEN, true);
+			snakeEffect.start();
+			
+			ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_GREEN, false);
+			alignOnIndex(indexX, indexY, effect);
+			effect.start();
+		}
+		
+		if (snake.getLength() > SPECIAL_SNAKE_LENGTH) {
+			alignOnIndex(snake.getIndexX(), snake.getIndexY(), snakeEffect);
+		}
 	}
 
 	@Override
@@ -109,8 +126,7 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 
 	@Override
 	public void onSpawn(Snake snake) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 
@@ -150,9 +166,11 @@ public class ParticleRenderer implements SnakeListener, WorldListener {
 	}
 	
 	private void alignOnIndex(int indexX, int indexY, ParticleEffect effect) {
+		if (effect != null) {
 		effect.setPosition(
 				cellManager.translateIndexX(indexX) + cellManager.getCellSize() / 2f, 
 				Gdx.graphics.getHeight() - indexY * cellManager.getCellSize() - cellManager.getCellSize() / 2f);
+		}
 	}
 
 	// ===========================================================
