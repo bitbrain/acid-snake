@@ -269,6 +269,12 @@ public enum WorldEntityType implements SnakeListener {
 	},
 	
 	ACID {
+		
+		private static final double SPAWN_CHANCE = 50.0;
+		
+		private static final int MIN_SNAKE_LENGTH = 8;
+		
+		private static final int MAX_FACTOR = 3;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -279,40 +285,49 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
+			
 			if (target.getType().equals(this)) {
+				
+				snake.getWorld().removeEntity(target);
+				
+				int amount = (int) (MAX_FACTOR * Math.random() + 1);
+				
+				while (amount-- > 0 && snake.getLength() > MIN_SNAKE_LENGTH) {
+					snake.removeChunk();
+				}
 				
 			}
 			
+			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
+				//spawnAtRandomPosition(this, snake.getWorld());
+			}
 		}
 
 		@Override
 		public void onKill(Snake snake) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void onSpawn(Snake snake) {
-			// TODO Auto-generated method stub
-			
+			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
+				//spawnAtRandomPosition(this, snake.getWorld());
+			}
 		}
 
 		@Override
 		public ParticleEffect getFieldEffect() {
-			// TODO Auto-generated method stub
-			return null;
+			return Resources.PARTICLE_FIELD_GREEN;
 		}
 
 		@Override
 		public ParticleEffect getExplodeEffect() {
-			// TODO Auto-generated method stub
-			return null;
+			return Resources.PARTICLE_EXPLOSION_GREEN;
 		}
 
 		@Override
 		public CellRenderer getCellRenderer() {
-			// TODO Auto-generated method stub
-			return null;
+			return Resources.CELL_RENDERER_GREEN;
 		}
 		
 	};

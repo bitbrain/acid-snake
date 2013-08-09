@@ -18,8 +18,11 @@
 
 package de.myreality.acidsnake.graphics;
 
+import com.badlogic.gdx.graphics.Color;
+
 import de.myreality.acid.CellManager;
 import de.myreality.acid.CellRenderer;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityType;
@@ -36,32 +39,27 @@ public class WorldRenderer implements WorldListener {
 	
 	private CellManager manager;
 	
-	@SuppressWarnings("unused")
-	private CellRenderer orangeCellRenderer, 
-					     blueCellRenderer, 
-					     violetCellRenderer, 
-					     greenCellRenderer, 
-					     normalCellRenderer;
-	
 	public WorldRenderer(CellManager manager) {
 		this.manager = manager;
 	}
 
 	@Override
-	public void onPut(int indexX, int indexY, WorldEntity target, World world) {		
+	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
 		
+		Color color = Resources.COLOR_GREEN;
 		CellRenderer cellRenderer = target.getType().getCellRenderer();
 		
 		if (cellRenderer != null) {
 			manager.setCellRenderer(cellRenderer);
 		}
 		
+		manager.color(color.r, color.g, color.b);
 		manager.put(indexX, indexY);
 	}
 
 	@Override
 	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
-		if (!(target.getType().equals(WorldEntityType.SNAKE) && !world.getSnake().getTail().equals(target))) {
+		if (target.removeRequested() || !(target.getType().equals(WorldEntityType.SNAKE) && !world.getSnake().getTail().equals(target))) {
 			manager.clear(indexX, indexY);
 		}
 	}
@@ -70,4 +68,32 @@ public class WorldRenderer implements WorldListener {
 	public void onBuild(World world) {
 		
 	}
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
+	// ===========================================================
+	// Getters and Setters
+	// ===========================================================
+
+	// ===========================================================
+	// Methods from Superclass
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	// ===========================================================
+	// Inner classes
+	// ===========================================================
 }

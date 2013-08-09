@@ -150,7 +150,7 @@ public class IngameScreen implements Screen {
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
-        
+        Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
         world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);
         
         worldRenderer = new WorldRenderer(acid);
@@ -164,7 +164,6 @@ public class IngameScreen implements Screen {
         //world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
-        Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
 	}
 
 	@Override
