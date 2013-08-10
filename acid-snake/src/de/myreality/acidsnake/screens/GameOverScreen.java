@@ -28,6 +28,7 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.GameOverProcessor;
 import de.myreality.acidsnake.core.Player;
+import de.myreality.acidsnake.google.GoogleInterface;
 import de.myreality.acidsnake.graphics.RandomAcid;
 import de.myreality.acidsnake.ui.PlayerTable;
 
@@ -116,6 +117,11 @@ public class GameOverScreen implements Screen {
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);
 		
 		Gdx.input.setInputProcessor(new GameOverProcessor(game));
+		
+		// Submit score
+		GoogleInterface googleInterface = game.getGoogleInterface();
+		
+		googleInterface.submitScore(player.getPoints());
 	}
 
 	@Override

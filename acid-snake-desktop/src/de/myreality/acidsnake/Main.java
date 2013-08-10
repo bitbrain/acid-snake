@@ -3,6 +3,8 @@ package de.myreality.acidsnake;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
+import de.myreality.acidsnake.google.DesktopInterface;
+
 public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
@@ -11,6 +13,6 @@ public class Main {
 		cfg.width = 800;
 		cfg.height = 600;
 		
-		new LwjglApplication(new SnakeGame(), cfg);
+		new LwjglApplication(new SnakeGame(new DesktopInterface()), cfg);
 	}
 }
