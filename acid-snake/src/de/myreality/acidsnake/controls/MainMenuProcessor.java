@@ -20,7 +20,7 @@ package de.myreality.acidsnake.controls;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.screens.IngameScreen;
@@ -32,17 +32,21 @@ import de.myreality.acidsnake.screens.IngameScreen;
  * @since 1.0
  * @version 1.0
  */
-public class MainMenuProcessor implements InputProcessor {
+public class MainMenuProcessor extends Stage {
 	
 	private SnakeGame game;
 	
-	public MainMenuProcessor(SnakeGame game) {
+	
+	
+	public MainMenuProcessor(float width, float height, SnakeGame game) {
+		super(width, height, false);
 		this.game = game;
 		Gdx.input.setCatchBackKey(true);
 	}
-
+	
 	@Override
 	public boolean keyDown(int keycode) {
+		super.keyDown(keycode);
 		if(keycode == Keys.BACK || keycode == Keys.ESCAPE){
 			Gdx.app.exit();
 			return true;
@@ -51,47 +55,13 @@ public class MainMenuProcessor implements InputProcessor {
 	}
 
 	@Override
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.setScreen(new IngameScreen(game));
+		if (!super.touchDown(screenX, screenY, pointer, button)) {
+			game.setScreen(new IngameScreen(game));
+		}
+		
 		return true;
 	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 
 	// ===========================================================
 	// Constants

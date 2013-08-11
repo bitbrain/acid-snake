@@ -49,6 +49,8 @@ public class Resources {
 	public static Texture TEXTURE_BLOCK_ORANGE;
 	public static Texture TEXTURE_BLOCK_BLUE;
 	public static Texture TEXTURE_BLOCK;
+	public static Texture TEXTURE_ICON_ACHIEVEMENTS;
+	public static Texture TEXTURE_ICON_SCORES;
 	
 	public static void reloadTextures() {
 		
@@ -80,6 +82,14 @@ public class Resources {
 			TEXTURE_BLOCK.dispose();
 		}
 		
+		if (TEXTURE_ICON_ACHIEVEMENTS != null) {
+			TEXTURE_ICON_ACHIEVEMENTS.dispose();
+		}
+		
+		if (TEXTURE_ICON_SCORES != null) {
+			TEXTURE_ICON_SCORES.dispose();
+		}
+		
 		TEXTURE_ACID_LOGO  = new Texture("data/banner.png");
 		TEXTURE_GAME_LOGO = new Texture("data/logo.png");
 		TEXTURE_BLOCK = new Texture("data/block.png");
@@ -87,6 +97,8 @@ public class Resources {
 		TEXTURE_BLOCK_VIOLET = new Texture("data/block-violet.png");
 		TEXTURE_BLOCK_ORANGE = new Texture("data/block-orange.png");
 		TEXTURE_BLOCK_BLUE = new Texture("data/block-blue.png");
+		TEXTURE_ICON_ACHIEVEMENTS = new Texture("data/icon-achievements.png");
+		TEXTURE_ICON_SCORES = new Texture("data/icon-scores.png");
 		
 	}
 	

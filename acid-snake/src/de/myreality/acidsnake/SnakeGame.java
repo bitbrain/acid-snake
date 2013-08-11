@@ -20,9 +20,21 @@ package de.myreality.acidsnake;
 
 import com.badlogic.gdx.Game;
 
+import de.myreality.acidsnake.google.GoogleInterface;
 import de.myreality.acidsnake.screens.IntroScreen;
 
 public class SnakeGame extends Game {
+	
+	private GoogleInterface googleInterface;
+	
+	public SnakeGame(GoogleInterface googleInterface) {
+		this.googleInterface = googleInterface;
+		googleInterface.login();
+	}
+	
+	public GoogleInterface getGoogleInterface() {
+		return googleInterface;
+	}
 
 	@Override
 	public void create() {
@@ -32,5 +44,13 @@ public class SnakeGame extends Game {
 		Resources.reloadParticles();
 		setScreen(new IntroScreen(this));
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		googleInterface.logout();
+	}
+	
+	
 	
 }

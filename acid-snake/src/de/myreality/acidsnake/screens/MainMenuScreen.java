@@ -24,8 +24,8 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -36,6 +36,7 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.MainMenuProcessor;
+import de.myreality.acidsnake.google.GoogleInterface;
 import de.myreality.acidsnake.graphics.RandomAcid;
 import de.myreality.acidsnake.tweens.LabelTween;
 import de.myreality.acidsnake.ui.FadeLabel;
@@ -53,17 +54,13 @@ public class MainMenuScreen implements Screen {
 	
 	private RandomAcid acdBackground;
 	
-	private Image imgLogo;
-	
-	private SpriteBatch batch;
+	private Image imgLogo, imgAchievements, imgScores;
 	
 	private Label lblStart;
 	
 	private Stage stage;
 
 	private TweenManager tweenManager;
-	
-	private ParticleEffect greenExplosion, violetExplosion;
 	
 	public MainMenuScreen(SnakeGame game) {
 		this.game = game;
@@ -77,30 +74,15 @@ public class MainMenuScreen implements Screen {
 		
 		tweenManager.update(delta);
 		stage.act(delta);
-		acdBackground.render();		
-
-		batch.begin();
-		greenExplosion.draw(batch, delta);
-		violetExplosion.draw(batch, delta);
-		batch.end();
+		acdBackground.render();
 
 		stage.draw();
-		
-		if (greenExplosion.isComplete()) {
-			greenExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
-			greenExplosion.reset();
-		}
-		
-		if (violetExplosion.isComplete()) {
-			violetExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
-			violetExplosion.reset();
-		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		if (stage == null) {
-			stage = new Stage(width, height, false);
+			stage = new MainMenuProcessor(width, height, game);
 			
 			tweenManager = new TweenManager();
 			Tween.registerAccessor(Label.class, new LabelTween());
@@ -125,6 +107,50 @@ public class MainMenuScreen implements Screen {
 								 (Gdx.graphics.getHeight() / 2f - imgLogo.getHeight() / 2f) + Gdx.graphics.getHeight() / 4f);
 		
 			stage.addActor(imgLogo);
+			
+			final GoogleInterface google = game.getGoogleInterface();
+			
+			if (google.isConnected()) {
+				
+				final float PADDING = 50f;
+				
+				imgAchievements = new Image(Resources.TEXTURE_ICON_ACHIEVEMENTS);
+				imgAchievements.setWidth(100f);
+				imgAchievements.setHeight(100f);
+				imgAchievements.setPosition(PADDING, PADDING);
+				
+				imgAchievements.addListener(new InputListener() {
+
+					@Override
+					public boolean touchDown(InputEvent event, float x,
+							float y, int pointer, int button) {
+						google.showAchievements();
+						return true;
+					}
+					
+				});
+				
+				imgScores = new Image(Resources.TEXTURE_ICON_SCORES);
+				imgScores.setWidth(100f);
+				imgScores.setHeight(100f);
+				imgScores.setPosition(Gdx.graphics.getWidth() - imgScores.getWidth() - PADDING, PADDING);
+				
+				imgScores.addListener(new InputListener() {
+
+					@Override
+					public boolean touchDown(InputEvent event, float x,
+							float y, int pointer, int button) {
+						google.showScores();
+						return true;
+					}
+					
+				});
+		
+				stage.addActor(imgAchievements);
+				stage.addActor(imgScores);
+			}
+			
+			Gdx.input.setInputProcessor(stage);
 		} else {
 			
 			stage.setViewport(width, height, false);
@@ -138,8 +164,6 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(new MainMenuProcessor(game));
-		batch = new SpriteBatch();
 		BufferedRenderer renderer = new GdxBufferedRenderer();			
 		
 		final int VERTICAL_INDEX = 8;
@@ -151,16 +175,7 @@ public class MainMenuScreen implements Screen {
 		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
 		acdBackground.setPadding(5);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
-							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);	
-		
-		greenExplosion = Resources.PARTICLE_EXPLOSION_GREEN;
-		violetExplosion = Resources.PARTICLE_EXPLOSION_VIOLET;
-		greenExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
-		greenExplosion.start();
-		
-		violetExplosion.setPosition((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight()));
-		violetExplosion.start();
-		
+							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);			
 	}
 
 	@Override

@@ -32,6 +32,7 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
+import de.myreality.acidsnake.google.ArchievementManager;
 import de.myreality.acidsnake.graphics.ParticleRenderer;
 import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.world.SimpleWorld;
@@ -142,7 +143,7 @@ public class IngameScreen implements Screen {
 		ShaderProgram.pedantic = false;
 		batch = new SpriteBatch();
 		
-		final int VERTICAL_INDEX = 22;
+		final int VERTICAL_INDEX = 16;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
@@ -161,6 +162,7 @@ public class IngameScreen implements Screen {
         particleRenderer = new ParticleRenderer(acid);
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
+        world.getSnake().addListener(new ArchievementManager(game.getGoogleInterface()));
         //world.getSnake().addListener(new WorldDebugger(world));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
