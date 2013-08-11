@@ -143,7 +143,7 @@ public class IngameScreen implements Screen {
 		ShaderProgram.pedantic = false;
 		batch = new SpriteBatch();
 		
-		final int VERTICAL_INDEX = 18;
+		final int VERTICAL_INDEX = 16;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
