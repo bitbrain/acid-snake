@@ -170,4 +170,11 @@ public class MainActivity extends AndroidApplication implements
 		}
 	}
 
+	@Override
+	public void incrementAchievement(String id, int steps) {
+		if (isConnected()) {
+			aHelper.getGamesClient().incrementAchievement(id, steps);
+		}
+	}
+
 }

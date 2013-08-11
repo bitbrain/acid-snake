@@ -39,6 +39,8 @@ public interface GoogleInterface {
 	
 	// submit a new archivement
 	public void submitAchievement(String id);
+	
+	public void incrementAchievement(String id, int steps);
 
 	// gets the scores and displays them threw googles default widget
 	public void showScores();

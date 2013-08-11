@@ -38,5 +38,7 @@ public class Achievements {
 	public static final String IN_A_ROW_30 = "CgkI1pOy-tIHEAIQAQ";
 	public static final String IN_A_ROW_40 = "CgkI1pOy-tIHEAIQCg";
 	public static final String IN_A_ROW_50 = "CgkI1pOy-tIHEAIQCw";
-	
+	public static final String ACID_HUNTER = "CgkI1pOy-tIHEAIQDA";
+	public static final String ACID_MASTER = "CgkI1pOy-tIHEAIQDQ";
+	public static final String ACID_LEGEND = "CgkI1pOy-tIHEAIQDg";
 }

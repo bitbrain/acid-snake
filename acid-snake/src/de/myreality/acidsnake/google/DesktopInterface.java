@@ -71,4 +71,9 @@ public class DesktopInterface implements GoogleInterface {
 	public void showScores() {
 		System.out.println("Desktop: getScores()");
 	}
+
+	@Override
+	public void incrementAchievement(String id, int steps) {
+		System.out.println("Increment achievement with id: " + id + " by " + steps);
+	}
 }

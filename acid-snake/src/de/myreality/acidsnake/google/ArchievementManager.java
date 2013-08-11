@@ -25,6 +25,7 @@ import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.util.Timer;
 import de.myreality.acidsnake.world.WorldEntity;
+import de.myreality.acidsnake.world.WorldEntityType;
 
 /**
  * Manages all archievements
@@ -128,6 +129,12 @@ public class ArchievementManager implements SnakeListener {
 		counter30.count();
 		counter40.count();
 		counter50.count();
+		
+		if (!target.getType().equals(WorldEntityType.SNAKE)) {
+			google.incrementAchievement(Achievements.ACID_HUNTER, 1);
+			google.incrementAchievement(Achievements.ACID_MASTER, 1);
+			google.incrementAchievement(Achievements.ACID_LEGEND, 1);
+		}
 	}
 
 	@Override
