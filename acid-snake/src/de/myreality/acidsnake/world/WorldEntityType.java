@@ -109,6 +109,7 @@ public enum WorldEntityType implements SnakeListener {
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
+			spawnAtRandomPosition(this, snake.getWorld());
 		}
 
 		@Override
@@ -135,7 +136,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	RARE_FOOD {
 		
-		private static final double CHANCE = 10.0;
+		private static final double CHANCE = 15.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -166,9 +167,7 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
-			if (isChance(CHANCE)) {
-				spawnAtRandomPosition(this, snake.getWorld());
-			}
+			
 		}
 
 		@Override
@@ -190,7 +189,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	TELEPORTER {
 		
-		private static final double SPAWN_CHANCE = 4.0;
+		private static final double SPAWN_CHANCE = 10.0;
 		
 		private static final int ALLOWED_COUNT = 2;
 
@@ -226,6 +225,7 @@ public enum WorldEntityType implements SnakeListener {
 				world.removeEntity(targetPortal);
 				
 				// 3. Move snake to portal
+				snake.setIndex(snake.getIndexX(), snake.getIndexY());
 				snake.setIndex(targetPortal.getIndexX(), targetPortal.getIndexY());
 				
 			} else if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
@@ -243,12 +243,6 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onSpawn(Snake snake) {
 			
-			World world = snake.getWorld();
-			
-			if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
-				spawnAtRandomPosition(this, world); // TELEPORT A
-				spawnAtRandomPosition(this, world); // TELEPORT B
-			}
 		}
 
 		@Override
@@ -338,7 +332,7 @@ public enum WorldEntityType implements SnakeListener {
 		
 		private static final double SPAWN_CHANCE = 10.0;
 		
-		private static final double REMOVE_CHANCE = 9.0;
+		private static final double REMOVE_CHANCE = 10.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {

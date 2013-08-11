@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.Color;
 import de.myreality.acid.CellManager;
 import de.myreality.acid.CellRenderer;
 import de.myreality.acidsnake.Resources;
+import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityType;
@@ -59,7 +60,13 @@ public class WorldRenderer extends WorldHandler {
 
 	@Override
 	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
-		if (target.renderRequested() || !(target.getType().equals(WorldEntityType.SNAKE) && !world.getSnake().getTail().equals(target))) {
+		
+		// Check if snake is already on the place
+		Snake snake = world.getSnake();
+		
+		boolean snakeOnPlace = indexX == snake.getIndexX() && indexY == snake.getIndexY();
+		
+		if (!snakeOnPlace && (target.renderRequested() || !(target.getType().equals(WorldEntityType.SNAKE) && !world.getSnake().getTail().equals(target)))) {
 			manager.clear(indexX, indexY);
 		}
 	}
