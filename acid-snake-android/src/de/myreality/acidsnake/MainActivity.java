@@ -61,31 +61,35 @@ public class MainActivity extends AndroidApplication implements
 
 	@Override
 	public void login() {
-		try {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					aHelper.beginUserInitiatedSignIn();
-				}
-			});
-		} catch (final Exception ex) {
-
+		if (!isConnected()) {
+			try {
+				runOnUiThread(new Runnable() {
+	
+					@Override
+					public void run() {
+						aHelper.beginUserInitiatedSignIn();
+					}
+				});
+			} catch (final Exception ex) {
+	
+			}
 		}
 	}
 
 	@Override
 	public void logout() {
-		try {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					aHelper.signOut();
-				}
-			});
-		} catch (final Exception ex) {
-
+		if (isConnected()) {
+			try {
+				runOnUiThread(new Runnable() {
+	
+					@Override
+					public void run() {
+						aHelper.signOut();
+					}
+				});
+			} catch (final Exception ex) {
+	
+			}
 		}
 	}
 
@@ -96,7 +100,7 @@ public class MainActivity extends AndroidApplication implements
 
 	@Override
 	public void submitScore(int score) {
-		if (aHelper.getGamesClient().isConnected()) {
+		if (isConnected()) {
 			System.out.println("in submit score");
 			aHelper.getGamesClient().submitScore(
 					getString(R.string.leaderBoardID), score);
@@ -105,7 +109,7 @@ public class MainActivity extends AndroidApplication implements
 
 	@Override
 	public void submitAchievement(String id) {
-		if (aHelper.getGamesClient().isConnected()) {
+		if (isConnected()) {
 			GamesClient client = aHelper.getGamesClient();
 			client.unlockAchievement(id);
 		}
@@ -133,19 +137,25 @@ public class MainActivity extends AndroidApplication implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		aHelper.onStart(this);
+		if (isConnected()) {
+			aHelper.onStart(this);
+		}
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		aHelper.onStop();
+		if (isConnected()) {
+			aHelper.onStop();
+		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		aHelper.onActivityResult(requestCode, resultCode, data);
+		if (isConnected()) {
+			aHelper.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 
 	@Override

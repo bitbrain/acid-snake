@@ -106,6 +106,15 @@ public class SimplePlayer implements Player {
 		return points / 200 + 1;
 	}
 
+	@Override
+	public void setPaused(boolean paused) {
+		if (paused) {
+			timer.pause();
+		} else {
+			timer.start();
+		}
+	}
+
 	// ===========================================================
 	// Inner classes
 	// ===========================================================

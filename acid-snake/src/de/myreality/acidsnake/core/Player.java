@@ -80,4 +80,6 @@ public interface Player {
 	 */
 	void resetTime();
 	
+	void setPaused(boolean paused);
+	
 }

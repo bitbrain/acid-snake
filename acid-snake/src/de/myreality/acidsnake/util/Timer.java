@@ -41,6 +41,10 @@ public class Timer {
 
 	private boolean running;
 	
+	private long pauseTime;
+	
+	private long currentTicks;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -48,6 +52,11 @@ public class Timer {
 	public Timer() {
 		reset();
 		running = false;
+	}
+	
+	public Timer(long miliseconds) {
+		startTime = System.currentTimeMillis() + miliseconds;
+		currentTicks = 0;
 	}
 
 	// ===========================================================
@@ -72,6 +81,11 @@ public class Timer {
 	
 	public void start() {
 		running = true;
+		
+		if (pauseTime > 0) {
+			startTime = System.currentTimeMillis() + pauseTime;
+			pauseTime = 0;
+		}
 	}
 	
 	public void stop() {
@@ -79,12 +93,22 @@ public class Timer {
 		reset();
 	}
 	
+	public void pause() {
+		running = false;
+		pauseTime = getTicks();
+	}
+	
 	public void reset() {
 		startTime = System.currentTimeMillis();
 	}
 	
 	public long getTicks() {
-		return System.currentTimeMillis() - startTime;
+		
+		if (running) {
+			currentTicks = System.currentTimeMillis() - startTime;
+		}
+		
+		return currentTicks;
 	}
 	
 	public boolean isRunning() {

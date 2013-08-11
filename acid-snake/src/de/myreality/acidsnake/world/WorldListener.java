@@ -59,4 +59,6 @@ public interface WorldListener {
 	 * @param world target world
 	 */
 	void onBuild(World world);
+	
+	void onPaused(boolean state);
 }

@@ -26,7 +26,7 @@ import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityType;
-import de.myreality.acidsnake.world.WorldListener;
+import de.myreality.acidsnake.world.WorldHandler;
 
 /**
  * Renderer which renders the world
@@ -35,7 +35,7 @@ import de.myreality.acidsnake.world.WorldListener;
  * @since 1.0
  * @version 1.0
  */
-public class WorldRenderer implements WorldListener {
+public class WorldRenderer extends WorldHandler {
 	
 	private CellManager manager;
 	

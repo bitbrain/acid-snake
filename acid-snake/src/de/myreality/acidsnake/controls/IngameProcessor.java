@@ -26,6 +26,7 @@ import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.screens.GameOverScreen;
 import de.myreality.acidsnake.util.Direction;
+import de.myreality.acidsnake.util.Timer;
 import de.myreality.acidsnake.world.World;
 
 /**
@@ -37,9 +38,13 @@ import de.myreality.acidsnake.world.World;
  */
 public class IngameProcessor implements InputProcessor {
 	
+	private final int PAUSE_INTERVAL = 1000;
+	
 	private SnakeGame game;
 	
 	private World world;
+	
+	private Timer touchTimer;
 	
 	public IngameProcessor(SnakeGame game, World world) {
 		this.game = game;
@@ -97,6 +102,13 @@ public class IngameProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		
+		if (touchTimer == null) {
+			touchTimer = new Timer();
+			touchTimer.start();
+		}
+		
+		
 		
 		return false;
 	}

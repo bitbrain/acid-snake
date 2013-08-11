@@ -64,6 +64,8 @@ public class SimpleWorld implements World {
 	private WorldBinder binder;
 	
 	private Accelerator snakeAccelerator;
+	
+	private boolean paused;
 
 	// ===========================================================
 	// Constructors
@@ -230,7 +232,7 @@ public class SimpleWorld implements World {
 
 	@Override
 	public void update(float delta) {
-		snakeAccelerator.setSpeedRate(15 + player.getLevel());
+		snakeAccelerator.setSpeedRate(18 + (player.getLevel() / 3));
 		snakeAccelerator.update(delta);
 	}
 
@@ -249,6 +251,22 @@ public class SimpleWorld implements World {
 	@Override
 	public Set<WorldEntity> getEntitiesOfType(WorldEntityType type) {
 		return types.get(type) != null ? types.get(type) : new HashSet<WorldEntity>();
+	}
+
+	@Override
+	public void setPaused(boolean paused) {
+		snakeAccelerator.setPaused(paused);
+		player.setPaused(paused);
+		this.paused = paused;
+		
+		for (WorldListener listener : listeners) {
+			listener.onPaused(paused);
+		}
+	}
+	
+	@Override
+	public boolean isPaused() {
+		return paused;
 	}
 
 	// ===========================================================

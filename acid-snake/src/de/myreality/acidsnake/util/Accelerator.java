@@ -70,6 +70,14 @@ public class Accelerator implements Updateable {
 			moveable.move();
 		}
 	}
+	
+	public void setPaused(boolean paused) {
+		if (paused) {
+			timer.pause();
+		} else {
+			timer.start();
+		}
+	}
 
 	// ===========================================================
 	// Methods

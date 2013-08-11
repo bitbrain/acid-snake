@@ -101,6 +101,7 @@ public class IngameScreen implements Screen {
 		
 		world.update(delta);
 		stage.act(delta);
+		//fpsLogger.log();
 		
 		acid.render();
 		
@@ -143,7 +144,7 @@ public class IngameScreen implements Screen {
 		ShaderProgram.pedantic = false;
 		batch = new SpriteBatch();
 		
-		final int VERTICAL_INDEX = 16;
+		final int VERTICAL_INDEX = 24;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
@@ -162,14 +163,9 @@ public class IngameScreen implements Screen {
         particleRenderer = new ParticleRenderer(acid);
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
-        world.getSnake().addListener(new ArchievementManager(game.getGoogleInterface()));
-        //world.getSnake().addListener(new WorldDebugger(world));
+        world.getSnake().addListener(new ArchievementManager(world, game.getGoogleInterface()));
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
-		
-		//if (bufferedRenderer.getSpriteBatch() != null) {
-		//	bufferedRenderer.getSpriteBatch().setShader(Resources.SHADER_BLUR);
-		//}
 	}
 
 	@Override

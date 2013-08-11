@@ -24,8 +24,10 @@ import java.util.Map;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.util.Timer;
+import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
 import de.myreality.acidsnake.world.WorldEntityType;
+import de.myreality.acidsnake.world.WorldHandler;
 
 /**
  * Manages all archievements
@@ -54,11 +56,14 @@ public class ArchievementManager implements SnakeListener {
 	// Constructors
 	// ===========================================================
 
-	public ArchievementManager(GoogleInterface googleInterface) {
+	public ArchievementManager(World world, GoogleInterface googleInterface) {
 		google = googleInterface;
 		counter30 = new BlockCounter(30, 60000);
 		counter40 = new BlockCounter(40, 60000);
 		counter50 = new BlockCounter(50, 60000);
+		world.addListener(counter30);
+		world.addListener(counter40);
+		world.addListener(counter50);
 	}
 
 	// ===========================================================
@@ -157,7 +162,7 @@ public class ArchievementManager implements SnakeListener {
 	// Inner classes
 	// ===========================================================
 	
-	class BlockCounter {
+	class BlockCounter extends WorldHandler {
 		
 		private final int BLOCKS;
 		
@@ -211,5 +216,18 @@ public class ArchievementManager implements SnakeListener {
 		public boolean check() {
 			return totalPool >= BLOCKS;
 		}
+
+		@Override
+		public void onPaused(boolean state) {
+			super.onPaused(state);
+			
+			if (state) {
+				timer.pause();
+			} else {
+				timer.start();
+			}
+		}
+		
+		
 	}
 }

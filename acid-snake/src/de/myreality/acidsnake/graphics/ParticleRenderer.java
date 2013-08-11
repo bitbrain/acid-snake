@@ -32,7 +32,7 @@ import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.world.World;
 import de.myreality.acidsnake.world.WorldEntity;
-import de.myreality.acidsnake.world.WorldListener;
+import de.myreality.acidsnake.world.WorldHandler;
 
 /**
  * Listens to a snake to spawn particles on collisions
@@ -41,7 +41,7 @@ import de.myreality.acidsnake.world.WorldListener;
  * @since 1.0
  * @version 1.0
  */
-public class ParticleRenderer implements SnakeListener, WorldListener {
+public class ParticleRenderer extends WorldHandler implements SnakeListener {
 
 	// ===========================================================
 	// Constants

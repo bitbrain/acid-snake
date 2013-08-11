@@ -127,5 +127,9 @@ public interface World extends Buildable, Updateable {
 	boolean hasEntity(WorldEntity entity);
 	
 	Set<WorldEntity> getEntitiesOfType(WorldEntityType type);
+	
+	void setPaused(boolean paused);
+	
+	boolean isPaused();
 
 }
