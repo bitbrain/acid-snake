@@ -156,7 +156,7 @@ public class ArchievementManager implements SnakeListener {
 		
 		private final long TIME;
 		
-		private int pool, totalPool, index;
+		private int pool, totalPool, index, maxIndex;
 		
 		private Map<Integer, Integer> poolMap;
 		
@@ -171,6 +171,7 @@ public class ArchievementManager implements SnakeListener {
 			timer = new Timer();
 			timer.start();
 			index = 0;
+			maxIndex = 0;
 		}
 		
 		public void count() {
@@ -184,17 +185,15 @@ public class ArchievementManager implements SnakeListener {
 				
 				timer.reset();
 				
-				if (poolMap.size() <= TIME_FACTOR) {
-					poolMap.put(index++, pool);
+				if (poolMap.size() < TIME_FACTOR) {
+					maxIndex = poolMap.size();
+					poolMap.put(poolMap.size(), pool);
 					totalPool += pool;
 				} else {
 					
-					if (index++ >= TIME_FACTOR) {
-						index = 0;
-					}
-					
 					totalPool -= poolMap.get(index);
-					poolMap.put(poolMap.size(), pool);
+					poolMap.remove(index++);
+					poolMap.put(++maxIndex, pool);
 					totalPool += pool;
 				}
 				
