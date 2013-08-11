@@ -98,31 +98,26 @@ public class MainActivity extends AndroidApplication implements
 	public void submitScore(int score) {
 		if (aHelper.getGamesClient().isConnected()) {
 			System.out.println("in submit score");
-			aHelper.getGamesClient().submitScore(getString(R.string.leaderBoardID), score);
+			aHelper.getGamesClient().submitScore(
+					getString(R.string.leaderBoardID), score);
 		}
 	}
-	
+
 	@Override
-	public void submitArchivement(String id) {
+	public void submitAchievement(String id) {
 		if (aHelper.getGamesClient().isConnected()) {
 			GamesClient client = aHelper.getGamesClient();
 			client.unlockAchievement(id);
 		}
-		//startActivityForResult(client.getAchievementsIntent(), REQUEST_ACHIEVEMENTS);
-	}
-
-	@Override
-	public void getScores() {
-		startActivityForResult(
-				aHelper.getGamesClient().getLeaderboardIntent(
-						getString(R.string.leaderBoardID)), 105);
 	}
 
 	@Override
 	public void getScoresData() {
-		aHelper.getGamesClient().loadPlayerCenteredScores(
-				theLeaderboardListener, getString(R.string.leaderBoardID), 1,
-				1, 25);
+		if (isConnected()) {
+			aHelper.getGamesClient().loadPlayerCenteredScores(
+					theLeaderboardListener, getString(R.string.leaderBoardID),
+					1, 1, 25);
+		}
 	}
 
 	@Override
@@ -151,6 +146,28 @@ public class MainActivity extends AndroidApplication implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		aHelper.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public boolean isConnected() {
+		return aHelper.getGamesClient().isConnected();
+	}
+
+	@Override
+	public void showAchievements() {
+		if (isConnected()) {
+			startActivityForResult(aHelper.getGamesClient()
+					.getAchievementsIntent(), 105);
+		}
+	}
+
+	@Override
+	public void showScores() {
+		if (isConnected()) {
+			startActivityForResult(aHelper.getGamesClient()
+					.getLeaderboardIntent(getString(R.string.leaderBoardID)),
+					105);
+		}
 	}
 
 }

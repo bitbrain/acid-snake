@@ -18,8 +18,12 @@
 
 package de.myreality.acidsnake.google;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
+import de.myreality.acidsnake.util.Timer;
 import de.myreality.acidsnake.world.WorldEntity;
 
 /**
@@ -42,6 +46,8 @@ public class ArchievementManager implements SnakeListener {
 	private GoogleInterface google;
 	
 	private int lastLength;
+	
+	private BlockCounter counter30, counter40, counter50;
 
 	// ===========================================================
 	// Constructors
@@ -49,6 +55,9 @@ public class ArchievementManager implements SnakeListener {
 
 	public ArchievementManager(GoogleInterface googleInterface) {
 		google = googleInterface;
+		counter30 = new BlockCounter(30, 60000);
+		counter40 = new BlockCounter(40, 60000);
+		counter50 = new BlockCounter(50, 60000);
 	}
 
 	// ===========================================================
@@ -65,17 +74,33 @@ public class ArchievementManager implements SnakeListener {
 		if (lastLength != snake.getLength()) {		
 			switch (snake.getLength()) {
 				case 15:
-					google.submitArchivement(Archievements.THE_LONG_SNAKE);
+					google.submitAchievement(Achievements.THE_LONG_SNAKE);
 					break;
 				case 30:
-					google.submitArchivement(Archievements.THE_MONSTER_SNAKE);
+					google.submitAchievement(Achievements.THE_MONSTER_SNAKE);
 					break;
 				case 50:
-					google.submitArchivement(Archievements.THE_GIANT_SNAKE);
+					google.submitAchievement(Achievements.THE_GIANT_SNAKE);
 					break;
 			}
 			
 			lastLength = snake.getLength();
+		}
+		
+		counter30.update();
+		counter40.update();
+		counter50.update();
+		
+		if (counter30.check()) {
+			google.submitAchievement(Achievements.IN_A_ROW_30);
+		}
+		
+		if (counter40.check()) {
+			google.submitAchievement(Achievements.IN_A_ROW_40);
+		}
+		
+		if (counter50.check()) {
+			google.submitAchievement(Achievements.IN_A_ROW_50);
 		}
 	}
 
@@ -94,12 +119,15 @@ public class ArchievementManager implements SnakeListener {
 		case SNAKE:
 			break;
 		case TELEPORTER:
-			google.submitArchivement(Archievements.BEAM_ME_UP_SCOTTIE);
+			google.submitAchievement(Achievements.BEAM_ME_UP_SCOTTIE);
 			break;
 		default:
 			break;
-		
 		}
+		
+		counter30.count();
+		counter40.count();
+		counter50.count();
 	}
 
 	@Override
@@ -121,4 +149,61 @@ public class ArchievementManager implements SnakeListener {
 	// ===========================================================
 	// Inner classes
 	// ===========================================================
+	
+	class BlockCounter {
+		
+		private final int BLOCKS;
+		
+		private final long TIME;
+		
+		private int pool, totalPool, index;
+		
+		private Map<Integer, Integer> poolMap;
+		
+		private Timer timer;
+		
+		public BlockCounter(final int BLOCKS, final long TIME) {
+			this.BLOCKS = BLOCKS;
+			this.TIME = TIME;
+			pool = 0;
+			totalPool = 0;
+			poolMap = new HashMap<Integer, Integer>();
+			timer = new Timer();
+			timer.start();
+			index = 0;
+		}
+		
+		public void count() {
+			pool++;
+		}
+		
+		public void update() {
+			if (timer.getTicks() > 1000) {
+				
+				final int TIME_FACTOR = (int) (TIME / 1000f);
+				
+				timer.reset();
+				
+				if (poolMap.size() <= TIME_FACTOR) {
+					poolMap.put(index++, pool);
+					totalPool += pool;
+				} else {
+					
+					if (index++ >= TIME_FACTOR) {
+						index = 0;
+					}
+					
+					totalPool -= poolMap.get(index);
+					poolMap.put(poolMap.size(), pool);
+					totalPool += pool;
+				}
+				
+				pool = 0;
+			}
+		}
+		
+		public boolean check() {
+			return totalPool >= BLOCKS;
+		}
+	}
 }

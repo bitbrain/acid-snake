@@ -38,11 +38,15 @@ public interface GoogleInterface {
 	public void submitScore(int score);
 	
 	// submit a new archivement
-	public void submitArchivement(String id);
+	public void submitAchievement(String id);
 
 	// gets the scores and displays them threw googles default widget
-	public void getScores();
+	public void showScores();
 
 	// gets the score and gives access to the raw score data
 	public void getScoresData();
+	
+	boolean isConnected();
+	
+	void showAchievements();
 }

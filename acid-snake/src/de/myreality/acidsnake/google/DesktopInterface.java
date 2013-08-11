@@ -46,19 +46,29 @@ public class DesktopInterface implements GoogleInterface {
 	public void submitScore(int score) {
 		System.out.println("Desktop: submitScore: " + score);
 	}
-
-	@Override
-	public void getScores() {
-		System.out.println("Desktop: getScores()");
-	}
-
+	
 	@Override
 	public void getScoresData() {
 		System.out.println("Desktop: getScoresData()");
 	}
 
 	@Override
-	public void submitArchivement(String id) {
+	public void submitAchievement(String id) {
 		System.out.println("Archieved: " + id);
+	}
+
+	@Override
+	public boolean isConnected() {		
+		return false;
+	}
+
+	@Override
+	public void showAchievements() {
+		System.out.println("Show achievements");
+	}
+
+	@Override
+	public void showScores() {
+		System.out.println("Desktop: getScores()");
 	}
 }

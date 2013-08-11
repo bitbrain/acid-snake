@@ -25,7 +25,7 @@ package de.myreality.acidsnake.google;
  * @since 1.0
  * @version 1.0
  */
-public class Archievements {
+public class Achievements {
 
 	// ===========================================================
 	// Constants

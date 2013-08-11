@@ -44,5 +44,13 @@ public class SnakeGame extends Game {
 		Resources.reloadParticles();
 		setScreen(new IntroScreen(this));
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		googleInterface.logout();
+	}
+	
+	
 	
 }

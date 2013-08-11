@@ -26,6 +26,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -36,6 +38,7 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.MainMenuProcessor;
+import de.myreality.acidsnake.google.GoogleInterface;
 import de.myreality.acidsnake.graphics.RandomAcid;
 import de.myreality.acidsnake.tweens.LabelTween;
 import de.myreality.acidsnake.ui.FadeLabel;
@@ -53,7 +56,7 @@ public class MainMenuScreen implements Screen {
 	
 	private RandomAcid acdBackground;
 	
-	private Image imgLogo;
+	private Image imgLogo, imgAchievements, imgScores;
 	
 	private SpriteBatch batch;
 	
@@ -125,6 +128,46 @@ public class MainMenuScreen implements Screen {
 								 (Gdx.graphics.getHeight() / 2f - imgLogo.getHeight() / 2f) + Gdx.graphics.getHeight() / 4f);
 		
 			stage.addActor(imgLogo);
+			
+			final GoogleInterface google = game.getGoogleInterface();
+			
+			if (google.isConnected()) {
+				
+				final float PADDING = 50f;
+				
+				imgAchievements = new Image(Resources.TEXTURE_GAME_LOGO);
+				imgAchievements.setWidth(100f);
+				imgAchievements.setHeight(100f);
+				imgAchievements.setPosition(PADDING, PADDING);
+				
+				imgAchievements.addListener(new EventListener() {
+
+					@Override
+					public boolean handle(Event event) {
+						google.showAchievements();
+						return true;
+					}
+					
+				});
+				
+				imgScores = new Image(Resources.TEXTURE_GAME_LOGO);
+				imgScores.setWidth(100f);
+				imgScores.setHeight(100f);
+				imgScores.setPosition(Gdx.graphics.getWidth() - imgScores.getWidth() - PADDING, PADDING);
+				
+				imgScores.addListener(new EventListener() {
+
+					@Override
+					public boolean handle(Event event) {
+						google.showScores();
+						return true;
+					}
+					
+				});
+		
+				stage.addActor(imgAchievements);
+				stage.addActor(imgScores);
+			}
 		} else {
 			
 			stage.setViewport(width, height, false);
