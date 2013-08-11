@@ -59,7 +59,7 @@ public class WorldRenderer implements WorldListener {
 
 	@Override
 	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
-		if (target.removeRequested() || !(target.getType().equals(WorldEntityType.SNAKE) && !world.getSnake().getTail().equals(target))) {
+		if (target.renderRequested() || !(target.getType().equals(WorldEntityType.SNAKE) && !world.getSnake().getTail().equals(target))) {
 			manager.clear(indexX, indexY);
 		}
 	}

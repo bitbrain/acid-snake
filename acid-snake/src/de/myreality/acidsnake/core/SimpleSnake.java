@@ -148,6 +148,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		}
 		
 		chunks.add(chunk);
+		chunk.ignoreNextRendering();
 		chunk.setIndex(chunkX, chunkY);
 		tail = chunk;
 	}

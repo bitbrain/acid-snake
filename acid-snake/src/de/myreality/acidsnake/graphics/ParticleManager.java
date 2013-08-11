@@ -75,7 +75,8 @@ public class ParticleManager {
 		for (Entry<ParticleEffect, Boolean> entries : effects.entrySet()) {
 			
 			if (!entries.getValue() && entries.getKey().isComplete()) {
-				effects.remove(entries.getKey());
+				ParticleEffect effect = entries.getKey();
+				effects.remove(effect);
 			} else {
 				entries.getKey().draw(batch, delta);
 			}

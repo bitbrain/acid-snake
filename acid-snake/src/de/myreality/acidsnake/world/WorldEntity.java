@@ -51,8 +51,10 @@ public interface WorldEntity extends Indexable {
 	 */
 	World getWorld();
 	
-	boolean removeRequested();
+	boolean renderRequested();
 	
-	void setRemoveRequested(boolean state);
+	void setRenderRequested(boolean state);
+	
+	void ignoreNextRendering();
 	
 }

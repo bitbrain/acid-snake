@@ -46,6 +46,8 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 
 	private boolean removeRequest;
 	
+	private boolean nextRenderingIgnored;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -81,7 +83,11 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 
 	@Override
 	public void setIndex(int indexX, int indexY) {
-		world.putEntity(indexX, indexY, this);
+		if (!nextRenderingIgnored) {
+			world.putEntity(indexX, indexY, this);
+		} else {
+			nextRenderingIgnored = false;
+		}
 		indexX = binder.bindIndexX(indexX);
 		indexY = binder.bindIndexY(indexY);
 		super.setIndex(indexX, indexY);
@@ -89,13 +95,18 @@ public class SimpleWorldEntity extends AbstractIndexable implements WorldEntity 
 
 
 	@Override
-	public boolean removeRequested() {
+	public boolean renderRequested() {
 		return removeRequest;
 	}
 
 	@Override
-	public void setRemoveRequested(boolean state) {
+	public void setRenderRequested(boolean state) {
 		this.removeRequest = state;
+	}
+
+	@Override
+	public void ignoreNextRendering() {
+		nextRenderingIgnored = true;
 	}
 
 	

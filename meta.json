@@ -3,10 +3,10 @@
     "author" : "Miguel Gonzalez",
     "url" : "http://acidsnake.my-reality.de",
     "version" : "1.1",
-    "phase" : "1.1",
-    "progress" : "100",
+    "phase" : "1.2",
+    "progress" : "10",
     "phaselist" : [
-        "release", "1.1"
+        "release", "1.1", "1.2"
     ],
     
     "team" : [
