@@ -146,15 +146,15 @@ public class IngameScreen implements Screen {
 		fpsLogger = new FPSLogger();
 
 		scoreUI = new ScoreUI();
-		final int VERTICAL_INDEX = 18;
-		final int CELL_SIZE = (int) ((Gdx.graphics.getHeight() - scoreUI.getHeight()) / VERTICAL_INDEX);
+		final int VERTICAL_INDEX = 15;
+		final int CELL_SIZE = (int) ((Gdx.graphics.getHeight()) / VERTICAL_INDEX);
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);
 		bufferedRenderer = new GdxBufferedRenderer();
 
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
-							   (Gdx.graphics.getHeight() + scoreUI.getHeight()) / 2f - acid.getHeight() / 2f);
+							   (Gdx.graphics.getHeight()) / 2f - acid.getHeight() / 2f);
         Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
         
         

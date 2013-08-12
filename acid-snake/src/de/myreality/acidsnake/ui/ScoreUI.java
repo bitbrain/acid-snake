@@ -19,15 +19,9 @@
 package de.myreality.acidsnake.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.core.Scoreable;
@@ -54,8 +48,6 @@ public class ScoreUI extends Table {
 	private Scoreable scoreable;
 	
 	private Label lblPoints, lblLevel;
-	
-	private ScoreBar scoreBar;
 
 	// ===========================================================
 	// Constructors
@@ -106,11 +98,9 @@ public class ScoreUI extends Table {
 		lblStyle.fontColor = Resources.COLOR_GREEN;
 		
 		lblPoints = new Label("0 points", lblStyle);
-		
 		left().add(lblPoints).padLeft(PADDING);
 		lblLevel = new Label("Level 1", lblStyle);
 		add(lblLevel).padLeft(PADDING);
-		add(new ScoreBar());
 		
 	}
 	
@@ -121,11 +111,4 @@ public class ScoreUI extends Table {
 	// ===========================================================
 	// Inner classes
 	// ===========================================================
-	
-	class ScoreBar extends Table {
-		
-		public ScoreBar() {
-			
-		}
-	}
 }

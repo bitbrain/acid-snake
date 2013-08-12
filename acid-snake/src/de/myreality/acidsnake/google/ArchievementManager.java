@@ -117,15 +117,20 @@ public class ArchievementManager implements SnakeListener {
 		case ACID:
 			break;
 		case BOMB:
+			google.incrementAchievement(Achievements.MR_KAMIKAZE, 1);
 			break;
 		case RARE_FOOD:
 			break;
 		case SMALL_FOOD:
 			break;
 		case SNAKE:
+			if (target.equals(snake.getTail())) {
+				google.submitAchievement(Achievements.CIRCLE_OF_DEATH);
+			}
 			break;
 		case TELEPORTER:
 			google.submitAchievement(Achievements.BEAM_ME_UP_SCOTTIE);
+			google.incrementAchievement(Achievements.THE_CAKE_IS_A_LIE, 1);
 			break;
 		default:
 			break;
