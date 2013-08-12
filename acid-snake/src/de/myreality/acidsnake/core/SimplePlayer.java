@@ -65,6 +65,11 @@ public class SimplePlayer implements Player {
 	public int getPoints() {
 		return points;
 	}
+	
+	@Override
+	public int getNextPoints() {
+		return getPoints(getLevel());
+	}
 
 	@Override
 	public void resetPoints() {
@@ -98,14 +103,6 @@ public class SimplePlayer implements Player {
 		return level;
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-	
-	private int calculateLevel(int points) {
-		return points / 200 + 1;
-	}
-
 	@Override
 	public void setPaused(boolean paused) {
 		if (paused) {
@@ -113,6 +110,32 @@ public class SimplePlayer implements Player {
 		} else {
 			timer.start();
 		}
+	}
+
+	@Override
+	public double getProgress() {
+		
+		int lastLevelCap = getPoints(getLevel() - 1);
+		int nextLevelCap = getPoints(getLevel());
+		int currentPoints = getPoints();
+		
+		// Brake down the points
+		currentPoints -= lastLevelCap;
+		nextLevelCap -= lastLevelCap;
+		
+		return (double) currentPoints / (double) nextLevelCap;
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+	
+	private int calculateLevel(int points) {
+		return points / 200 + 1;
+	}
+	
+	private int getPoints(int level) {
+		return level * 300;
 	}
 
 	// ===========================================================

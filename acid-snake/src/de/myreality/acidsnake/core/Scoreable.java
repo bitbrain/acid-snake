@@ -19,13 +19,13 @@
 package de.myreality.acidsnake.core;
 
 /**
- * Player of a given game
+ * Provides score and leveling functionality
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 1.2
+ * @version 1.2
  */
-public interface Player extends Scoreable {
+public interface Scoreable {
 
 	// ===========================================================
 	// Constants
@@ -36,29 +36,27 @@ public interface Player extends Scoreable {
 	// ===========================================================
 	
 	/**
-	 * Resets the points
+	 * @return the current total points
 	 */
-	void resetPoints();
+	int getPoints();
 	
 	/**
-	 * Add points to the player
-	 * 
-	 * @param points target points to add
+	 * @return the current time
 	 */
-	void addPoints(int points);
+	String getTime();
 	
 	/**
-	 * Set a new point amount
-	 * 
-	 * @param points points to set
+	 * @return points which are required for the next level
 	 */
-	void setPoints(int points);
+	int getNextPoints();
 	
 	/**
-	 * Resets the time
+	 * @return current level
 	 */
-	void resetTime();
+	int getLevel();
 	
-	void setPaused(boolean paused);
-	
+	/**
+	 * @return progress of the current level
+	 */
+	double getProgress();
 }

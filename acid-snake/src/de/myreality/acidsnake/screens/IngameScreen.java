@@ -25,7 +25,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import de.myreality.acid.Acid;
@@ -36,6 +35,7 @@ import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.google.ArchievementManager;
 import de.myreality.acidsnake.graphics.ParticleRenderer;
 import de.myreality.acidsnake.graphics.WorldRenderer;
+import de.myreality.acidsnake.ui.ScoreUI;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
 
@@ -68,7 +68,7 @@ public class IngameScreen implements Screen {
 	
 	private GdxBufferedRenderer bufferedRenderer;
 	
-	private Label lblPoints, lblLevel;
+	private ScoreUI scoreUI;
 	
 	private Stage stage;
 	
@@ -108,8 +108,7 @@ public class IngameScreen implements Screen {
 		
 		acid.render();
 		
-		lblPoints.setText(world.getPlayer().getPoints() + " points");
-		lblLevel.setText("Level " + world.getPlayer().getLevel());
+		scoreUI.update(delta);
 		
 		stage.draw();
 		
@@ -130,10 +129,7 @@ public class IngameScreen implements Screen {
 			style.font = Resources.BITMAP_FONT_REGULAR;
 			style.fontColor = Resources.COLOR_GREEN;
 			
-			lblPoints = new Label("0 points", style);
-			lblLevel = new Label("Level 1", style);
-			stage.addActor(lblPoints);
-			stage.addActor(lblLevel);
+			stage.addActor(scoreUI);
 			
 			applyUI();
 		} else {
@@ -148,17 +144,19 @@ public class IngameScreen implements Screen {
 		batch = new SpriteBatch();
 		
 		fpsLogger = new FPSLogger();
-		
+
+		scoreUI = new ScoreUI();
 		final int VERTICAL_INDEX = 18;
-		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
+		final int CELL_SIZE = (int) ((Gdx.graphics.getHeight() - scoreUI.getHeight()) / VERTICAL_INDEX);
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
-		
+		world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);
 		bufferedRenderer = new GdxBufferedRenderer();
+
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
-							   Gdx.graphics.getHeight() / 2f - acid.getHeight() / 2f);
+							   (Gdx.graphics.getHeight() + scoreUI.getHeight()) / 2f - acid.getHeight() / 2f);
         Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
-        world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);
+        
         
         worldRenderer = new WorldRenderer(acid);
         world.addListener(worldRenderer);
@@ -169,6 +167,8 @@ public class IngameScreen implements Screen {
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
         world.getSnake().addListener(new ArchievementManager(world, game.getGoogleInterface()));
+        
+        scoreUI.setScoreable(world.getPlayer());
         
         Gdx.input.setInputProcessor(new IngameProcessor(game, world));
 	}
@@ -203,11 +203,7 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	
 	private void applyUI() {
-		lblPoints.setX(30);
-		lblPoints.setY(Gdx.graphics.getHeight() - lblPoints.getHeight() - 30);
-				
-		lblLevel.setX(Gdx.graphics.getWidth() - lblLevel.getWidth() - 30);
-		lblLevel.setY(Gdx.graphics.getHeight() - lblLevel.getHeight() - 30);
+		scoreUI.setX(0);
 	}
 
 	// ===========================================================

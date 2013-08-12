@@ -61,7 +61,7 @@ public class MainActivity extends AndroidApplication implements
 
 	@Override
 	public void login() {
-		if (!isConnected()) {
+		
 			try {
 				runOnUiThread(new Runnable() {
 	
@@ -73,7 +73,6 @@ public class MainActivity extends AndroidApplication implements
 			} catch (final Exception ex) {
 	
 			}
-		}
 	}
 
 	@Override
@@ -137,25 +136,25 @@ public class MainActivity extends AndroidApplication implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (isConnected()) {
+		//if (isConnected()) {
 			aHelper.onStart(this);
-		}
+		//}
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (isConnected()) {
+		//if (isConnected()) {
 			aHelper.onStop();
-		}
+		//}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (isConnected()) {
+		//if (isConnected()) {
 			aHelper.onActivityResult(requestCode, resultCode, data);
-		}
+		//}
 	}
 
 	@Override
