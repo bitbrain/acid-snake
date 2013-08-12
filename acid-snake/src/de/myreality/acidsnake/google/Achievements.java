@@ -41,4 +41,7 @@ public class Achievements {
 	public static final String ACID_HUNTER = "CgkI1pOy-tIHEAIQDA";
 	public static final String ACID_MASTER = "CgkI1pOy-tIHEAIQDQ";
 	public static final String ACID_LEGEND = "CgkI1pOy-tIHEAIQDg";
+	public static final String MR_KAMIKAZE = "CgkI1pOy-tIHEAIQDw";
+	public static final String THE_CAKE_IS_A_LIE = "CgkI1pOy-tIHEAIQEA";
+	public static final String CIRCLE_OF_DEATH = "CgkI1pOy-tIHEAIQEQ";
 }

@@ -79,6 +79,7 @@ public class SimpleWorld implements World {
 		area = new WorldEntity[width][height];
 		binder = new WorldBinder(this);
 		types = new HashMap<WorldEntityType, Set<WorldEntity> >();
+		player = new SimplePlayer();
 	}
 
 	// ===========================================================
@@ -100,9 +101,12 @@ public class SimpleWorld implements World {
 		Set<WorldEntity> copy = new HashSet<WorldEntity>(entities);
 		
 		for (WorldEntity entity : copy) {
+			entity.renderRequested();
 			removeEntity(entity);
 		}
-		
+		entities.clear();
+		types.clear();
+		area = new WorldEntity[width][height];
 		build();
 	}
 
@@ -199,7 +203,7 @@ public class SimpleWorld implements World {
 
 	@Override
 	public void build() {
-		player = new SimplePlayer();
+		
 		snake = new SimpleSnake(5, 5, this);	
 		snakeAccelerator = new Accelerator(snake);
 		
