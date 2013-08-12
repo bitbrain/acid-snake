@@ -126,7 +126,6 @@ public class SimpleWorld implements World {
 	@Override
 	public boolean putEntity(int indexX, int indexY, WorldEntity entity) {
 		
-		indexX = binder.bindIndexX(indexX);
 		indexY = binder.bindIndexY(indexY);
 			
 		WorldEntity old = getEntity(indexX, indexY);

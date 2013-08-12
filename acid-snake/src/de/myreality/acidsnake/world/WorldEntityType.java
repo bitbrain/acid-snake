@@ -189,7 +189,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	TELEPORTER {
 		
-		private static final double SPAWN_CHANCE = 10.0;
+		private static final double SPAWN_CHANCE = 5.0;
 		
 		private static final int ALLOWED_COUNT = 2;
 

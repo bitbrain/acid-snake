@@ -26,7 +26,6 @@ import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.screens.GameOverScreen;
 import de.myreality.acidsnake.util.Direction;
-import de.myreality.acidsnake.util.Timer;
 import de.myreality.acidsnake.world.World;
 
 /**
@@ -38,11 +37,13 @@ import de.myreality.acidsnake.world.World;
  */
 public class IngameProcessor implements InputProcessor {
 	
+	private static final int PAUSE_TIME = 250;
+	
 	private SnakeGame game;
 	
 	private World world;
 	
-	private Timer touchTimer;
+	private long touchDelta;
 	
 	public IngameProcessor(SnakeGame game, World world) {
 		this.game = game;
@@ -101,11 +102,16 @@ public class IngameProcessor implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		
-		if (touchTimer == null) {
-			touchTimer = new Timer();
-			touchTimer.start();
+		if (System.currentTimeMillis() - touchDelta <= PAUSE_TIME) {
+			int deltaX = Gdx.input.getDeltaX(pointer);
+			int deltaY = Gdx.input.getDeltaY(pointer);
+			
+			if (deltaX <= 1 && deltaY <= 1) {
+				world.setPaused(!world.isPaused());
+			}
 		}
 		
+		touchDelta = System.currentTimeMillis();
 		
 		return false;
 	}

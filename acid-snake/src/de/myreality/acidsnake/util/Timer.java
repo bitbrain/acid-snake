@@ -53,11 +53,6 @@ public class Timer {
 		reset();
 		running = false;
 	}
-	
-	public Timer(long miliseconds) {
-		startTime = System.currentTimeMillis() + miliseconds;
-		currentTicks = 0;
-	}
 
 	// ===========================================================
 	// Getters and Setters
@@ -83,7 +78,7 @@ public class Timer {
 		running = true;
 		
 		if (pauseTime > 0) {
-			startTime = System.currentTimeMillis() + pauseTime;
+			startTime = System.currentTimeMillis() - pauseTime;
 			pauseTime = 0;
 		}
 	}
@@ -94,12 +89,13 @@ public class Timer {
 	}
 	
 	public void pause() {
-		running = false;
 		pauseTime = getTicks();
+		running = false;
 	}
 	
 	public void reset() {
 		startTime = System.currentTimeMillis();
+		currentTicks = 0;
 	}
 	
 	public long getTicks() {

@@ -19,6 +19,7 @@
 package de.myreality.acidsnake;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 import de.myreality.acidsnake.google.GoogleInterface;
 import de.myreality.acidsnake.screens.IntroScreen;
@@ -43,6 +44,7 @@ public class SnakeGame extends Game {
 		Resources.reloadShaders();
 		Resources.reloadParticles();
 		setScreen(new IntroScreen(this));
+		Gdx.graphics.setVSync(true);
 	}
 
 	@Override

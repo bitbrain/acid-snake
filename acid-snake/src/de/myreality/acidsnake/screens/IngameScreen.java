@@ -20,6 +20,7 @@ package de.myreality.acidsnake.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -72,6 +73,8 @@ public class IngameScreen implements Screen {
 	private Stage stage;
 	
 	private SpriteBatch batch;
+	
+	private FPSLogger fpsLogger;
 
 	// ===========================================================
 	// Constructors
@@ -101,7 +104,7 @@ public class IngameScreen implements Screen {
 		
 		world.update(delta);
 		stage.act(delta);
-		//fpsLogger.log();
+		fpsLogger.log();
 		
 		acid.render();
 		
@@ -143,6 +146,8 @@ public class IngameScreen implements Screen {
 	public void show() {
 		ShaderProgram.pedantic = false;
 		batch = new SpriteBatch();
+		
+		fpsLogger = new FPSLogger();
 		
 		final int VERTICAL_INDEX = 24;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
