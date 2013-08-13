@@ -94,7 +94,7 @@ public enum WorldEntityType implements SnakeListener {
 			if (target.getType().equals(this)) {
 				snake.addChunk();
 				snake.getWorld().getPlayer().addPoints(10);
-				snake.getWorld().removeEntity(target);
+				snake.getWorld().remove(target);
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
@@ -151,7 +151,7 @@ public enum WorldEntityType implements SnakeListener {
 			if (target.getType().equals(this)) {
 				snake.addChunk();
 				snake.getWorld().getPlayer().addPoints(50);
-				snake.getWorld().removeEntity(target);
+				snake.getWorld().remove(target);
 			}
 			
 			if (isChance(CHANCE)) {
@@ -221,8 +221,8 @@ public enum WorldEntityType implements SnakeListener {
 
 				// 2. Cleanup
 				
-				world.removeEntity(target);
-				world.removeEntity(targetPortal);
+				world.remove(target);
+				world.remove(targetPortal);
 				
 				// 3. Move snake to portal
 				snake.setIndex(snake.getIndexX(), snake.getIndexY());
@@ -282,7 +282,7 @@ public enum WorldEntityType implements SnakeListener {
 			
 			if (target.getType().equals(this)) {
 				
-				snake.getWorld().removeEntity(target);
+				snake.getWorld().remove(target);
 				
 				int amount = (int) (MAX_FACTOR * Math.random() + 1);
 				
@@ -356,7 +356,7 @@ public enum WorldEntityType implements SnakeListener {
 				int currentIndex = 0;
 				for (WorldEntity bomb : bombs) {
 					if (currentIndex++ == randomIndex) {
-						world.removeEntity(bomb);
+						world.remove(bomb);
 						break;
 					}
 				}
@@ -425,7 +425,7 @@ public enum WorldEntityType implements SnakeListener {
 			validPosition = !world.hasEntity(randomX, randomY);
 		}
 		
-		world.putEntity(randomX, randomY, entityFactory.create(randomX, randomY, type));
+		world.put(randomX, randomY, entityFactory.create(randomX, randomY, type));
 	}
 	
 	private static boolean isChance(double chance) {

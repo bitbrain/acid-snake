@@ -38,11 +38,6 @@ public interface SnakeChunk extends WorldEntity {
 	// ===========================================================
 	
 	/**
-	 * Moves this snake chunk to its sibling
-	 */
-	void move();
-	
-	/**
 	 * Determines if this chunk is the head of the snake
 	 * 
 	 * @return True when head
@@ -55,4 +50,6 @@ public interface SnakeChunk extends WorldEntity {
 	 * @return next chunk
 	 */
 	SnakeChunk getNext();
+	
+	void setNext(SnakeChunk next);
 }
