@@ -162,9 +162,8 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		if (tail != null) {
 			
 			world.remove(tail);
-			chunks.remove(tail);
-			
-			tail = tail.getNext();
+			chunks.remove(tail);			
+			this.tail = tail.getNext();
 		}
 		
 	}
