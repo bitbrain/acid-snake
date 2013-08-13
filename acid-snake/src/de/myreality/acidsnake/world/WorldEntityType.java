@@ -109,7 +109,6 @@ public enum WorldEntityType implements SnakeListener {
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
-			spawnAtRandomPosition(this, snake.getWorld());
 		}
 
 		@Override
@@ -136,7 +135,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	RARE_FOOD {
 		
-		private static final double CHANCE = 15.0;
+		private static final double CHANCE = 8.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {

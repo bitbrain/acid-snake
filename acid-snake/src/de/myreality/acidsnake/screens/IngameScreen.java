@@ -25,6 +25,8 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
@@ -141,6 +143,24 @@ public class IngameScreen implements Screen {
 			pauseStyle.checked = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PLAY));
 			
 			btnPause = new Button(pauseStyle);
+			btnPause.setColor(1f, 1f, 1f, 0.4f);
+			btnPause.addListener(new InputListener() {
+
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button) {
+					world.setPaused(!world.isPaused());
+					
+					if (world.isPaused()) {
+						btnPause.setColor(1f, 1f, 1f, 1f);
+					} else {
+						btnPause.setColor(1f, 1f, 1f, 0.4f);
+					}
+					return true;
+				}
+				
+				
+			});
 			
 			stage.addActor(scoreUI);
 			stage.addActor(btnPause);
@@ -216,6 +236,8 @@ public class IngameScreen implements Screen {
 	
 	private void applyUI() {
 		scoreUI.setX(0);
+		btnPause.setX(Gdx.graphics.getWidth() - btnPause.getWidth() - 20);
+		btnPause.setY(20);
 	}
 
 	// ===========================================================
