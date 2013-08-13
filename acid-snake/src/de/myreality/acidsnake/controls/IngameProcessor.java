@@ -21,6 +21,7 @@ package de.myreality.acidsnake.controls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.core.Snake;
@@ -35,17 +36,14 @@ import de.myreality.acidsnake.world.World;
  * @since 1.0
  * @version 1.0
  */
-public class IngameProcessor implements InputProcessor {
-	
-	private static final int PAUSE_TIME = 250;
+public class IngameProcessor extends Stage implements InputProcessor {
 	
 	private SnakeGame game;
 	
 	private World world;
 	
-	private long touchDelta;
-	
-	public IngameProcessor(SnakeGame game, World world) {
+	public IngameProcessor(int width, int height, SnakeGame game, World world) {
+		super(width, height, false);
 		this.game = game;
 		this.world = world;
 		Gdx.input.setCatchBackKey(true);
@@ -101,18 +99,6 @@ public class IngameProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		
-		if (System.currentTimeMillis() - touchDelta <= PAUSE_TIME) {
-			int deltaX = Gdx.input.getDeltaX(pointer);
-			int deltaY = Gdx.input.getDeltaY(pointer);
-			
-			if (deltaX <= 1 && deltaY <= 1) {
-				world.setPaused(!world.isPaused());
-			}
-		}
-		
-		touchDelta = System.currentTimeMillis();
-		
 		return false;
 	}
 

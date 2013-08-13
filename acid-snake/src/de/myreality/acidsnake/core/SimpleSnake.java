@@ -145,10 +145,11 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		SnakeChunk chunk = (SnakeChunk) factory.create(chunkX, chunkY, WorldEntityType.SNAKE);
 		if (chunks.isEmpty()) {
 			head = chunk;
+		} else {
+			chunk.setNext(tail);
 		}
 		
 		chunks.add(chunk);
-		chunk.ignoreNextRendering();
 		chunk.setIndex(chunkX, chunkY);
 		tail = chunk;
 	}
@@ -160,10 +161,9 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		
 		if (tail != null) {
 			
-			world.removeEntity(tail);
-			chunks.remove(tail);
-			
-			tail = tail.getNext();
+			world.remove(tail);
+			chunks.remove(tail);			
+			this.tail = tail.getNext();
 		}
 		
 	}
@@ -216,6 +216,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		
 		indexX = binder.bindIndexX(indexX);
 		indexY = binder.bindIndexY(indexY);
+		
 		boolean collision = world.hasEntity(indexX, indexY);		
 		WorldEntity collisionTarget = world.getEntity(indexX, indexY);
 		
@@ -231,10 +232,13 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		
 		if (!isKilled()) {
 			
-			for (int index = chunks.size() - 1; index >= 0; --index) {
-				SnakeChunk chunk = chunks.get(index);
-				chunk.move();
-			}
+			SnakeChunk newTail = tail.getNext();
+			tail.setIndex(indexX, indexY);
+			//world.remove(tail, true);
+			head.setNext(tail);
+			head = tail;
+			tail = newTail;
+			head.setNext(null);
 			
 			directionApplied = true;
 		}

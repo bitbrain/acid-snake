@@ -22,10 +22,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import de.myreality.acid.Acid;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
@@ -67,6 +71,8 @@ public class IngameScreen implements Screen {
 	private ParticleRenderer particleRenderer;
 	
 	private GdxBufferedRenderer bufferedRenderer;
+	
+	private Button btnPause;
 	
 	private ScoreUI scoreUI;
 	
@@ -124,13 +130,20 @@ public class IngameScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		if (stage == null) {
-			stage = new Stage(width, height, false);
+			stage = new IngameProcessor(width, height, game, world);
+			Gdx.input.setInputProcessor(stage);
 			LabelStyle style = new LabelStyle();
 			style.font = Resources.BITMAP_FONT_REGULAR;
 			style.fontColor = Resources.COLOR_GREEN;
 			
-			stage.addActor(scoreUI);
+			ButtonStyle pauseStyle = new ButtonStyle();
+			pauseStyle.up = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PAUSE));
+			pauseStyle.checked = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PLAY));
 			
+			btnPause = new Button(pauseStyle);
+			
+			stage.addActor(scoreUI);
+			stage.addActor(btnPause);
 			applyUI();
 		} else {
 			stage.setViewport(width, height, false);
@@ -155,6 +168,7 @@ public class IngameScreen implements Screen {
         acid = new Acid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, bufferedRenderer);
         acid.setPosition(Gdx.graphics.getWidth() / 2f - acid.getWidth() / 2f, 
 							   (Gdx.graphics.getHeight()) / 2f - acid.getHeight() / 2f);
+        acid.setPadding(1);
         Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
         
         
@@ -169,8 +183,6 @@ public class IngameScreen implements Screen {
         world.getSnake().addListener(new ArchievementManager(world, game.getGoogleInterface()));
         
         scoreUI.setScoreable(world.getPlayer());
-        
-        Gdx.input.setInputProcessor(new IngameProcessor(game, world));
 	}
 
 	@Override
