@@ -90,14 +90,16 @@ public interface World extends Buildable, Updateable {
 	 * @param object target object to transfer
 	 * @return Returns false when the object has been put successfully
 	 */
-	boolean putEntity(int indexX, int indexY, WorldEntity entity);
+	boolean put(int indexX, int indexY, WorldEntity entity);
 	
 	/**
 	 * Removes the given entity from the world
 	 * 
 	 * @param entity
 	 */
-	void removeEntity(WorldEntity entity);
+	void remove(WorldEntity entity);
+	
+	void remove(WorldEntity entity, boolean moved);
 	
 	/**
 	 * Adds a new listener

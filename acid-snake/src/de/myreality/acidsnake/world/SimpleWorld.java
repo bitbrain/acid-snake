@@ -102,7 +102,7 @@ public class SimpleWorld implements World {
 		
 		for (WorldEntity entity : copy) {
 			entity.renderRequested();
-			removeEntity(entity);
+			remove(entity);
 		}
 		entities.clear();
 		types.clear();
@@ -128,47 +128,44 @@ public class SimpleWorld implements World {
 	}
 
 	@Override
-	public boolean putEntity(int indexX, int indexY, WorldEntity entity) {
+	public boolean put(int indexX, int indexY, WorldEntity entity) {
 		
+		indexX = binder.bindIndexX(indexX);
 		indexY = binder.bindIndexY(indexY);
 			
-		WorldEntity old = getEntity(indexX, indexY);
-		boolean oldExists = old != null;
-		boolean isTheSame = oldExists && old.equals(entity);
-		
-		if (oldExists && !isTheSame) {
-			removeEntity(old);
-		} 
-		
-		if (!oldExists || !isTheSame) {
-
-			removeEntity(entity);
-			
-			for (WorldListener listener : listeners) {
-				listener.onPut(indexX, indexY, entity, this);
-			}
-			
-			entities.add(entity);
-			area[indexX][indexY] = entity;
-			
-			Set<WorldEntity> targets = types.get(entity.getType());
-			
-			if (targets == null) {
-				targets = new HashSet<WorldEntity>();
-				types.put(entity.getType(), targets);
-			}
-			
-			targets.add(entity);
-			
-			return true;
-		} else {
-			return false;
+		for (WorldListener listener : listeners) {
+			listener.onPut(indexX, indexY, entity, this);
 		}
+		
+		if (!entities.contains(entity)) {
+			entities.add(entity);
+		}
+		area[indexX][indexY] = entity;
+		
+		Set<WorldEntity> targets = types.get(entity.getType());
+		
+		if (targets == null) {
+			targets = new HashSet<WorldEntity>();
+			types.put(entity.getType(), targets);
+		}
+		
+		if (!targets.contains(entity)) {
+			targets.add(entity);
+		}
+		
+		return true;
 		
 	}
 
 	@Override
-	public void removeEntity(WorldEntity entity) {
+	public void remove(WorldEntity entity) {
+		remove(entity, false);
+	}
+	
+
+
+	@Override
+	public void remove(WorldEntity entity, boolean moved) {
 		if (entity != null && entities.contains(entity)) {
 			
 			int indexX = entity.getIndexX(), indexY = entity.getIndexY();
@@ -180,12 +177,14 @@ public class SimpleWorld implements World {
 				listener.onRemove(indexX, indexY, entity, this);
 			}
 			
-			entities.remove(entity);
-			
-			Set<WorldEntity> targets = types.get(entity.getType());
-			targets.remove(entity);			
-			if (targets.isEmpty()) {
-				types.remove(targets);
+			if (!moved) {
+				entities.remove(entity);
+				
+				Set<WorldEntity> targets = types.get(entity.getType());
+				targets.remove(entity);			
+				if (targets.isEmpty()) {
+					types.remove(targets);
+				}
 			}
 
 			if (validIndex(indexX, indexY)) {
