@@ -45,7 +45,6 @@ public class MainActivity extends AndroidApplication implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 		cfg.useGL20 = true;
 		aHelper.setup(this);
