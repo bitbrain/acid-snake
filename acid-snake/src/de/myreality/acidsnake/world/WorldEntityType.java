@@ -93,7 +93,7 @@ public enum WorldEntityType implements SnakeListener {
 				WorldEntity target) {
 			if (target.getType().equals(this)) {
 				snake.addChunk();
-				snake.getWorld().getPlayer().addPoints(10);
+				snake.getWorld().getPlayer().addPoints(25);
 				snake.getWorld().remove(target);
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
@@ -106,6 +106,7 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
+			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
@@ -188,7 +189,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	TELEPORTER {
 		
-		private static final double SPAWN_CHANCE = 5.0;
+		private static final double SPAWN_CHANCE = 8.0;
 		
 		private static final int ALLOWED_COUNT = 2;
 
@@ -227,6 +228,9 @@ public enum WorldEntityType implements SnakeListener {
 				snake.setIndex(snake.getIndexX(), snake.getIndexY());
 				snake.setIndex(targetPortal.getIndexX(), targetPortal.getIndexY());
 				
+				// 4. Add points
+				world.getPlayer().addPoints(30);
+				
 			} else if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
 				spawnAtRandomPosition(this, world); // TELEPORT A
 				spawnAtRandomPosition(this, world); // TELEPORT B
@@ -263,11 +267,9 @@ public enum WorldEntityType implements SnakeListener {
 	
 	ACID {
 		
-		private static final double SPAWN_CHANCE = 1.0;
+		private static final double SPAWN_CHANCE = 5.0;
 		
-		private static final int MIN_SNAKE_LENGTH = 16;
-		
-		private static final int MAX_FACTOR = 3;
+		private static final int MIN_SNAKE_LENGTH = 8;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -283,15 +285,16 @@ public enum WorldEntityType implements SnakeListener {
 				
 				snake.getWorld().remove(target);
 				
-				int amount = (int) (MAX_FACTOR * Math.random() + 1);
+				int amount = (int) ((snake.getLength() / 3f) * Math.random() + 1);
 				
-				while (amount-- > 0 && snake.getLength() > MIN_SNAKE_LENGTH) {
+				while (amount-- > 0) {
 					snake.removeChunk();
 				}
 				
+				snake.getWorld().getPlayer().addPoints(30);
 			}
 			
-			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
+			if (snake.getLength() >= MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
@@ -327,11 +330,11 @@ public enum WorldEntityType implements SnakeListener {
 	
 	BOMB {
 		
-		private static final int MAX_COUNT = 5;
+		private static final int MAX_COUNT = 6;
 		
-		private static final double SPAWN_CHANCE = 10.0;
+		private static final double SPAWN_CHANCE = 20.0;
 		
-		private static final double REMOVE_CHANCE = 10.0;
+		private static final double REMOVE_CHANCE = 20.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -346,6 +349,7 @@ public enum WorldEntityType implements SnakeListener {
 			World world = snake.getWorld();
 			
 			if (target.getType().equals(this)) {
+				snake.getWorld().getPlayer().addPoints(100);
 				snake.kill();
 			}
 			

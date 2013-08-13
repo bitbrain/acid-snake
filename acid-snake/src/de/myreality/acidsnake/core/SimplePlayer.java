@@ -135,7 +135,7 @@ public class SimplePlayer implements Player {
 	}
 	
 	private int getPoints(int level) {
-		return level * 300;
+		return level * 500;
 	}
 
 	// ===========================================================

@@ -179,7 +179,7 @@ public class IngameScreen implements Screen {
 		fpsLogger = new FPSLogger();
 
 		scoreUI = new ScoreUI();
-		final int VERTICAL_INDEX = 15;
+		final int VERTICAL_INDEX = 18;
 		final int CELL_SIZE = (int) ((Gdx.graphics.getHeight()) / VERTICAL_INDEX);
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		world = new SimpleWorld(HORIZONTAL_INDEX, VERTICAL_INDEX);

@@ -82,13 +82,16 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener {
 	@Override
 	public void onEnterPosition(int indexX, int indexY, Snake snake) {
 		
-		if (snakeEffect == null && snake.getLength() > SPECIAL_SNAKE_LENGTH) {
+		if (snakeEffect == null && snake.getLength() >= SPECIAL_SNAKE_LENGTH) {
 			snakeEffect = particleManager.create(Resources.PARTICLE_FIELD_GREEN, true);
 			snakeEffect.start();
 			
 			ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_GREEN, false);
 			alignOnIndex(indexX, indexY, effect);
 			effect.start();
+		} else if (snake.getLength() < SPECIAL_SNAKE_LENGTH) {
+			particleManager.setEndless(snakeEffect, false);
+			snakeEffect = null;
 		}
 		
 		if (snake.getLength() > SPECIAL_SNAKE_LENGTH) {
