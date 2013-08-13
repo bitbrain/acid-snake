@@ -19,7 +19,9 @@
 package de.myreality.acidsnake.google;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
@@ -51,6 +53,8 @@ public class ArchievementManager implements SnakeListener {
 	private int lastLength;
 	
 	private BlockCounter counter30, counter40, counter50;
+	
+	private Set<WorldEntityType> collected;
 
 	// ===========================================================
 	// Constructors
@@ -58,6 +62,7 @@ public class ArchievementManager implements SnakeListener {
 
 	public ArchievementManager(World world, GoogleInterface googleInterface) {
 		google = googleInterface;
+		collected = new HashSet<WorldEntityType>();
 		counter30 = new BlockCounter(30, 60000);
 		counter40 = new BlockCounter(40, 60000);
 		counter50 = new BlockCounter(50, 60000);
@@ -144,6 +149,21 @@ public class ArchievementManager implements SnakeListener {
 			google.incrementAchievement(Achievements.ACID_HUNTER, 1);
 			google.incrementAchievement(Achievements.ACID_MASTER, 1);
 			google.incrementAchievement(Achievements.ACID_LEGEND, 1);
+		}
+		
+		if (!target.getType().equals(WorldEntityType.SNAKE)) {
+			
+			WorldEntityType type = target.getType();
+			
+			if (type.equals(WorldEntityType.RARE_FOOD)) {
+				type = WorldEntityType.SMALL_FOOD;
+			}
+			
+			collected.add(type);
+			
+			if (collected.size() >= 4) {
+				google.submitAchievement(Achievements.QUADROCOPTER);
+			}
 		}
 	}
 

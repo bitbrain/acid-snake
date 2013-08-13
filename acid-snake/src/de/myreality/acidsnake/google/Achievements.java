@@ -44,4 +44,5 @@ public class Achievements {
 	public static final String MR_KAMIKAZE = "CgkI1pOy-tIHEAIQDw";
 	public static final String THE_CAKE_IS_A_LIE = "CgkI1pOy-tIHEAIQEA";
 	public static final String CIRCLE_OF_DEATH = "CgkI1pOy-tIHEAIQEQ";
+	public static final String QUADROCOPTER = "CgkI1pOy-tIHEAIQEg";
 }

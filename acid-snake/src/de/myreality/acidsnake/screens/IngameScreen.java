@@ -22,10 +22,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import de.myreality.acid.Acid;
 import de.myreality.acid.gdx.GdxBufferedRenderer;
@@ -67,6 +71,8 @@ public class IngameScreen implements Screen {
 	private ParticleRenderer particleRenderer;
 	
 	private GdxBufferedRenderer bufferedRenderer;
+	
+	private Button btnPause;
 	
 	private ScoreUI scoreUI;
 	
@@ -130,8 +136,14 @@ public class IngameScreen implements Screen {
 			style.font = Resources.BITMAP_FONT_REGULAR;
 			style.fontColor = Resources.COLOR_GREEN;
 			
-			stage.addActor(scoreUI);
+			ButtonStyle pauseStyle = new ButtonStyle();
+			pauseStyle.up = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PAUSE));
+			pauseStyle.checked = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PLAY));
 			
+			btnPause = new Button(pauseStyle);
+			
+			stage.addActor(scoreUI);
+			stage.addActor(btnPause);
 			applyUI();
 		} else {
 			stage.setViewport(width, height, false);
