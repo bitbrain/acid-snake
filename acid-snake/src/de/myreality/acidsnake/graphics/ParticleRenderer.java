@@ -94,7 +94,7 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener {
 			snakeEffect = null;
 		}
 		
-		if (snake.getLength() > SPECIAL_SNAKE_LENGTH) {
+		if (snake.getLength() >= SPECIAL_SNAKE_LENGTH) {
 			alignOnIndex(snake.getIndexX(), snake.getIndexY(), snakeEffect);
 		}
 	}

@@ -59,7 +59,7 @@ public class IngameScreen implements Screen {
 	// Constants
 	// ===========================================================
 	
-	private static final int GLOBAL_PADDING = 20;
+	private static final int GLOBAL_PADDING = 30;
 
 	// ===========================================================
 	// Fields
@@ -83,6 +83,7 @@ public class IngameScreen implements Screen {
 	
 	private SpriteBatch batch;
 	
+	@SuppressWarnings("unused")
 	private FPSLogger fpsLogger;
 	
 	private TweenManager tweenManager;
@@ -118,7 +119,7 @@ public class IngameScreen implements Screen {
 		tweenManager.update(delta);
 		world.update(delta);
 		stage.act(delta);
-		fpsLogger.log();
+		//fpsLogger.log();
 		
 		acid.render();
 		
@@ -139,7 +140,7 @@ public class IngameScreen implements Screen {
 			stage = new IngameProcessor(width, height, game, world);
 			Gdx.input.setInputProcessor(stage);
 			LabelStyle style = new LabelStyle();
-			style.font = Resources.BITMAP_FONT_REGULAR;
+			style.font = Resources.BITMAP_FONT_LARGE;
 			style.fontColor = Resources.COLOR_GREEN;
 			
 			ButtonStyle pauseStyle = new ButtonStyle();
@@ -182,7 +183,7 @@ public class IngameScreen implements Screen {
         world.addListener(worldRenderer);
         
         world.build();
-        
+        //world.getSnake().addListener(new WorldDebugger(world));
         particleRenderer = new ParticleRenderer(acid);
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
@@ -222,7 +223,7 @@ public class IngameScreen implements Screen {
 		btnPause.setX(Gdx.graphics.getWidth() - btnPause.getWidth() - GLOBAL_PADDING);
 		btnPause.setY(GLOBAL_PADDING);		
 		lblScore.setX(GLOBAL_PADDING);
-		lblScore.setY(GLOBAL_PADDING);
+		lblScore.setY(Gdx.graphics.getHeight() - lblScore.getHeight() - 10);
 		
 	}
 

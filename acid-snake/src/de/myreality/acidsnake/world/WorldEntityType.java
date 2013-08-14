@@ -35,6 +35,69 @@ import de.myreality.acidsnake.core.SnakeListener;
  * @version 1.0
  */
 public enum WorldEntityType implements SnakeListener {
+	
+ACID {
+		
+		private static final double SPAWN_CHANCE = 5.0;
+		
+		private static final int MIN_SNAKE_LENGTH = 8;
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			
+			if (target.getType().equals(this)) {
+				
+				snake.getWorld().remove(target);
+				
+				int amount = (int) ((snake.getLength() / 10f) * Math.random() + 1);
+				
+				while (amount-- > 0) {
+					snake.removeChunk();
+				}
+				
+				snake.getWorld().getPlayer().addPoints(30);
+			}
+			
+			if (snake.getLength() >= MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, snake.getWorld());
+			}
+		}
+
+		@Override
+		public void onKill(Snake snake) {
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, snake.getWorld());
+			}
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return Resources.PARTICLE_FIELD_GREEN;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return Resources.PARTICLE_EXPLOSION_GREEN;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_GREEN;
+		}
+		
+	},
 
 	SNAKE {
 		
@@ -106,6 +169,7 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
+			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
 			spawnAtRandomPosition(this, snake.getWorld());
@@ -261,69 +325,6 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public CellRenderer getCellRenderer() {
 			return Resources.CELL_RENDERER_BLUE;
-		}
-		
-	},
-	
-	ACID {
-		
-		private static final double SPAWN_CHANCE = 5.0;
-		
-		private static final int MIN_SNAKE_LENGTH = 8;
-
-		@Override
-		public void onEnterPosition(int indexX, int indexY, Snake snake) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onCollide(int indexX, int indexY, Snake snake,
-				WorldEntity target) {
-			
-			if (target.getType().equals(this)) {
-				
-				snake.getWorld().remove(target);
-				
-				int amount = (int) ((snake.getLength() / 3f) * Math.random() + 1);
-				
-				while (amount-- > 0) {
-					snake.removeChunk();
-				}
-				
-				snake.getWorld().getPlayer().addPoints(30);
-			}
-			
-			if (snake.getLength() >= MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
-				spawnAtRandomPosition(this, snake.getWorld());
-			}
-		}
-
-		@Override
-		public void onKill(Snake snake) {
-			
-		}
-
-		@Override
-		public void onSpawn(Snake snake) {
-			if (snake.getLength() > MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
-				spawnAtRandomPosition(this, snake.getWorld());
-			}
-		}
-
-		@Override
-		public ParticleEffect getFieldEffect() {
-			return Resources.PARTICLE_FIELD_GREEN;
-		}
-
-		@Override
-		public ParticleEffect getExplodeEffect() {
-			return Resources.PARTICLE_EXPLOSION_GREEN;
-		}
-
-		@Override
-		public CellRenderer getCellRenderer() {
-			return Resources.CELL_RENDERER_GREEN;
 		}
 		
 	},
