@@ -42,6 +42,7 @@ import de.myreality.acidsnake.google.ArchievementManager;
 import de.myreality.acidsnake.graphics.ParticleRenderer;
 import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.ui.PauseButton;
+import de.myreality.acidsnake.ui.ScoreLabel;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
 
@@ -57,6 +58,8 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int GLOBAL_PADDING = 20;
 
 	// ===========================================================
 	// Fields
@@ -83,6 +86,8 @@ public class IngameScreen implements Screen {
 	private FPSLogger fpsLogger;
 	
 	private TweenManager tweenManager;
+	
+	private ScoreLabel lblScore;
 
 	// ===========================================================
 	// Constructors
@@ -110,6 +115,7 @@ public class IngameScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		tweenManager.update(delta);
 		world.update(delta);
 		stage.act(delta);
 		fpsLogger.log();
@@ -143,6 +149,9 @@ public class IngameScreen implements Screen {
 			btnPause = new PauseButton(world, pauseStyle);
 			
 			stage.addActor(btnPause);
+			
+			lblScore = new ScoreLabel(world.getPlayer(), tweenManager, style);	
+			stage.addActor(lblScore);
 			applyUI();
 		} else {
 			stage.setViewport(width, height, false);
@@ -154,7 +163,7 @@ public class IngameScreen implements Screen {
 	public void show() {
 		ShaderProgram.pedantic = false;
 		batch = new SpriteBatch();
-		
+		tweenManager = new TweenManager();
 		fpsLogger = new FPSLogger();
 		final int VERTICAL_INDEX = 18;
 		final int CELL_SIZE = (int) ((Gdx.graphics.getHeight()) / VERTICAL_INDEX);
@@ -210,8 +219,11 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	
 	private void applyUI() {
-		btnPause.setX(Gdx.graphics.getWidth() - btnPause.getWidth() - 20);
-		btnPause.setY(20);
+		btnPause.setX(Gdx.graphics.getWidth() - btnPause.getWidth() - GLOBAL_PADDING);
+		btnPause.setY(GLOBAL_PADDING);		
+		lblScore.setX(GLOBAL_PADDING);
+		lblScore.setY(GLOBAL_PADDING);
+		
 	}
 
 	// ===========================================================
