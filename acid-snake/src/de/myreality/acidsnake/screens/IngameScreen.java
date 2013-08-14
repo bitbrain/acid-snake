@@ -41,6 +41,7 @@ import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.google.ArchievementManager;
 import de.myreality.acidsnake.graphics.ParticleRenderer;
 import de.myreality.acidsnake.graphics.WorldRenderer;
+import de.myreality.acidsnake.ui.LevelLabel;
 import de.myreality.acidsnake.ui.PauseButton;
 import de.myreality.acidsnake.ui.ScoreLabel;
 import de.myreality.acidsnake.world.SimpleWorld;
@@ -80,6 +81,8 @@ public class IngameScreen implements Screen {
 	private Button btnPause;
 	
 	private Stage stage;
+	
+	private LevelLabel lblLevel;
 	
 	private SpriteBatch batch;
 	
@@ -143,6 +146,10 @@ public class IngameScreen implements Screen {
 			style.font = Resources.BITMAP_FONT_LARGE;
 			style.fontColor = Resources.COLOR_GREEN;
 			
+			LabelStyle styleLevel = new LabelStyle();
+			styleLevel.font = Resources.BITMAP_FONT_LARGE;
+			styleLevel.fontColor = Resources.COLOR_VIOLET;
+			
 			ButtonStyle pauseStyle = new ButtonStyle();
 			pauseStyle.up = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PAUSE));
 			pauseStyle.checked = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PLAY));
@@ -152,7 +159,9 @@ public class IngameScreen implements Screen {
 			stage.addActor(btnPause);
 			
 			lblScore = new ScoreLabel(world.getPlayer(), tweenManager, style);	
+			lblLevel = new LevelLabel(world.getPlayer(), tweenManager, styleLevel);
 			stage.addActor(lblScore);
+			stage.addActor(lblLevel);
 			applyUI();
 		} else {
 			stage.setViewport(width, height, false);
@@ -224,6 +233,8 @@ public class IngameScreen implements Screen {
 		btnPause.setY(GLOBAL_PADDING);		
 		lblScore.setX(GLOBAL_PADDING);
 		lblScore.setY(Gdx.graphics.getHeight() - lblScore.getHeight() - 10);
+		lblLevel.setX(Gdx.graphics.getWidth() - lblLevel.getWidth() - GLOBAL_PADDING);
+		lblLevel.setY(Gdx.graphics.getHeight() - lblLevel.getHeight() - 10);
 		
 	}
 
