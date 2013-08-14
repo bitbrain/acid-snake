@@ -62,7 +62,7 @@ public class LevelLabel extends Label {
 		this.scoreable = scoreable;
 		this.tweenManager = tweenManager;
 		Tween.registerAccessor(Label.class, new LabelTween());
-		setColor(1f, 1f, 1f, 0.65f);
+		setColor(1f, 1f, 1f, 0.75f);
 	}
 
 	// ===========================================================
@@ -82,7 +82,7 @@ public class LevelLabel extends Label {
 				tweenManager.killTarget(this);
 				setColor(1f, 1f, 1f, 1f);
 				Tween.to(this, LabelTween.ALPHA, 3)
-			 	.target(0.65f)
+			 	.target(0.75f)
 				.ease(TweenEquations.easeInOutQuad)
 				.start(tweenManager);
 			}

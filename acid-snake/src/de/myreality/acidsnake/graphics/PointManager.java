@@ -18,58 +18,22 @@
 
 package de.myreality.acidsnake.graphics;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 
 import de.myreality.acid.CellManager;
-import de.myreality.acid.CellRenderer;
-import de.myreality.acidsnake.Resources;
-import de.myreality.acidsnake.world.World;
+import de.myreality.acidsnake.core.Snake;
+import de.myreality.acidsnake.core.SnakeListener;
+import de.myreality.acidsnake.ui.PopupManager;
 import de.myreality.acidsnake.world.WorldEntity;
-import de.myreality.acidsnake.world.WorldHandler;
 
 /**
- * Renderer which renders the world
+ * Handles point displaying
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 1.3
+ * @version 1.3
  */
-public class WorldRenderer extends WorldHandler {
-	
-	private CellManager manager;
-	
-	public WorldRenderer(CellManager manager) {
-		this.manager = manager;
-	}
-
-	@Override
-	public void onPut(int indexX, int indexY, WorldEntity target, World world) {
-		
-		if (target.isRendering()) {
-			Color color = Resources.COLOR_GREEN;
-			CellRenderer cellRenderer = target.getType().getCellRenderer();
-			
-			if (cellRenderer != null) {
-				manager.setCellRenderer(cellRenderer);
-			}
-			
-			manager.color(color.r, color.g, color.b);
-			manager.put(indexX, indexY);
-		}
-	}
-
-	@Override
-	public void onRemove(int indexX, int indexY, WorldEntity target, World world) {
-		if (target.isRendering()) {
-			manager.clear(indexX, indexY);
-		}
-		
-	}
-
-	@Override
-	public void onBuild(World world) {
-		
-	}
+public class PointManager implements SnakeListener {
 
 	// ===========================================================
 	// Constants
@@ -78,10 +42,19 @@ public class WorldRenderer extends WorldHandler {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private CellManager cellManager;
+	
+	private PopupManager popupManager;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public PointManager(CellManager cellManager, PopupManager popupManager) {
+		this.cellManager = cellManager;
+		this.popupManager = popupManager;
+	}
 
 	// ===========================================================
 	// Getters and Setters
@@ -90,6 +63,30 @@ public class WorldRenderer extends WorldHandler {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
+
+	@Override
+	public void onEnterPosition(int indexX, int indexY, Snake snake) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onCollide(int indexX, int indexY, Snake snake,
+			WorldEntity target) {
+		int x = (int) (cellManager.translateIndexX(indexX) + cellManager.getCellSize() / 2f);
+		int y = (int) (Gdx.graphics.getHeight() - indexY * cellManager.getCellSize() - cellManager.getCellSize() / 2f);
+		popupManager.popup(x, y, target.getType().getPoints() + "");
+	}
+
+	@Override
+	public void onKill(Snake snake) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSpawn(Snake snake) {
+	}
 
 	// ===========================================================
 	// Methods

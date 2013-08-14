@@ -36,7 +36,7 @@ import de.myreality.acidsnake.core.SnakeListener;
  */
 public enum WorldEntityType implements SnakeListener {
 	
-ACID {
+	ACID {
 		
 		private static final double SPAWN_CHANCE = 5.0;
 		
@@ -51,7 +51,7 @@ ACID {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
-			
+			super.onCollide(indexX, indexY, snake, target);
 			if (target.getType().equals(this)) {
 				
 				snake.getWorld().remove(target);
@@ -61,8 +61,6 @@ ACID {
 				while (amount-- > 0) {
 					snake.removeChunk();
 				}
-				
-				snake.getWorld().getPlayer().addPoints(30);
 			}
 			
 			if (snake.getLength() >= MIN_SNAKE_LENGTH && isChance(SPAWN_CHANCE)) {
@@ -96,6 +94,11 @@ ACID {
 		public CellRenderer getCellRenderer() {
 			return Resources.CELL_RENDERER_GREEN;
 		}
+
+		@Override
+		public int getPoints() {
+			return 30;
+		}
 		
 	},
 
@@ -111,6 +114,7 @@ ACID {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
+			super.onCollide(indexX, indexY, snake, target);
 			if (target != null && target.getType().equals(this)) {
 				snake.kill();
 			}
@@ -142,6 +146,11 @@ ACID {
 		public CellRenderer getCellRenderer() {
 			return Resources.CELL_RENDERER_GREEN;
 		}
+
+		@Override
+		public int getPoints() {
+			return 0;
+		}
 	},
 	
 	SMALL_FOOD {
@@ -154,9 +163,9 @@ ACID {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
+			super.onCollide(indexX, indexY, snake, target);
 			if (target.getType().equals(this)) {
 				snake.addChunk();
-				snake.getWorld().getPlayer().addPoints(25);
 				snake.getWorld().remove(target);
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
@@ -195,6 +204,11 @@ ACID {
 		public int getParticleDecreaseFactor() {
 			return 5;
 		}
+
+		@Override
+		public int getPoints() {
+			return 25;
+		}
 		
 	},
 	
@@ -211,10 +225,9 @@ ACID {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
-			
+			super.onCollide(indexX, indexY, snake, target);
 			if (target.getType().equals(this)) {
 				snake.addChunk();
-				snake.getWorld().getPlayer().addPoints(50);
 				snake.getWorld().remove(target);
 			}
 			
@@ -248,6 +261,11 @@ ACID {
 		public CellRenderer getCellRenderer() {
 			return Resources.CELL_RENDERER_VIOLET;
 		}
+
+		@Override
+		public int getPoints() {
+			return 50;
+		}
 		
 	},
 	
@@ -265,7 +283,8 @@ ACID {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
-			
+			super.onCollide(indexX, indexY, snake, target);
+
 			World world = snake.getWorld();
 			
 			if (target.getType().equals(this)) {
@@ -291,9 +310,6 @@ ACID {
 				// 3. Move snake to portal
 				snake.setIndex(snake.getIndexX(), snake.getIndexY());
 				snake.setIndex(targetPortal.getIndexX(), targetPortal.getIndexY());
-				
-				// 4. Add points
-				world.getPlayer().addPoints(30);
 				
 			} else if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
 				spawnAtRandomPosition(this, world); // TELEPORT A
@@ -326,6 +342,11 @@ ACID {
 		public CellRenderer getCellRenderer() {
 			return Resources.CELL_RENDERER_BLUE;
 		}
+
+		@Override
+		public int getPoints() {
+			return 30;
+		}
 		
 	},
 	
@@ -346,11 +367,10 @@ ACID {
 		@Override
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
-			
+			super.onCollide(indexX, indexY, snake, target);
 			World world = snake.getWorld();
 			
 			if (target.getType().equals(this)) {
-				snake.getWorld().getPlayer().addPoints(100);
 				snake.kill();
 			}
 			
@@ -398,6 +418,11 @@ ACID {
 		public CellRenderer getCellRenderer() {
 			return Resources.CELL_RENDERER_ORANGE;
 		}
+
+		@Override
+		public int getPoints() {
+			return 100;
+		}
 		
 	};
 	
@@ -406,11 +431,20 @@ ACID {
 	public abstract ParticleEffect getFieldEffect();
 	public abstract ParticleEffect getExplodeEffect();
 	public abstract CellRenderer getCellRenderer();
+	public abstract int getPoints();
 	
 	public int getParticleDecreaseFactor() {
 		return 1;
 	}
 	
+	@Override
+	public void onCollide(int indexX, int indexY, Snake snake,
+			WorldEntity target) {
+		if (target.getType().equals(this)) {
+			snake.getWorld().getPlayer().addPoints(getPoints());
+			target.setRendering(false);
+		}
+	}
 	private static void spawnAtRandomPosition(WorldEntityType type, World world) {
 		
 		if (entityFactory == null) {

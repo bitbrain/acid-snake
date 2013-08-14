@@ -40,9 +40,11 @@ import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.google.ArchievementManager;
 import de.myreality.acidsnake.graphics.ParticleRenderer;
+import de.myreality.acidsnake.graphics.PointManager;
 import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.ui.LevelLabel;
 import de.myreality.acidsnake.ui.PauseButton;
+import de.myreality.acidsnake.ui.PopupManager;
 import de.myreality.acidsnake.ui.ScoreLabel;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
@@ -92,6 +94,8 @@ public class IngameScreen implements Screen {
 	private TweenManager tweenManager;
 	
 	private ScoreLabel lblScore;
+	
+	private PopupManager popupManager;
 
 	// ===========================================================
 	// Constructors
@@ -142,6 +146,11 @@ public class IngameScreen implements Screen {
 		if (stage == null) {
 			stage = new IngameProcessor(width, height, game, world);
 			Gdx.input.setInputProcessor(stage);
+			
+			LabelStyle popupStyle = new LabelStyle();
+			popupStyle.font = Resources.BITMAP_FONT_REGULAR;
+			popupStyle.fontColor = Resources.COLOR_GREEN;
+			
 			LabelStyle style = new LabelStyle();
 			style.font = Resources.BITMAP_FONT_LARGE;
 			style.fontColor = Resources.COLOR_GREEN;
@@ -163,6 +172,10 @@ public class IngameScreen implements Screen {
 			stage.addActor(lblScore);
 			stage.addActor(lblLevel);
 			applyUI();
+			
+			popupManager = new PopupManager(stage, tweenManager, popupStyle);
+			
+			world.getSnake().addListener(new PointManager(acid, popupManager));
 		} else {
 			stage.setViewport(width, height, false);
 			applyUI();

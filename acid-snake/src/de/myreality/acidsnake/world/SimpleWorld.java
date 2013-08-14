@@ -27,6 +27,7 @@ import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.SimplePlayer;
 import de.myreality.acidsnake.core.SimpleSnake;
 import de.myreality.acidsnake.core.Snake;
+import de.myreality.acidsnake.core.SnakeChunk;
 import de.myreality.acidsnake.util.Accelerator;
 import de.myreality.acidsnake.util.WorldBinder;
 
@@ -101,7 +102,6 @@ public class SimpleWorld implements World {
 		Set<WorldEntity> copy = new HashSet<WorldEntity>(entities);
 		
 		for (WorldEntity entity : copy) {
-			entity.renderRequested();
 			remove(entity);
 		}
 		entities.clear();
@@ -117,7 +117,16 @@ public class SimpleWorld implements World {
 
 	@Override
 	public boolean hasEntity(int indexX, int indexY) {
-		return getEntity(indexX, indexY) != null;
+		
+		SnakeChunk tail = snake.getTail();
+		
+		if (tail != null) {		
+			return getEntity(indexX, indexY) != null ||
+				   (tail.getIndexX() == indexX && 
+				   tail.getIndexY() == indexY);
+		} else {
+			return  getEntity(indexX, indexY) != null;
+		}
 	}
 
 	@Override

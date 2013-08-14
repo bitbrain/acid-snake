@@ -89,7 +89,7 @@ public class MainMenuScreen implements Screen {
 			
 			LabelStyle lblStyle = new LabelStyle();
 			
-			lblStyle.font = Resources.BITMAP_FONT_REGULAR;
+			lblStyle.font = Resources.BITMAP_FONT_LARGE;
 			lblStyle.fontColor = Resources.COLOR_GREEN;
 			
 			lblStart = new FadeLabel(Resources.STRING_START_GAME,
@@ -166,14 +166,14 @@ public class MainMenuScreen implements Screen {
 	public void show() {
 		BufferedRenderer renderer = new GdxBufferedRenderer();			
 		
-		final int VERTICAL_INDEX = 8;
+		final int VERTICAL_INDEX = 5;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		acdBackground = new RandomAcid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, renderer);	
 
 		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
-		acdBackground.setPadding(5);
+		acdBackground.setPadding(10);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);			
 	}

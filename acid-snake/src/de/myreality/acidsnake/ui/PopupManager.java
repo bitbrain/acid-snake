@@ -18,105 +18,60 @@
 
 package de.myreality.acidsnake.ui;
 
+import java.util.LinkedList;
+
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import de.myreality.acidsnake.Resources;
-import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.tweens.LabelTween;
 
 /**
- * Shows information/statistics of the player's game
+ * Handles popups during gameplay
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 1.3
+ * @version 1.3
  */
-public class PlayerTable extends Table {
+public class PopupManager implements TweenCallback {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int MOVING_DISTANCE = 300;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private TweenManager tweenManager;
+	
+	private Stage stage;
+	
+	private LabelStyle popupStyle;
+
+	private float duration;
+	
+	private LinkedList<Label> queue;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public PlayerTable(Player player, TweenManager tweenManager) {
-		
-		LabelStyle valueStyle = new LabelStyle();
-		valueStyle.font = Resources.BITMAP_FONT_LARGE;
-		valueStyle.fontColor = Resources.COLOR_GREEN;
-		
-		LabelStyle infoStyle = new LabelStyle();
-		infoStyle.font = Resources.BITMAP_FONT_LARGE;
-		infoStyle.fontColor = Resources.COLOR_VIOLET;
-		
-		// LEVEL
-		Label lblLevel = new Label(player.getLevel() + "", valueStyle);
-		Label lblLevelInfo = new Label("Level: ", infoStyle);
-		lblLevel.getColor().a = 0;
-		lblLevelInfo.getColor().a = 0;
-		add(lblLevelInfo).left();
-		add(lblLevel).left();
-		row();
-		
-		// POINTS
-		Label lblPoints = new Label(player.getPoints() + "", valueStyle);
-		Label lblPointsInfo = new Label("Points: ", infoStyle);
-		lblPoints.getColor().a = 0;
-		lblPointsInfo.getColor().a = 0;
-		add(lblPointsInfo).left();
-		add(lblPoints).left();
-		row();
-		
-		// TIME
-		Label lblTime = new Label(player.getTime(), valueStyle);
-		Label lblTimeInfo = new Label("Time: ", infoStyle);
-		lblTime.getColor().a = 0;
-		lblTimeInfo.getColor().a = 0;
-		add(lblTimeInfo).left();
-		add(lblTime).left();
-		row();
-		
-		Tween.to(lblLevel, LabelTween.ALPHA, 1.4f)
-	 	.target(1f)
-		.ease(TweenEquations.easeInOutQuad)
-		.start(tweenManager);
-		
-		Tween.to(lblPoints, LabelTween.ALPHA, 1.4f)
-	 	.target(1f)
-		.ease(TweenEquations.easeInOutQuad)
-		.start(tweenManager);
-		
-		Tween.to(lblTime, LabelTween.ALPHA, 1.4f)
-	 	.target(1f)
-		.ease(TweenEquations.easeInOutQuad)
-		.start(tweenManager);
-		
-		Tween.to(lblLevelInfo, LabelTween.ALPHA, 1.4f)
-	 	.target(1f)
-		.ease(TweenEquations.easeInOutQuad)
-		.start(tweenManager);
-		
-		Tween.to(lblPointsInfo, LabelTween.ALPHA, 1.4f)
-	 	.target(1f)
-		.ease(TweenEquations.easeInOutQuad)
-		.start(tweenManager);
-		
-		Tween.to(lblTimeInfo, LabelTween.ALPHA, 1.4f)
-	 	.target(1f)
-		.ease(TweenEquations.easeInOutQuad)
-		.start(tweenManager);
+	public PopupManager(Stage stage, TweenManager tweenManager, LabelStyle popupStyle) {
+		this.tweenManager = tweenManager;
+		this.stage = stage;
+		this.popupStyle = popupStyle;
+		duration = 2f;
+		queue = new LinkedList<Label>();
+		Tween.registerAccessor(Label.class, new LabelTween());
 	}
 
 	// ===========================================================
@@ -126,12 +81,38 @@ public class PlayerTable extends Table {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
-	
-	
+
+	@Override
+	public void onEvent(int type, BaseTween<?> source) {
+		Label label = queue.remove();
+		stage.getActors().removeValue(label, true);
+	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void popup(float x, float y, String text) {
+		Label label = new Label(text, popupStyle);
+		stage.addActor(label);
+		label.setPosition(x - label.getWidth() / 2f, y - label.getHeight() / 2f);
+		
+		Tween.to(label, LabelTween.ALPHA, duration)
+	 	.target(0f)
+		.ease(TweenEquations.easeInOutQuad)
+		.setCallback(this)
+		.setCallbackTriggers(TweenCallback.COMPLETE)
+		.start(tweenManager);
+		Tween.to(label, LabelTween.POPUP, duration)
+	 	.target(y - MOVING_DISTANCE)
+		.ease(TweenEquations.easeInOutQuad)
+		.start(tweenManager);
+		queue.add(label);
+	}
+	
+	public void setDurartion(float duration) {
+		this.duration = duration;
+	}
 
 	// ===========================================================
 	// Inner classes

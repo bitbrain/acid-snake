@@ -18,6 +18,8 @@
 
 package de.myreality.acidsnake.screens;
 
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -56,6 +58,8 @@ public class GameOverScreen implements Screen {
 	private RandomAcid acdBackground;
 	
 	private Stage stage;
+	
+	private TweenManager tweenManager;
 
 	// ===========================================================
 	// Constructors
@@ -81,6 +85,7 @@ public class GameOverScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		tweenManager.update(delta);
 		stage.act(delta);
 		
 		acdBackground.render();
@@ -90,8 +95,9 @@ public class GameOverScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		if (stage == null) {
+			tweenManager = new TweenManager();
 			stage = new Stage(width, height, false);
-			PlayerTable results = new PlayerTable(player);
+			PlayerTable results = new PlayerTable(player, tweenManager);
 			stage.addActor(results);
 			results.setX(Gdx.graphics.getWidth() / 2f - results.getWidth() / 2f);
 			results.setY(Gdx.graphics.getHeight() / 2f - results.getHeight() / 2f);
@@ -105,14 +111,14 @@ public class GameOverScreen implements Screen {
 		
 		BufferedRenderer renderer = new GdxBufferedRenderer();			
 		
-		final int VERTICAL_INDEX = 8;
+		final int VERTICAL_INDEX = 5;
 		final int CELL_SIZE = Gdx.graphics.getHeight() / VERTICAL_INDEX;
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
 		
 		acdBackground = new RandomAcid(HORIZONTAL_INDEX, VERTICAL_INDEX, CELL_SIZE, renderer);	
 
 		acdBackground.backgroundColor(0.0f, 0.0f, 0.0f);	
-		acdBackground.setPadding(5);
+		acdBackground.setPadding(10);
 		acdBackground.setPosition(Gdx.graphics.getWidth() / 2f - acdBackground.getWidth() / 2f, 
 							   Gdx.graphics.getHeight() / 2f - acdBackground.getHeight() / 2f);
 		
