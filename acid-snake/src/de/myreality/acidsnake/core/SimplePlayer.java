@@ -111,6 +111,11 @@ public class SimplePlayer implements Player {
 			timer.start();
 		}
 	}
+	
+	@Override
+	public boolean isPaused() {
+		return !timer.isRunning();
+	}
 
 	@Override
 	public double getProgress() {

@@ -18,53 +18,56 @@
 
 package de.myreality.acidsnake.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
-import de.myreality.acidsnake.Resources;
-import de.myreality.acidsnake.core.Scoreable;
+import de.myreality.acidsnake.util.Pauseable;
 
 /**
- * UI element which shows up the total score
+ * Button which pauses a pausable and vise versa
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.2
- * @version 1.2
+ * @since 1.3
+ * @version 1.3
  */
-public class ScoreUI extends Table {
+public class PauseButton extends Button {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	private static final int PADDING = 30;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	
-	private Scoreable scoreable;
-	
-	private Label lblPoints, lblLevel;
+	private Pauseable pauseable;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public ScoreUI() {
-		
-		this.setWidth(Gdx.graphics.getWidth());	
-		setupUI();
 
-		this.setHeight(lblPoints.getHeight() + PADDING);
-		refreshUI(60f);
-	}
-	
-	public ScoreUI(Scoreable scoreable) {
-		this();
-		setScoreable(scoreable);
+	public PauseButton(Pauseable pause, ButtonStyle style) {
+		super(style);
+		this.pauseable = pause;
+		setColor(1f, 1f, 1f, 0.4f);
+		final Button pauseButton = this;
+		
+		addListener(new InputListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				pauseable.setPaused(!pauseable.isPaused());
+				
+				if (pauseable.isPaused()) {
+					pauseButton.setColor(1f, 1f, 1f, 1f);
+				} else {
+					pauseButton.setColor(1f, 1f, 1f, 0.4f);
+				}
+				return true;
+			}
+		});
 	}
 
 	// ===========================================================
@@ -78,35 +81,6 @@ public class ScoreUI extends Table {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	public void update(float delta) {
-		refreshUI(delta);
-	}
-	
-	private void refreshUI(float delta) {
-		if (scoreable != null) {
-			lblPoints.setText(scoreable.getPoints() + " points");
-			lblLevel.setText("Level " + scoreable.getLevel());
-		}
-		
-		
-	}
-	
-	private void setupUI() {
-		LabelStyle lblStyle = new LabelStyle();
-		lblStyle.font = Resources.BITMAP_FONT_REGULAR;
-		lblStyle.fontColor = Resources.COLOR_GREEN;
-		
-		lblPoints = new Label("0 points", lblStyle);
-		left().add(lblPoints).padLeft(PADDING);
-		lblLevel = new Label("Level 1", lblStyle);
-		add(lblLevel).padLeft(PADDING);
-		
-	}
-	
-	public void setScoreable(Scoreable scoreable) {
-		this.scoreable = scoreable;
-	}
 
 	// ===========================================================
 	// Inner classes

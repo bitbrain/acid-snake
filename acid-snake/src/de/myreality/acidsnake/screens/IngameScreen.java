@@ -18,6 +18,8 @@
 
 package de.myreality.acidsnake.screens;
 
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -25,8 +27,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
@@ -41,7 +41,7 @@ import de.myreality.acidsnake.controls.IngameProcessor;
 import de.myreality.acidsnake.google.ArchievementManager;
 import de.myreality.acidsnake.graphics.ParticleRenderer;
 import de.myreality.acidsnake.graphics.WorldRenderer;
-import de.myreality.acidsnake.ui.ScoreUI;
+import de.myreality.acidsnake.ui.PauseButton;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
 
@@ -76,13 +76,13 @@ public class IngameScreen implements Screen {
 	
 	private Button btnPause;
 	
-	private ScoreUI scoreUI;
-	
 	private Stage stage;
 	
 	private SpriteBatch batch;
 	
 	private FPSLogger fpsLogger;
+	
+	private TweenManager tweenManager;
 
 	// ===========================================================
 	// Constructors
@@ -116,8 +116,6 @@ public class IngameScreen implements Screen {
 		
 		acid.render();
 		
-		scoreUI.update(delta);
-		
 		stage.draw();
 		
 		batch.begin();
@@ -142,27 +140,8 @@ public class IngameScreen implements Screen {
 			pauseStyle.up = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PAUSE));
 			pauseStyle.checked = new SpriteDrawable(new Sprite(Resources.TEXTURE_ICON_PLAY));
 			
-			btnPause = new Button(pauseStyle);
-			btnPause.setColor(1f, 1f, 1f, 0.4f);
-			btnPause.addListener(new InputListener() {
-
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					world.setPaused(!world.isPaused());
-					
-					if (world.isPaused()) {
-						btnPause.setColor(1f, 1f, 1f, 1f);
-					} else {
-						btnPause.setColor(1f, 1f, 1f, 0.4f);
-					}
-					return true;
-				}
-				
-				
-			});
+			btnPause = new PauseButton(world, pauseStyle);
 			
-			stage.addActor(scoreUI);
 			stage.addActor(btnPause);
 			applyUI();
 		} else {
@@ -177,8 +156,6 @@ public class IngameScreen implements Screen {
 		batch = new SpriteBatch();
 		
 		fpsLogger = new FPSLogger();
-
-		scoreUI = new ScoreUI();
 		final int VERTICAL_INDEX = 18;
 		final int CELL_SIZE = (int) ((Gdx.graphics.getHeight()) / VERTICAL_INDEX);
 		final int HORIZONTAL_INDEX = (int) (Gdx.graphics.getWidth() / CELL_SIZE);
@@ -201,8 +178,6 @@ public class IngameScreen implements Screen {
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
         world.getSnake().addListener(new ArchievementManager(world, game.getGoogleInterface()));
-        
-        scoreUI.setScoreable(world.getPlayer());
 	}
 
 	@Override
@@ -235,7 +210,6 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	
 	private void applyUI() {
-		scoreUI.setX(0);
 		btnPause.setX(Gdx.graphics.getWidth() - btnPause.getWidth() - 20);
 		btnPause.setY(20);
 	}

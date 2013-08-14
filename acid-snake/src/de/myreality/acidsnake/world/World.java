@@ -23,6 +23,7 @@ import java.util.Set;
 import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.util.Buildable;
+import de.myreality.acidsnake.util.Pauseable;
 import de.myreality.acidsnake.util.Updateable;
 
 /**
@@ -32,7 +33,7 @@ import de.myreality.acidsnake.util.Updateable;
  * @since 1.0
  * @version 1.0
  */
-public interface World extends Buildable, Updateable {
+public interface World extends Buildable, Updateable, Pauseable {
 
 	// ===========================================================
 	// Constants
@@ -129,9 +130,5 @@ public interface World extends Buildable, Updateable {
 	boolean hasEntity(WorldEntity entity);
 	
 	Set<WorldEntity> getEntitiesOfType(WorldEntityType type);
-	
-	void setPaused(boolean paused);
-	
-	boolean isPaused();
 
 }

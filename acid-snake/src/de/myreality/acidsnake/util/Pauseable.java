@@ -16,18 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.core;
-
-import de.myreality.acidsnake.util.Pauseable;
+package de.myreality.acidsnake.util;
 
 /**
- * Player of a given game
+ * Provides pausing functionality
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 1.3
+ * @version 1.3
  */
-public interface Player extends Scoreable, Pauseable {
+public interface Pauseable {
 
 	// ===========================================================
 	// Constants
@@ -37,28 +35,7 @@ public interface Player extends Scoreable, Pauseable {
 	// Methods
 	// ===========================================================
 	
-	/**
-	 * Resets the points
-	 */
-	void resetPoints();
+	boolean isPaused();
 	
-	/**
-	 * Add points to the player
-	 * 
-	 * @param points target points to add
-	 */
-	void addPoints(int points);
-	
-	/**
-	 * Set a new point amount
-	 * 
-	 * @param points points to set
-	 */
-	void setPoints(int points);
-	
-	/**
-	 * Resets the time
-	 */
-	void resetTime();
-	
+	void setPaused(boolean paused);
 }
