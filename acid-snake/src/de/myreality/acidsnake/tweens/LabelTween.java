@@ -20,16 +20,16 @@ package de.myreality.acidsnake.tweens;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class LabelTween implements TweenAccessor<Label> {
+public class LabelTween implements TweenAccessor<Actor> {
 
 	public static final int ALPHA = 1;
 	
 	public static final int POPUP = 2;
 
 	@Override
-	public int getValues(Label target, int tweenType, float[] returnValues) {
+	public int getValues(Actor target, int tweenType, float[] returnValues) {
 		switch (tweenType) {
 		case ALPHA:
 			returnValues[0] = target.getColor().a;
@@ -43,7 +43,7 @@ public class LabelTween implements TweenAccessor<Label> {
 	}
 
 	@Override
-	public void setValues(Label target, int tweenType, float[] newValues) {
+	public void setValues(Actor target, int tweenType, float[] newValues) {
 		
 		switch (tweenType) {
 			case ALPHA:

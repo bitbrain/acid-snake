@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.PlayerListener;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
@@ -215,12 +216,12 @@ public class ArchievementManager implements SnakeListener, PlayerListener {
 	}
 
 	@Override
-	public void onPointsAdd(int points, int level) {
+	public void onPointsAdd(int points, int level, Player player) {
 		
 	}
 	
 	@Override
-	public void onLevelUp(int oldLevel, int newLevel) {
+	public void onLevelUp(int oldLevel, int newLevel, Player player) {
 		switch (newLevel) {
 			case 5:
 				google.submitAchievement(Achievements.LEVEL_5);

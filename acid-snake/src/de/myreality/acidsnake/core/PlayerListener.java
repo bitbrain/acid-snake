@@ -35,7 +35,7 @@ public interface PlayerListener {
 	// Methods
 	// ===========================================================
 	
-	void onPointsAdd(int points, int level);
+	void onPointsAdd(int points, int level, Player player);
 	
-	void onLevelUp(int oldLevel, int newLevel);
+	void onLevelUp(int oldLevel, int newLevel, Player player);
 }

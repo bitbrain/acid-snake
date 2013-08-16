@@ -45,6 +45,7 @@ import de.myreality.acidsnake.graphics.PointManager;
 import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.ui.LevelLabel;
 import de.myreality.acidsnake.ui.PauseButton;
+import de.myreality.acidsnake.ui.PlayerActorAnimator;
 import de.myreality.acidsnake.ui.PopupManager;
 import de.myreality.acidsnake.ui.ProgressImage;
 import de.myreality.acidsnake.ui.ScoreLabel;
@@ -137,12 +138,14 @@ public class IngameScreen implements Screen {
 		
 		//fpsLogger.log();
 		
-		acid.render();		
-		stage.draw();
+		acid.render();	
 		
 		batch.begin();
 			particleRenderer.render(batch, delta);
 		batch.end();
+		
+		
+		stage.draw();
 		
 		if (world.getSnake().isKilled()) {
 			game.setScreen(new GameOverScreen(game, world.getPlayer()));
@@ -189,9 +192,11 @@ public class IngameScreen implements Screen {
 			Snake snake = world.getSnake();
 			snake.addListener(pointManager);
 			
-			progressImage = new ProgressImage();
-			progressImage.setProgress(0.3);
+			progressImage = new ProgressImage(world.getPlayer());
 			stage.addActor(progressImage);
+			
+			PlayerActorAnimator animator = new PlayerActorAnimator(progressImage, tweenManager);
+			world.getPlayer().addListener(animator);
 		} else {
 			stage.setViewport(width, height, false);
 			applyUI();

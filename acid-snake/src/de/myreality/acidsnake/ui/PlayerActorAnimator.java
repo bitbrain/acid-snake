@@ -22,21 +22,20 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.myreality.acidsnake.core.Scoreable;
+import de.myreality.acidsnake.core.Player;
+import de.myreality.acidsnake.core.PlayerListener;
 import de.myreality.acidsnake.tweens.LabelTween;
 
 /**
- * Shows a score of a scoreable
+ * Animates a progress bar for a specific player
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.3
  * @version 1.3
  */
-public class ScoreLabel extends Label {
+public class PlayerActorAnimator implements PlayerListener {	
 
 	// ===========================================================
 	// Constants
@@ -46,24 +45,19 @@ public class ScoreLabel extends Label {
 	// Fields
 	// ===========================================================
 	
-	private Scoreable scoreable;
-	
 	private TweenManager tweenManager;
 	
-	private int currentPoints;
-	
-	private boolean fadingAllowed;
+	private Actor actor;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public ScoreLabel(Scoreable scoreable, TweenManager tweenManager, LabelStyle style) {
-		super("" + scoreable.getPoints(), style);
-		this.scoreable = scoreable;
-		this.tweenManager = tweenManager;
+	
+	public PlayerActorAnimator(Actor actor, TweenManager manager) {
+		this.tweenManager = manager;
+		this.actor = actor;
 		Tween.registerAccessor(Actor.class, new LabelTween());
-		setColor(1f, 1f, 1f, 0.5f);
+		actor.setColor(1f, 1f, 1f, 0.5f);
 	}
 
 	// ===========================================================
@@ -73,29 +67,20 @@ public class ScoreLabel extends Label {
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
+	
+	@Override
+	public void onPointsAdd(int points, int level, Player player) {
+		tweenManager.killTarget(actor);
+		actor.setColor(1f, 1f, 1f, 1f);
+		Tween.to(actor, LabelTween.ALPHA, 3)
+	 	.target(0.5f)
+		.ease(TweenEquations.easeInOutQuad)
+		.start(tweenManager);
+	}
 
 	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
+	public void onLevelUp(int oldLevel, int newLevel, Player player) {
 		
-		if (currentPoints < scoreable.getPoints()) {
-			
-			if (fadingAllowed) {
-				tweenManager.killTarget(this);
-				setColor(1f, 1f, 1f, 1f);
-				Tween.to(this, LabelTween.ALPHA, 3)
-			 	.target(0.5f)
-				.ease(TweenEquations.easeInOutQuad)
-				.start(tweenManager);
-			}
-			
-			currentPoints++;
-			fadingAllowed = false;
-		} else {
-			fadingAllowed = true;
-		}
-		
-		setText("" + currentPoints);
-		super.draw(batch, parentAlpha);
 	}
 
 	// ===========================================================

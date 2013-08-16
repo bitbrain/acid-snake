@@ -135,6 +135,7 @@ public class Resources {
 	
 	public static final Color COLOR_GREEN = Color.valueOf("8af500");	
 	public static final Color COLOR_VIOLET = Color.valueOf("6f0076");
+	public static final Color COLOR_DARK_VIOLET = Color.valueOf("2a003d");
 	public static final Color COLOR_ORANGE = Color.valueOf("ff3600");
 	public static final Color COLOR_BLUE = Color.valueOf("00a2ff");
 	

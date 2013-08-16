@@ -92,20 +92,22 @@ public class SimplePlayer implements Player {
 	public void setPoints(int points) {
 		
 		for (PlayerListener l : listeners) {
-			l.onPointsAdd(points - this.points, calculateLevel(points));
+			l.onPointsAdd(points - this.points, level, this);
 		}
 		
 		this.points = points;
 		
-		int newLevel = calculateLevel(points);
-		
-		if (newLevel != level) {
-			for (PlayerListener l : listeners) {
-				l.onLevelUp(level, newLevel);
+		if (points >= getPoints(level)) {
+			int newLevel = level + 1;
+			
+			if (newLevel != level) {
+				for (PlayerListener l : listeners) {
+					l.onLevelUp(level, newLevel, this);
+				}
 			}
+			
+			level = newLevel;
 		}
-		
-		level = newLevel;
 	}
 
 	@Override
@@ -155,12 +157,8 @@ public class SimplePlayer implements Player {
 	// Methods
 	// ===========================================================
 	
-	private int calculateLevel(int points) {
-		return points / 500 + 1;
-	}
-	
 	private int getPoints(int level) {
-		return level * 500;
+		return level * level * 250;
 	}
 
 	@Override

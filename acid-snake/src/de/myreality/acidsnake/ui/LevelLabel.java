@@ -23,6 +23,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import de.myreality.acidsnake.core.Scoreable;
@@ -61,7 +62,7 @@ public class LevelLabel extends Label {
 		super("Level " + scoreable.getPoints(), style);
 		this.scoreable = scoreable;
 		this.tweenManager = tweenManager;
-		Tween.registerAccessor(Label.class, new LabelTween());
+		Tween.registerAccessor(Actor.class, new LabelTween());
 		setColor(1f, 1f, 1f, 0.75f);
 	}
 

@@ -28,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import de.myreality.acidsnake.Resources;
+import de.myreality.acidsnake.core.Player;
 
 /**
  * Shows the progress of the current level
@@ -51,15 +52,20 @@ public class ProgressImage extends Actor {
 	private double progress;
 	
 	private Image image, background;
+	
+	private Player player;
+	
+	private float currentWidth;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ProgressImage() {
-		progress = 0;
-		
-		Pixmap map = new Pixmap(HEIGHT, HEIGHT, Format.RGB888);
+	public ProgressImage(Player player) {
+		progress = player.getProgress();
+		currentWidth = 0;
+		this.player = player;
+		Pixmap map = new Pixmap(HEIGHT, HEIGHT, Format.RGBA4444);
 		map.setColor(Resources.COLOR_GREEN);
 		map.fill();
 		Texture texture = new Texture(map);		
@@ -71,6 +77,10 @@ public class ProgressImage extends Actor {
 		background = new Image(backgroundTexture);
 		image.setY(Gdx.graphics.getHeight() - HEIGHT);
 		background.setY(Gdx.graphics.getHeight() - HEIGHT);
+		image.setWidth(Gdx.graphics.getWidth());
+		background.setWidth(Gdx.graphics.getWidth());
+		image.setHeight(HEIGHT);
+		background.setHeight(HEIGHT);
 	}
 
 	// ===========================================================
@@ -83,10 +93,16 @@ public class ProgressImage extends Actor {
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
+		setProgress(player.getProgress());
 		float progressWidth = (float) (Gdx.graphics.getWidth() * progress);
-		background.setX(progressWidth);
-		background.setWidth(Gdx.graphics.getWidth() - progressWidth);
-		image.setWidth(progressWidth);
+		
+		if (currentWidth < progressWidth) {
+			currentWidth += 3;
+		} else {
+			currentWidth = progressWidth;
+		}
+		background.setX(currentWidth);
+		image.setX(-image.getWidth() + background.getX());
 		super.draw(batch, parentAlpha);
 		background.draw(batch, parentAlpha);
 		image.draw(batch, parentAlpha);

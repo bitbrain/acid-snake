@@ -28,6 +28,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.myreality.acid.CellManager;
 import de.myreality.acidsnake.Resources;
+import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.PlayerListener;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
@@ -118,13 +119,13 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener, Pla
 	}
 
 	@Override
-	public void onPointsAdd(int points, int level) {
+	public void onPointsAdd(int points, int level, Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onLevelUp(int oldLevel, int newLevel) {
+	public void onLevelUp(int oldLevel, int newLevel, Player player) {
 		Snake snake = world.getSnake();
 		ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_GREEN, false);
 		alignOnIndex(snake.getIndexX(), snake.getIndexY(), effect);
