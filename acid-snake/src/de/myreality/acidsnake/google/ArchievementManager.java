@@ -58,7 +58,7 @@ public class ArchievementManager implements SnakeListener {
 	
 	private Set<WorldEntityType> collected;
 	
-	private ComboDetector comboDetector;
+	private ComboDetector comboDetector, directComboDetector;
 	
 	private List<AchievementListener> listeners;
 
@@ -77,6 +77,7 @@ public class ArchievementManager implements SnakeListener {
 		world.addListener(counter40);
 		world.addListener(counter50);
 		comboDetector = new ComboDetector();
+		directComboDetector = new DirectComboDetector();
 	}
 
 	// ===========================================================
@@ -127,12 +128,20 @@ public class ArchievementManager implements SnakeListener {
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
 		
-		comboDetector.update(target);
+		comboDetector.update(target, indexX, indexY);
+		directComboDetector.update(target, indexX, indexY);
 		
-		if (comboDetector.hasCombo(target.getType(), 2)) {
-			submitAchievement(Achievements.COMBO_EXPERT, indexX, indexY);
-		} else if (comboDetector.hasCombo(target.getType(), 3)) {
+		WorldEntityType type = target.getType();
+		
+		if (type.equals(WorldEntityType.RARE_FOOD)) {
+			type = WorldEntityType.SMALL_FOOD;
+		}
+		
+		if (directComboDetector.hasCombo(type, 3)) {
 			submitAchievement(Achievements.COMBO_SAIYAJIN, indexX, indexY);
+			directComboDetector.clear();
+		} else if (directComboDetector.hasCombo(type, 2)) {
+			submitAchievement(Achievements.COMBO_EXPERT, indexX, indexY);
 		}
 		
 		switch (target.getType()) {
@@ -153,6 +162,13 @@ public class ArchievementManager implements SnakeListener {
 		case TELEPORTER:
 			submitAchievement(Achievements.BEAM_ME_UP_SCOTTIE, indexX, indexY);
 			incrementAchievement(Achievements.THE_CAKE_IS_A_LIE, 1, indexX, indexY);
+			
+			if (comboDetector.hasCombo(target.getType(), 3)) {
+				submitAchievement(Achievements.MASTER_OF_TIME, indexX, indexY);
+				comboDetector.clear();
+			} else if (comboDetector.hasCombo(target.getType(), 2)) {
+				submitAchievement(Achievements.TIME_TRAVELLER, indexX, indexY);
+			}
 			break;
 		default:
 			break;
@@ -169,12 +185,6 @@ public class ArchievementManager implements SnakeListener {
 		}
 		
 		if (!target.getType().equals(WorldEntityType.SNAKE)) {
-			
-			WorldEntityType type = target.getType();
-			
-			if (type.equals(WorldEntityType.RARE_FOOD)) {
-				type = WorldEntityType.SMALL_FOOD;
-			}
 			
 			collected.add(type);
 			
@@ -199,6 +209,12 @@ public class ArchievementManager implements SnakeListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void addListener(AchievementListener listener) {
+		if (!listeners.contains(listener)) {
+			listeners.add(listener);
+		}
+	}
 	
 	private void submitAchievement(String achievementID, int indexX, int indexY) {
 		google.submitAchievement(achievementID);
@@ -289,15 +305,19 @@ public class ArchievementManager implements SnakeListener {
 	
 	class ComboDetector {
 		
-		private Map<WorldEntityType, Integer> combos;
+		protected Map<WorldEntityType, Integer> combos;
 		
 		public ComboDetector() {
 			combos = new HashMap<WorldEntityType, Integer>();
 		}
 		
-		public void update(WorldEntity entity) {
+		public void update(WorldEntity entity, int indexX, int indexY) {
 			
 			WorldEntityType type = entity.getType();
+			
+			if (type.equals(WorldEntityType.RARE_FOOD)) {
+				type = WorldEntityType.SMALL_FOOD;
+			}
 			
 			Integer value = combos.get(type);
 			
@@ -310,7 +330,46 @@ public class ArchievementManager implements SnakeListener {
 		}
 		
 		public boolean hasCombo(WorldEntityType type, int steps) {
-			return combos.get(type) != null && combos.get(type) >= steps;
+			return combos.get(type) != null && combos.get(type) == steps;
 		}
+		
+		public void clear() {
+			combos.clear();
+		}
+		
+		public int size(WorldEntityType type) {			
+			Integer size = combos.get(type);			
+			return size != null ? size : 0;
+		}
+	}
+	
+	class DirectComboDetector extends ComboDetector {
+		
+		private int lastIndexX = -1, lastIndexY = -1;
+
+		@Override
+		public void update(WorldEntity entity, int indexX, int indexY) {
+			
+			if (lastIndexX > 0 || lastIndexY > 0) {
+				int deltaX = Math.abs(indexX - lastIndexX);
+				int deltaY = Math.abs(indexY - lastIndexY);
+				
+				System.out.println(deltaX + " | " + deltaY);
+				
+				if (size(entity.getType()) == 0 || (deltaX <= 1 && deltaY <= 1)) {
+					super.update(entity, indexX, indexY);
+				} else {
+					clear();
+					super.update(entity, indexX, indexY);
+				}
+			} else {
+				super.update(entity, indexX, indexY);
+			}
+			
+			lastIndexX = indexX;
+			lastIndexY = indexY;
+		}
+		
+				
 	}
 }

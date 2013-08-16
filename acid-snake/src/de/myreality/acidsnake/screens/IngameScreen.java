@@ -116,6 +116,8 @@ public class IngameScreen implements Screen {
 
 	boolean pressed;
 
+	private ArchievementManager achievementManager;
+
 	@Override
 	public void render(float delta) {
 		float color = 0.0f;
@@ -174,8 +176,9 @@ public class IngameScreen implements Screen {
 			applyUI();
 			
 			popupManager = new PopupManager(stage, tweenManager, popupStyle);
-			
-			world.getSnake().addListener(new PointManager(acid, popupManager));
+			PointManager pointManager = new PointManager(acid, popupManager);
+			achievementManager.addListener(pointManager);
+			world.getSnake().addListener(pointManager);
 		} else {
 			stage.setViewport(width, height, false);
 			applyUI();
@@ -209,7 +212,8 @@ public class IngameScreen implements Screen {
         particleRenderer = new ParticleRenderer(acid);
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
-        world.getSnake().addListener(new ArchievementManager(world, game.getGoogleInterface()));
+        achievementManager = new ArchievementManager(world, game.getGoogleInterface());
+        world.getSnake().addListener(achievementManager);
 	}
 
 	@Override

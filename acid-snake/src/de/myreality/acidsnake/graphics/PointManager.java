@@ -51,7 +51,7 @@ public class PointManager implements SnakeListener, AchievementListener {
 	
 	private PopupManager popupManager;
 	
-	private LabelStyle comboStyle;
+	private LabelStyle comboStyle, portalStyle;
 
 	// ===========================================================
 	// Constructors
@@ -63,6 +63,9 @@ public class PointManager implements SnakeListener, AchievementListener {
 		comboStyle = new LabelStyle();
 		comboStyle.font = Resources.BITMAP_FONT_REGULAR;
 		comboStyle.fontColor = Resources.COLOR_ORANGE;
+		portalStyle = new LabelStyle();
+		portalStyle.font = Resources.BITMAP_FONT_REGULAR;
+		portalStyle.fontColor = Resources.COLOR_BLUE;
 	}
 
 	// ===========================================================
@@ -104,7 +107,7 @@ public class PointManager implements SnakeListener, AchievementListener {
 	public void onAchieve(String achievementID, int indexX, int indexY) {
 		
 		float x = translateIndexX(indexX);
-		float y = translateIndexY(indexY);
+		float y = translateIndexY(indexY) + 30;
 		
 		if (achievementID.equals(Achievements.COMBO_EXPERT)) {
 			popupManager.popup(x, y, "Combo 2x", comboStyle);
@@ -112,6 +115,14 @@ public class PointManager implements SnakeListener, AchievementListener {
 		
 		if (achievementID.equals(Achievements.COMBO_SAIYAJIN)) {
 			popupManager.popup(x, y, "Combo 3x", comboStyle);
+		}
+		
+		if (achievementID.equals(Achievements.TIME_TRAVELLER)) {
+			popupManager.popup(x, y, "Time Traveler", portalStyle);
+		}
+		
+		if (achievementID.equals(Achievements.MASTER_OF_TIME)) {
+			popupManager.popup(x, y, "Master Of Time", portalStyle);
 		}
 	}
 

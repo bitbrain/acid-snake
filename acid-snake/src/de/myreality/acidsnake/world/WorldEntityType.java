@@ -154,6 +154,8 @@ public enum WorldEntityType implements SnakeListener {
 	},
 	
 	SMALL_FOOD {
+		
+		private static final int COUNT = 40;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -178,11 +180,9 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public void onSpawn(Snake snake) {
-			spawnAtRandomPosition(this, snake.getWorld());
-			spawnAtRandomPosition(this, snake.getWorld());
-			spawnAtRandomPosition(this, snake.getWorld());
-			spawnAtRandomPosition(this, snake.getWorld());
-			spawnAtRandomPosition(this, snake.getWorld());
+			for (int i = 0; i < COUNT; ++i) {
+				spawnAtRandomPosition(this, snake.getWorld());
+			}
 		}
 
 		@Override
@@ -311,7 +311,9 @@ public enum WorldEntityType implements SnakeListener {
 				snake.setIndex(snake.getIndexX(), snake.getIndexY());
 				snake.setIndex(targetPortal.getIndexX(), targetPortal.getIndexY());
 				
-			} else if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
+			} 
+			
+			if (world.getEntityCount(this) < ALLOWED_COUNT && isChance(SPAWN_CHANCE)) {
 				spawnAtRandomPosition(this, world); // TELEPORT A
 				spawnAtRandomPosition(this, world); // TELEPORT B
 			}

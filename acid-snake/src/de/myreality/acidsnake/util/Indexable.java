@@ -48,8 +48,4 @@ public interface Indexable {
 	int getLastIndexX();
 	
 	int getLastIndexY();
-	
-	void setLastIndexX(int indexX);
-	
-	void setLastIndexY(int indexY);
 }

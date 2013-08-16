@@ -103,16 +103,6 @@ public class AbstractIndexable implements Indexable {
 		}
 	}
 
-	@Override
-	public void setLastIndexX(int indexX) {
-		this.lastIndexX = indexX;
-	}
-
-	@Override
-	public void setLastIndexY(int indexY) {
-		this.lastIndexY = indexY;
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

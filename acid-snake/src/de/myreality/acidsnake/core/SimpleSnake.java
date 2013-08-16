@@ -222,7 +222,6 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		
 		super.setIndex(indexX, indexY);
 		
-		
 		for (SnakeListener listener : listeners) {
 			listener.onEnterPosition(indexX, indexY, this);		
 			if (collision) {
@@ -234,7 +233,6 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 			
 			SnakeChunk newTail = tail.getNext();
 			tail.setIndex(indexX, indexY);
-			//world.remove(tail, true);
 			head.setNext(tail);
 			head = tail;
 			tail = newTail;
