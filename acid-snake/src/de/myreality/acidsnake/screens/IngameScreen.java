@@ -38,6 +38,7 @@ import de.myreality.acid.gdx.GdxBufferedRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.controls.IngameProcessor;
+import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.google.ArchievementManager;
 import de.myreality.acidsnake.graphics.ParticleRenderer;
 import de.myreality.acidsnake.graphics.PointManager;
@@ -177,8 +178,11 @@ public class IngameScreen implements Screen {
 			
 			popupManager = new PopupManager(stage, tweenManager, popupStyle);
 			PointManager pointManager = new PointManager(acid, popupManager);
+			
 			achievementManager.addListener(pointManager);
-			world.getSnake().addListener(pointManager);
+			
+			Snake snake = world.getSnake();
+			snake.addListener(pointManager);
 		} else {
 			stage.setViewport(width, height, false);
 			applyUI();
@@ -204,16 +208,17 @@ public class IngameScreen implements Screen {
         Resources.reloadCellRenderer((GdxBufferedRenderer) acid.getBufferedRenderer());
         
         
+        Snake snake = world.getSnake();
+        
         worldRenderer = new WorldRenderer(acid);
         world.addListener(worldRenderer);
-        
+        achievementManager = new ArchievementManager(world, game.getGoogleInterface());
+		snake.addListener(achievementManager);
         world.build();
         //world.getSnake().addListener(new WorldDebugger(world));
         particleRenderer = new ParticleRenderer(acid);
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
-        achievementManager = new ArchievementManager(world, game.getGoogleInterface());
-        world.getSnake().addListener(achievementManager);
 	}
 
 	@Override

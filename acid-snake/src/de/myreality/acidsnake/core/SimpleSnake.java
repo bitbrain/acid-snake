@@ -19,9 +19,7 @@
 package de.myreality.acidsnake.core;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.myreality.acidsnake.util.AbstractIndexable;
 import de.myreality.acidsnake.util.Direction;
@@ -60,7 +58,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	
 	private boolean killed;
 	
-	private Set<SnakeListener> listeners;
+	private List<SnakeListener> listeners;
 	
 	private WorldEntityFactory factory;
 	
@@ -75,7 +73,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	public SimpleSnake(int indexX, int indexY, World world) {
 		super(indexX, indexY);
 		this.world = world;
-		listeners = new HashSet<SnakeListener>();
+		listeners = new ArrayList<SnakeListener>();
 		chunks = new ArrayList<SnakeChunk>();
 		factory = new SimpleWorldEntityFactory(world);	
 		fixedDirection = Direction.RIGHT;

@@ -18,8 +18,10 @@
 
 package de.myreality.acidsnake.world;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,7 +54,7 @@ public class SimpleWorld implements World {
 	
 	private Player player;
 	
-	private Set<WorldListener> listeners;
+	private List<WorldListener> listeners;
 	
 	private int width, height;
 	
@@ -75,12 +77,13 @@ public class SimpleWorld implements World {
 	public SimpleWorld(int width, int height) {
 		this.width = width;
 		this.height = height;
-		listeners = new HashSet<WorldListener>();
+		listeners = new ArrayList<WorldListener>();
 		entities = new HashSet<WorldEntity>();
 		area = new WorldEntity[width][height];
 		binder = new WorldBinder(this);
 		types = new HashMap<WorldEntityType, Set<WorldEntity> >();
 		player = new SimplePlayer();
+		snake = new SimpleSnake(5, 5, this);
 	}
 
 	// ===========================================================
@@ -211,8 +214,7 @@ public class SimpleWorld implements World {
 
 	@Override
 	public void build() {
-		
-		snake = new SimpleSnake(5, 5, this);	
+			
 		snakeAccelerator = new Accelerator(snake);
 		
 		for (WorldEntityType entityType : WorldEntityType.values()) {

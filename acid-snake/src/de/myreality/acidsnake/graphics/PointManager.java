@@ -29,6 +29,7 @@ import de.myreality.acidsnake.google.AchievementListener;
 import de.myreality.acidsnake.google.Achievements;
 import de.myreality.acidsnake.ui.PopupManager;
 import de.myreality.acidsnake.world.WorldEntity;
+import de.myreality.acidsnake.world.WorldEntityType;
 
 /**
  * Handles point displaying
@@ -52,6 +53,8 @@ public class PointManager implements SnakeListener, AchievementListener {
 	private PopupManager popupManager;
 	
 	private LabelStyle comboStyle, portalStyle;
+	
+	private float multiplier;
 
 	// ===========================================================
 	// Constructors
@@ -66,6 +69,7 @@ public class PointManager implements SnakeListener, AchievementListener {
 		portalStyle = new LabelStyle();
 		portalStyle.font = Resources.BITMAP_FONT_REGULAR;
 		portalStyle.fontColor = Resources.COLOR_BLUE;
+		multiplier = 1.0f;
 	}
 
 	// ===========================================================
@@ -85,11 +89,18 @@ public class PointManager implements SnakeListener, AchievementListener {
 	@Override
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
+		
 		float x = translateIndexX(indexX);
 		float y = translateIndexY(indexY);
 		
-		if (target.getType().getPoints() > 0) {
-			popupManager.popup(x, y, target.getType().getPoints() + "");
+		WorldEntityType type = target.getType();
+		
+		int points = (int) (type.getPoints() * multiplier);
+		if (points > 0) {			
+			System.out.println("POINTS");
+			snake.getWorld().getPlayer().addPoints(points);
+			popupManager.popup(x, y, points + "");
+			multiplier = 1.0f;
 		}
 	}
 
@@ -111,10 +122,12 @@ public class PointManager implements SnakeListener, AchievementListener {
 		
 		if (achievementID.equals(Achievements.COMBO_EXPERT)) {
 			popupManager.popup(x, y, "Combo 2x", comboStyle);
+			multiplier = 2;
 		}
 		
 		if (achievementID.equals(Achievements.COMBO_SAIYAJIN)) {
 			popupManager.popup(x, y, "Combo 3x", comboStyle);
+			multiplier = 3;
 		}
 		
 		if (achievementID.equals(Achievements.TIME_TRAVELLER)) {

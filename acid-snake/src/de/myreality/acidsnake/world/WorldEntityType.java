@@ -155,7 +155,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	SMALL_FOOD {
 		
-		private static final int COUNT = 40;
+		private static final int COUNT = 50;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -443,7 +443,6 @@ public enum WorldEntityType implements SnakeListener {
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
 		if (target.getType().equals(this)) {
-			snake.getWorld().getPlayer().addPoints(getPoints());
 			target.setRendering(false);
 		}
 	}

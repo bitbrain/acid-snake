@@ -20,10 +20,8 @@ package de.myreality.acidsnake.google;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
@@ -56,9 +54,11 @@ public class ArchievementManager implements SnakeListener {
 	
 	private BlockCounter counter30, counter40, counter50;
 	
-	private Set<WorldEntityType> collected;
+	private List<WorldEntityType> collected;
 	
-	private ComboDetector comboDetector, directComboDetector;
+	private ComboDetector comboDetector;
+	
+	private DirectComboDetector directComboDetector;
 	
 	private List<AchievementListener> listeners;
 
@@ -68,7 +68,7 @@ public class ArchievementManager implements SnakeListener {
 
 	public ArchievementManager(World world, GoogleInterface googleInterface) {
 		google = googleInterface;
-		collected = new HashSet<WorldEntityType>();
+		collected = new ArrayList<WorldEntityType>();
 		listeners = new ArrayList<AchievementListener>();
 		counter30 = new BlockCounter(30, 60000);
 		counter40 = new BlockCounter(40, 60000);
@@ -122,6 +122,13 @@ public class ArchievementManager implements SnakeListener {
 		if (counter50.check()) {
 			submitAchievement(Achievements.IN_A_ROW_50, indexX, indexY);
 		}
+		
+		World world = snake.getWorld();
+		
+		if (!world.hasEntity(indexX, indexY)) {
+			directComboDetector.clear();
+		}
+		
 	}
 
 	@Override
@@ -132,10 +139,6 @@ public class ArchievementManager implements SnakeListener {
 		directComboDetector.update(target, indexX, indexY);
 		
 		WorldEntityType type = target.getType();
-		
-		if (type.equals(WorldEntityType.RARE_FOOD)) {
-			type = WorldEntityType.SMALL_FOOD;
-		}
 		
 		if (directComboDetector.hasCombo(type, 3)) {
 			submitAchievement(Achievements.COMBO_SAIYAJIN, indexX, indexY);
@@ -177,6 +180,10 @@ public class ArchievementManager implements SnakeListener {
 		counter30.count();
 		counter40.count();
 		counter50.count();
+		
+		if (type.equals(WorldEntityType.RARE_FOOD)) {
+			type = WorldEntityType.SMALL_FOOD;
+		}
 		
 		if (!target.getType().equals(WorldEntityType.SNAKE)) {
 			incrementAchievement(Achievements.ACID_HUNTER, 1, indexX, indexY);
@@ -313,20 +320,22 @@ public class ArchievementManager implements SnakeListener {
 		
 		public void update(WorldEntity entity, int indexX, int indexY) {
 			
-			WorldEntityType type = entity.getType();
-			
-			if (type.equals(WorldEntityType.RARE_FOOD)) {
-				type = WorldEntityType.SMALL_FOOD;
+			if (entity != null) {
+				WorldEntityType type = entity.getType();
+				
+				if (type.equals(WorldEntityType.RARE_FOOD)) {
+					type = WorldEntityType.SMALL_FOOD;
+				}
+				
+				Integer value = combos.get(type);
+				
+				if (value == null) {
+					combos.clear();
+					value = 0;
+				}
+				
+				combos.put(type, ++value);
 			}
-			
-			Integer value = combos.get(type);
-			
-			if (value == null) {
-				combos.clear();
-				value = 0;
-			}
-			
-			combos.put(type, ++value);
 		}
 		
 		public boolean hasCombo(WorldEntityType type, int steps) {
@@ -354,8 +363,6 @@ public class ArchievementManager implements SnakeListener {
 				int deltaX = Math.abs(indexX - lastIndexX);
 				int deltaY = Math.abs(indexY - lastIndexY);
 				
-				System.out.println(deltaX + " | " + deltaY);
-				
 				if (size(entity.getType()) == 0 || (deltaX <= 1 && deltaY <= 1)) {
 					super.update(entity, indexX, indexY);
 				} else {
@@ -368,8 +375,6 @@ public class ArchievementManager implements SnakeListener {
 			
 			lastIndexX = indexX;
 			lastIndexY = indexY;
-		}
-		
-				
+		}	
 	}
 }
