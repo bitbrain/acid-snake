@@ -18,6 +18,9 @@
 
 package de.myreality.acidsnake.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.myreality.acidsnake.util.Timer;
 
 /**
@@ -42,6 +45,8 @@ public class SimplePlayer implements Player {
 	private int points;
 	
 	private int level;
+	
+	private List<PlayerListener> listeners;
 
 	// ===========================================================
 	// Constructors
@@ -51,6 +56,7 @@ public class SimplePlayer implements Player {
 		level = 1;
 		timer = new Timer();
 		timer.start();
+		listeners = new ArrayList<PlayerListener>();
 	}
 
 	// ===========================================================
@@ -78,14 +84,28 @@ public class SimplePlayer implements Player {
 
 	@Override
 	public void addPoints(int points) {
-		setPoints(getPoints() + points);
+		points += getPoints();
+		setPoints(points);
 	}
 
 	@Override
 	public void setPoints(int points) {
+		
+		for (PlayerListener l : listeners) {
+			l.onPointsAdd(points - this.points, calculateLevel(points));
+		}
+		
 		this.points = points;
 		
-		level = calculateLevel(points);
+		int newLevel = calculateLevel(points);
+		
+		if (newLevel != level) {
+			for (PlayerListener l : listeners) {
+				l.onLevelUp(level, newLevel);
+			}
+		}
+		
+		level = newLevel;
 	}
 
 	@Override
@@ -141,6 +161,13 @@ public class SimplePlayer implements Player {
 	
 	private int getPoints(int level) {
 		return level * 500;
+	}
+
+	@Override
+	public void addListener(PlayerListener listener) {
+		if (!listeners.contains(listener)) {
+			listeners.add(listener);
+		}
 	}
 
 	// ===========================================================

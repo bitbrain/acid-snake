@@ -18,16 +18,14 @@
 
 package de.myreality.acidsnake.core;
 
-import de.myreality.acidsnake.util.Pauseable;
-
 /**
- * Player of a given game
+ * Listens to a single player
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 1.3
+ * @version 1.3
  */
-public interface Player extends Scoreable, Pauseable {
+public interface PlayerListener {
 
 	// ===========================================================
 	// Constants
@@ -37,30 +35,7 @@ public interface Player extends Scoreable, Pauseable {
 	// Methods
 	// ===========================================================
 	
-	/**
-	 * Resets the points
-	 */
-	void resetPoints();
+	void onPointsAdd(int points, int level);
 	
-	/**
-	 * Add points to the player
-	 * 
-	 * @param points target points to add
-	 */
-	void addPoints(int points);
-	
-	/**
-	 * Set a new point amount
-	 * 
-	 * @param points points to set
-	 */
-	void setPoints(int points);
-	
-	/**
-	 * Resets the time
-	 */
-	void resetTime();
-	
-	void addListener(PlayerListener listener);
-	
+	void onLevelUp(int oldLevel, int newLevel);
 }

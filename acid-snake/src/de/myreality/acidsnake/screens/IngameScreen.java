@@ -46,6 +46,7 @@ import de.myreality.acidsnake.graphics.WorldRenderer;
 import de.myreality.acidsnake.ui.LevelLabel;
 import de.myreality.acidsnake.ui.PauseButton;
 import de.myreality.acidsnake.ui.PopupManager;
+import de.myreality.acidsnake.ui.ProgressImage;
 import de.myreality.acidsnake.ui.ScoreLabel;
 import de.myreality.acidsnake.world.SimpleWorld;
 import de.myreality.acidsnake.world.World;
@@ -82,6 +83,8 @@ public class IngameScreen implements Screen {
 	private GdxBufferedRenderer bufferedRenderer;
 	
 	private Button btnPause;
+	
+	private ProgressImage progressImage;
 	
 	private Stage stage;
 	
@@ -126,17 +129,19 @@ public class IngameScreen implements Screen {
 		Gdx.gl.glClearColor(color, color, color, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		tweenManager.update(delta);
-		world.update(delta);
-		stage.act(delta);
+		if (!world.isPaused()) {
+			tweenManager.update(delta);
+			world.update(delta);
+			stage.act(delta);
+		}
+		
 		//fpsLogger.log();
 		
-		acid.render();
-		
+		acid.render();		
 		stage.draw();
 		
 		batch.begin();
-		particleRenderer.render(batch, delta);
+			particleRenderer.render(batch, delta);
 		batch.end();
 		
 		if (world.getSnake().isKilled()) {
@@ -183,6 +188,10 @@ public class IngameScreen implements Screen {
 			
 			Snake snake = world.getSnake();
 			snake.addListener(pointManager);
+			
+			progressImage = new ProgressImage();
+			progressImage.setProgress(0.3);
+			stage.addActor(progressImage);
 		} else {
 			stage.setViewport(width, height, false);
 			applyUI();
@@ -214,9 +223,11 @@ public class IngameScreen implements Screen {
         world.addListener(worldRenderer);
         achievementManager = new ArchievementManager(world, game.getGoogleInterface());
 		snake.addListener(achievementManager);
+		world.getPlayer().addListener(achievementManager);
         world.build();
         //world.getSnake().addListener(new WorldDebugger(world));
-        particleRenderer = new ParticleRenderer(acid);
+        particleRenderer = new ParticleRenderer(acid, world);
+        world.getPlayer().addListener(particleRenderer);
         world.getSnake().addListener(particleRenderer);
         world.addListener(particleRenderer);
 	}

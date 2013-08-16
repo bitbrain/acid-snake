@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.myreality.acidsnake.core.PlayerListener;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.util.Timer;
@@ -38,7 +39,7 @@ import de.myreality.acidsnake.world.WorldHandler;
  * @since 1.0
  * @version 1.0
  */
-public class ArchievementManager implements SnakeListener {
+public class ArchievementManager implements SnakeListener, PlayerListener {
 
 	// ===========================================================
 	// Constants
@@ -211,6 +212,26 @@ public class ArchievementManager implements SnakeListener {
 	public void onSpawn(Snake snake) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onPointsAdd(int points, int level) {
+		
+	}
+	
+	@Override
+	public void onLevelUp(int oldLevel, int newLevel) {
+		switch (newLevel) {
+			case 5:
+				google.submitAchievement(Achievements.LEVEL_5);
+				break;
+			case 10:
+				google.submitAchievement(Achievements.LEVEL_10);
+				break;
+			case 20:
+				google.submitAchievement(Achievements.LEVEL_20);
+				break;
+		}
 	}
 
 	// ===========================================================

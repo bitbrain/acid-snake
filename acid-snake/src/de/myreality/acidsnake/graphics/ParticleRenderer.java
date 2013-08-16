@@ -28,6 +28,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.myreality.acid.CellManager;
 import de.myreality.acidsnake.Resources;
+import de.myreality.acidsnake.core.PlayerListener;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
 import de.myreality.acidsnake.world.World;
@@ -41,13 +42,11 @@ import de.myreality.acidsnake.world.WorldHandler;
  * @since 1.0
  * @version 1.0
  */
-public class ParticleRenderer extends WorldHandler implements SnakeListener {
+public class ParticleRenderer extends WorldHandler implements SnakeListener, PlayerListener {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	private static final int SPECIAL_SNAKE_LENGTH = 15;
 
 	// ===========================================================
 	// Fields
@@ -59,16 +58,17 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener {
 	
 	private Map<WorldEntity, ParticleEffect> effects;
 	
-	private ParticleEffect snakeEffect;
+	private World world;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public ParticleRenderer(CellManager manager) {
+	public ParticleRenderer(CellManager manager, World world) {
 		this.cellManager = manager;
 		particleManager = new ParticleManager();
 		effects = new HashMap<WorldEntity, ParticleEffect>();
+		this.world = world;
 	}
 
 	// ===========================================================
@@ -82,21 +82,6 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener {
 	@Override
 	public void onEnterPosition(int indexX, int indexY, Snake snake) {
 		
-		if (snakeEffect == null && snake.getLength() >= SPECIAL_SNAKE_LENGTH) {
-			snakeEffect = particleManager.create(Resources.PARTICLE_FIELD_GREEN, true);
-			snakeEffect.start();
-			
-			ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_GREEN, false);
-			alignOnIndex(indexX, indexY, effect);
-			effect.start();
-		} else if (snake.getLength() < SPECIAL_SNAKE_LENGTH) {
-			particleManager.setEndless(snakeEffect, false);
-			snakeEffect = null;
-		}
-		
-		if (snake.getLength() >= SPECIAL_SNAKE_LENGTH) {
-			alignOnIndex(snake.getIndexX(), snake.getIndexY(), snakeEffect);
-		}
 	}
 
 	@Override
@@ -130,6 +115,20 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener {
 	@Override
 	public void onSpawn(Snake snake) {
 		
+	}
+
+	@Override
+	public void onPointsAdd(int points, int level) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLevelUp(int oldLevel, int newLevel) {
+		Snake snake = world.getSnake();
+		ParticleEffect effect = particleManager.create(Resources.PARTICLE_EXPLOSION_GREEN, false);
+		alignOnIndex(snake.getIndexX(), snake.getIndexY(), effect);
+		effect.start();
 	}
 
 

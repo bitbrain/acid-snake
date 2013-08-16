@@ -97,7 +97,6 @@ public class PointManager implements SnakeListener, AchievementListener {
 		
 		int points = (int) (type.getPoints() * multiplier);
 		if (points > 0) {			
-			System.out.println("POINTS");
 			snake.getWorld().getPlayer().addPoints(points);
 			popupManager.popup(x, y, points + "");
 			multiplier = 1.0f;

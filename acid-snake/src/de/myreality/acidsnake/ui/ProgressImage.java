@@ -16,83 +16,105 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-package de.myreality.acidsnake.graphics;
+package de.myreality.acidsnake.ui;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
+import de.myreality.acidsnake.Resources;
 
 /**
- * Handles particle systems
+ * Shows the progress of the current level
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
- * @since 1.0
- * @version 1.0
+ * @since 1.3
+ * @version 1.3
  */
-public class ParticleManager {
+public class ProgressImage extends Actor {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int HEIGHT = 6;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	
-	private Map<ParticleEffect, Boolean> effects;
+	private double progress;
+	
+	private Image image, background;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public ParticleManager() {
-		effects = new ConcurrentHashMap<ParticleEffect, Boolean>();
+
+	public ProgressImage() {
+		progress = 0;
+		
+		Pixmap map = new Pixmap(HEIGHT, HEIGHT, Format.RGB888);
+		map.setColor(Resources.COLOR_GREEN);
+		map.fill();
+		Texture texture = new Texture(map);		
+		map.setColor(Resources.COLOR_VIOLET);
+		map.fill();
+		Texture backgroundTexture = new Texture(map);
+		map.dispose();
+		image = new Image(texture);
+		background = new Image(backgroundTexture);
+		image.setY(Gdx.graphics.getHeight() - HEIGHT);
+		background.setY(Gdx.graphics.getHeight() - HEIGHT);
 	}
 
 	// ===========================================================
 	// Getters and Setters
 	// ===========================================================
+	
+	public void setProgress(double progress) {
+		this.progress = progress;
+	}
+
+	@Override
+	public void draw(SpriteBatch batch, float parentAlpha) {
+		float progressWidth = (float) (Gdx.graphics.getWidth() * progress);
+		background.setX(progressWidth);
+		background.setWidth(Gdx.graphics.getWidth() - progressWidth);
+		image.setWidth(progressWidth);
+		super.draw(batch, parentAlpha);
+		background.draw(batch, parentAlpha);
+		image.draw(batch, parentAlpha);
+	}
+
+	@Override
+	public void setColor(Color color) {
+		super.setColor(color);
+		image.setColor(color);
+		background.setColor(color);
+	}
+
+	@Override
+	public void setColor(float r, float g, float b, float a) {
+		super.setColor(r, g, b, a);
+		image.setColor(r, g, b, a);
+		background.setColor(r, g, b, a);
+	}
 
 	// ===========================================================
 	// Methods from Superclass
 	// ===========================================================
+	
+	
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	public ParticleEffect create(ParticleEffect original, boolean endless) {
-		ParticleEffect copy = new ParticleEffect(original);		
-		effects.put(copy, endless);
-		return copy;
-	}
-	
-	public void render(SpriteBatch batch, float delta) {
-		for (Entry<ParticleEffect, Boolean> entries : effects.entrySet()) {
-			
-			if (!entries.getValue() && entries.getKey().isComplete()) {
-				ParticleEffect effect = entries.getKey();
-				effects.remove(effect);
-			} else {				
-				entries.getKey().draw(batch, delta);
-			}
-		}
-	}
-	
-	public void setEndless(ParticleEffect effect, boolean endless) {
-		
-		if (effect != null) {
-			effects.put(effect, endless);
-			
-			for (ParticleEmitter emitter : effect.getEmitters()) {
-				emitter.setContinuous(endless);
-			}
-		}
-	}
 
 	// ===========================================================
 	// Inner classes
