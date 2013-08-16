@@ -95,6 +95,10 @@ public class PopupManager implements TweenCallback {
 	// ===========================================================
 	
 	public void popup(float x, float y, String text) {
+		popup(x, y, text, popupStyle);
+	}
+	
+	public void popup(float x, float y, String text, LabelStyle popupStyle) {
 		Label label = new Label(text, popupStyle);
 		stage.addActor(label);
 		label.setPosition(x - label.getWidth() / 2f, y - label.getHeight() / 2f);

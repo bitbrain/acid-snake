@@ -19,10 +19,14 @@
 package de.myreality.acidsnake.graphics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import de.myreality.acid.CellManager;
+import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
+import de.myreality.acidsnake.google.AchievementListener;
+import de.myreality.acidsnake.google.Achievements;
 import de.myreality.acidsnake.ui.PopupManager;
 import de.myreality.acidsnake.world.WorldEntity;
 
@@ -33,7 +37,7 @@ import de.myreality.acidsnake.world.WorldEntity;
  * @since 1.3
  * @version 1.3
  */
-public class PointManager implements SnakeListener {
+public class PointManager implements SnakeListener, AchievementListener {
 
 	// ===========================================================
 	// Constants
@@ -46,6 +50,8 @@ public class PointManager implements SnakeListener {
 	private CellManager cellManager;
 	
 	private PopupManager popupManager;
+	
+	private LabelStyle comboStyle;
 
 	// ===========================================================
 	// Constructors
@@ -54,6 +60,9 @@ public class PointManager implements SnakeListener {
 	public PointManager(CellManager cellManager, PopupManager popupManager) {
 		this.cellManager = cellManager;
 		this.popupManager = popupManager;
+		comboStyle = new LabelStyle();
+		comboStyle.font = Resources.BITMAP_FONT_REGULAR;
+		comboStyle.fontColor = Resources.COLOR_ORANGE;
 	}
 
 	// ===========================================================
@@ -73,9 +82,12 @@ public class PointManager implements SnakeListener {
 	@Override
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
-		int x = (int) (cellManager.translateIndexX(indexX) + cellManager.getCellSize() / 2f);
-		int y = (int) (Gdx.graphics.getHeight() - indexY * cellManager.getCellSize() - cellManager.getCellSize() / 2f);
-		popupManager.popup(x, y, target.getType().getPoints() + "");
+		float x = translateIndexX(indexX);
+		float y = translateIndexY(indexY);
+		
+		if (target.getType().getPoints() > 0) {
+			popupManager.popup(x, y, target.getType().getPoints() + "");
+		}
 	}
 
 	@Override
@@ -88,9 +100,37 @@ public class PointManager implements SnakeListener {
 	public void onSpawn(Snake snake) {
 	}
 
+	@Override
+	public void onAchieve(String achievementID, int indexX, int indexY) {
+		
+		float x = translateIndexX(indexX);
+		float y = translateIndexY(indexY);
+		
+		if (achievementID.equals(Achievements.COMBO_EXPERT)) {
+			popupManager.popup(x, y, "Combo 2x", comboStyle);
+		}
+		
+		if (achievementID.equals(Achievements.COMBO_SAIYAJIN)) {
+			popupManager.popup(x, y, "Combo 3x", comboStyle);
+		}
+	}
+
+	@Override
+	public void onIncrementalAchieve(String achievementID, int indexX, int index) {
+		
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	private float translateIndexX(int indexX) {
+		return cellManager.translateIndexX(indexX) + cellManager.getCellSize() / 2f;
+	}
+	
+	private float translateIndexY(int indexY) {
+		return Gdx.graphics.getHeight() - indexY * cellManager.getCellSize() - cellManager.getCellSize() / 2f;
+	}
 
 	// ===========================================================
 	// Inner classes
