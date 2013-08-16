@@ -85,7 +85,9 @@ public class PopupManager implements TweenCallback {
 	@Override
 	public void onEvent(int type, BaseTween<?> source) {
 		Label label = queue.remove();
-		stage.getActors().removeValue(label, true);
+		tweenManager.killTarget(label);
+		label.remove();
+		label.invalidate();
 	}
 
 	// ===========================================================
