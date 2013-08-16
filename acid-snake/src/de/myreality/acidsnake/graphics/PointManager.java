@@ -132,10 +132,12 @@ public class PointManager implements SnakeListener, AchievementListener {
 		
 		if (achievementID.equals(Achievements.TIME_TRAVELLER)) {
 			popupManager.popup(x, y, "Time Traveler", portalStyle);
+			multiplier = 3;
 		}
 		
 		if (achievementID.equals(Achievements.MASTER_OF_TIME)) {
 			popupManager.popup(x, y, "Master Of Time", portalStyle);
+			multiplier = 5;
 		}
 	}
 
