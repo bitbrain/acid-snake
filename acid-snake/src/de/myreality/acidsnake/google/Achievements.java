@@ -45,4 +45,12 @@ public class Achievements {
 	public static final String THE_CAKE_IS_A_LIE = "CgkI1pOy-tIHEAIQEA";
 	public static final String CIRCLE_OF_DEATH = "CgkI1pOy-tIHEAIQEQ";
 	public static final String QUADROCOPTER = "CgkI1pOy-tIHEAIQEg";
+	public static final String TIME_TRAVELLER = "CgkI1pOy-tIHEAIQEw";
+	public static final String MASTER_OF_TIME = "CgkI1pOy-tIHEAIQFA";
+	public static final String COMBO_EXPERT = "CgkI1pOy-tIHEAIQFQ";
+	public static final String COMBO_SAIYAJIN = "CgkI1pOy-tIHEAIQFg";
+	public static final String LEVEL_5 = "CgkI1pOy-tIHEAIQFw";
+	public static final String LEVEL_10 = "CgkI1pOy-tIHEAIQGA";
+	public static final String LEVEL_20 = "CgkI1pOy-tIHEAIQGQ";
+	
 }

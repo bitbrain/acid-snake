@@ -243,7 +243,7 @@ public class SimpleWorld implements World {
 
 	@Override
 	public void update(float delta) {
-		snakeAccelerator.setSpeedRate(14 + (player.getLevel() / 4));
+		snakeAccelerator.setSpeedRate(14 + (player.getLevel() / 10));
 		snakeAccelerator.update(delta);
 	}
 

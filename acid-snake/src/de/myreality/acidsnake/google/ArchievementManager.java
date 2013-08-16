@@ -55,6 +55,8 @@ public class ArchievementManager implements SnakeListener {
 	private BlockCounter counter30, counter40, counter50;
 	
 	private Set<WorldEntityType> collected;
+	
+	private ComboDetector comboDetector;
 
 	// ===========================================================
 	// Constructors
@@ -69,6 +71,7 @@ public class ArchievementManager implements SnakeListener {
 		world.addListener(counter30);
 		world.addListener(counter40);
 		world.addListener(counter50);
+		comboDetector = new ComboDetector();
 	}
 
 	// ===========================================================
@@ -118,6 +121,9 @@ public class ArchievementManager implements SnakeListener {
 	@Override
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
+		
+		comboDetector.update(target.getType());
+		
 		switch (target.getType()) {
 		case ACID:
 			break;
@@ -164,7 +170,7 @@ public class ArchievementManager implements SnakeListener {
 			if (collected.size() >= 4) {
 				google.submitAchievement(Achievements.QUADROCOPTER);
 			}
-		}
+		}		
 	}
 
 	@Override
@@ -252,7 +258,32 @@ public class ArchievementManager implements SnakeListener {
 				timer.start();
 			}
 		}
+	}
+	
+	
+	
+	class ComboDetector {
 		
+		private Map<WorldEntityType, Integer> combos;
 		
+		public ComboDetector() {
+			combos = new HashMap<WorldEntityType, Integer>();
+		}
+		
+		public void update(WorldEntityType type) {
+			
+			Integer value = combos.get(type);
+			
+			if (value == null) {
+				combos.clear();
+				value = 0;
+			}
+			
+			combos.put(type, ++value);
+		}
+		
+		public boolean hasCombo(WorldEntityType type, int steps) {
+			return combos.get(type) != null && combos.get(type) >= steps;
+		}
 	}
 }
