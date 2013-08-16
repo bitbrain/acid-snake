@@ -18,8 +18,10 @@
 
 package de.myreality.acidsnake.google;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,6 +59,8 @@ public class ArchievementManager implements SnakeListener {
 	private Set<WorldEntityType> collected;
 	
 	private ComboDetector comboDetector;
+	
+	private List<AchievementListener> listeners;
 
 	// ===========================================================
 	// Constructors
@@ -65,6 +69,7 @@ public class ArchievementManager implements SnakeListener {
 	public ArchievementManager(World world, GoogleInterface googleInterface) {
 		google = googleInterface;
 		collected = new HashSet<WorldEntityType>();
+		listeners = new ArrayList<AchievementListener>();
 		counter30 = new BlockCounter(30, 60000);
 		counter40 = new BlockCounter(40, 60000);
 		counter50 = new BlockCounter(50, 60000);
@@ -88,13 +93,13 @@ public class ArchievementManager implements SnakeListener {
 		if (lastLength != snake.getLength()) {		
 			switch (snake.getLength()) {
 				case 15:
-					google.submitAchievement(Achievements.THE_LONG_SNAKE);
+					submitAchievement(Achievements.THE_LONG_SNAKE, indexX, indexY);
 					break;
 				case 30:
-					google.submitAchievement(Achievements.THE_MONSTER_SNAKE);
+					submitAchievement(Achievements.THE_MONSTER_SNAKE, indexX, indexY);
 					break;
 				case 50:
-					google.submitAchievement(Achievements.THE_GIANT_SNAKE);
+					submitAchievement(Achievements.THE_GIANT_SNAKE, indexX, indexY);
 					break;
 			}
 			
@@ -106,15 +111,15 @@ public class ArchievementManager implements SnakeListener {
 		counter50.update();
 		
 		if (counter30.check()) {
-			google.submitAchievement(Achievements.IN_A_ROW_30);
+			submitAchievement(Achievements.IN_A_ROW_30, indexX, indexY);
 		}
 		
 		if (counter40.check()) {
-			google.submitAchievement(Achievements.IN_A_ROW_40);
+			submitAchievement(Achievements.IN_A_ROW_40, indexX, indexY);
 		}
 		
 		if (counter50.check()) {
-			google.submitAchievement(Achievements.IN_A_ROW_50);
+			submitAchievement(Achievements.IN_A_ROW_50, indexX, indexY);
 		}
 	}
 
@@ -122,13 +127,19 @@ public class ArchievementManager implements SnakeListener {
 	public void onCollide(int indexX, int indexY, Snake snake,
 			WorldEntity target) {
 		
-		comboDetector.update(target.getType());
+		comboDetector.update(target);
+		
+		if (comboDetector.hasCombo(target.getType(), 2)) {
+			submitAchievement(Achievements.COMBO_EXPERT, indexX, indexY);
+		} else if (comboDetector.hasCombo(target.getType(), 3)) {
+			submitAchievement(Achievements.COMBO_SAIYAJIN, indexX, indexY);
+		}
 		
 		switch (target.getType()) {
 		case ACID:
 			break;
 		case BOMB:
-			google.incrementAchievement(Achievements.MR_KAMIKAZE, 1);
+			incrementAchievement(Achievements.MR_KAMIKAZE, 1, indexX, indexY);
 			break;
 		case RARE_FOOD:
 			break;
@@ -136,12 +147,12 @@ public class ArchievementManager implements SnakeListener {
 			break;
 		case SNAKE:
 			if (target.equals(snake.getTail())) {
-				google.submitAchievement(Achievements.CIRCLE_OF_DEATH);
+				submitAchievement(Achievements.CIRCLE_OF_DEATH, indexX, indexY);
 			}
 			break;
 		case TELEPORTER:
-			google.submitAchievement(Achievements.BEAM_ME_UP_SCOTTIE);
-			google.incrementAchievement(Achievements.THE_CAKE_IS_A_LIE, 1);
+			submitAchievement(Achievements.BEAM_ME_UP_SCOTTIE, indexX, indexY);
+			incrementAchievement(Achievements.THE_CAKE_IS_A_LIE, 1, indexX, indexY);
 			break;
 		default:
 			break;
@@ -152,9 +163,9 @@ public class ArchievementManager implements SnakeListener {
 		counter50.count();
 		
 		if (!target.getType().equals(WorldEntityType.SNAKE)) {
-			google.incrementAchievement(Achievements.ACID_HUNTER, 1);
-			google.incrementAchievement(Achievements.ACID_MASTER, 1);
-			google.incrementAchievement(Achievements.ACID_LEGEND, 1);
+			incrementAchievement(Achievements.ACID_HUNTER, 1, indexX, indexY);
+			incrementAchievement(Achievements.ACID_MASTER, 1, indexX, indexY);
+			incrementAchievement(Achievements.ACID_LEGEND, 1, indexX, indexY);
 		}
 		
 		if (!target.getType().equals(WorldEntityType.SNAKE)) {
@@ -168,7 +179,7 @@ public class ArchievementManager implements SnakeListener {
 			collected.add(type);
 			
 			if (collected.size() >= 4) {
-				google.submitAchievement(Achievements.QUADROCOPTER);
+				submitAchievement(Achievements.QUADROCOPTER, indexX, indexY);
 			}
 		}		
 	}
@@ -188,6 +199,20 @@ public class ArchievementManager implements SnakeListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	private void submitAchievement(String achievementID, int indexX, int indexY) {
+		google.submitAchievement(achievementID);
+		for (AchievementListener listener : listeners) {
+			listener.onAchieve(achievementID, indexX, indexY);
+		}
+	}
+	
+	private void incrementAchievement(String achievementID, int steps, int indexX, int indexY) {
+		google.incrementAchievement(achievementID, steps);
+		for (AchievementListener listener : listeners) {
+			listener.onIncrementalAchieve(achievementID, indexX, indexY);
+		}
+	}
 
 	// ===========================================================
 	// Inner classes
@@ -270,7 +295,9 @@ public class ArchievementManager implements SnakeListener {
 			combos = new HashMap<WorldEntityType, Integer>();
 		}
 		
-		public void update(WorldEntityType type) {
+		public void update(WorldEntity entity) {
+			
+			WorldEntityType type = entity.getType();
 			
 			Integer value = combos.get(type);
 			
