@@ -60,6 +60,8 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener, Pla
 	private Map<WorldEntity, ParticleEffect> effects;
 	
 	private World world;
+	
+	private ParticleEffect snakeEffect;
 
 	// ===========================================================
 	// Constructors
@@ -82,7 +84,15 @@ public class ParticleRenderer extends WorldHandler implements SnakeListener, Pla
 
 	@Override
 	public void onEnterPosition(int indexX, int indexY, Snake snake) {
+		if (snakeEffect == null) {
+			snakeEffect = particleManager.create(Resources.PARTICLE_FIELD_GREEN, true);
+			for (ParticleEmitter emitter : snakeEffect.getEmitters()) {
+				emitter.setMaxParticleCount(emitter.getMaxParticleCount() / 2);
+			}
+			snakeEffect.start();
+		}
 		
+		alignOnIndex(indexX, indexY, snakeEffect);
 	}
 
 	@Override

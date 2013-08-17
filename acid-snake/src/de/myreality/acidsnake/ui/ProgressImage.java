@@ -97,7 +97,7 @@ public class ProgressImage extends Actor {
 		float progressWidth = (float) (Gdx.graphics.getWidth() * progress);
 		
 		if (currentWidth < progressWidth) {
-			currentWidth += 3;
+			currentWidth += (progressWidth - currentWidth) / 20;
 		} else {
 			currentWidth = progressWidth;
 		}

@@ -355,11 +355,11 @@ public enum WorldEntityType implements SnakeListener {
 	
 	BOMB {
 		
-		private static final int MAX_COUNT = 6;
+		private static final int MAX_COUNT = 10;
 		
-		private static final double SPAWN_CHANCE = 80.0;
+		private static final double SPAWN_CHANCE = 20.0;
 		
-		private static final double REMOVE_CHANCE = 5.0;
+		private static final double REMOVE_CHANCE = 10.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -377,17 +377,20 @@ public enum WorldEntityType implements SnakeListener {
 				snake.kill();
 			}
 			
-			if (isChance(REMOVE_CHANCE)) {
+			int bombCount = world.getEntityCount(WorldEntityType.BOMB);
+			
+			if (bombCount > 0 && isChance(REMOVE_CHANCE)) {
 				List<WorldEntity> bombs = world.getEntitiesOfType(this);
 				int randomIndex = (int) (Math.random() * bombs.size());
-				int currentIndex = 0;
-				for (WorldEntity bomb : bombs) {
-					if (currentIndex++ == randomIndex) {
-						world.remove(bomb);
-						break;
+				WorldEntity bomb = bombs.get(randomIndex);				
+				world.remove(bomb);
+				
+				if (bombCount <= 1) {
+					List<WorldEntity> iceBlocks = world.getEntitiesOfType(WorldEntityType.ICE);
+					for (WorldEntity ice : iceBlocks) {
+						world.remove(ice);
 					}
 				}
-				
 			}
 			
 			
@@ -475,14 +478,14 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public int getPoints() {
-			return 45;
+			return 10;
 		}
 		
 	},
 	
 	ICE {
 		
-		private static final double SPAWN_CHANCE = 10.0;
+		private static final double SPAWN_CHANCE = 7.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -503,7 +506,8 @@ public enum WorldEntityType implements SnakeListener {
 				
 				// For each bomb: remove it and replace it with ice
 				for (WorldEntity bomb : bombs) {
-					world.remove(bomb);
+					bomb.setRendering(false);
+					world.remove(bomb);					
 					spawnAtPosition(bomb.getIndexX(), bomb.getIndexY(), WorldEntityType.FROZEN_BOMB, world);
 				}
 				
@@ -511,7 +515,10 @@ public enum WorldEntityType implements SnakeListener {
 				world.remove(target);
 			}
 			
-			if (world.getEntityCount(WorldEntityType.BOMB) > 0 && isChance(SPAWN_CHANCE)) {
+			int bombCount = world.getEntityCount(WorldEntityType.BOMB);
+			int iceCount = world.getEntityCount(this);
+			
+			if (bombCount > 0 && iceCount < 1 && isChance(SPAWN_CHANCE)) {
 				spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
