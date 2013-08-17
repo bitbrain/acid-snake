@@ -19,11 +19,12 @@
 package de.myreality.acidsnake.world;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.SimplePlayer;
@@ -60,7 +61,7 @@ public class SimpleWorld implements World {
 	
 	WorldEntity[][] area;
 	
-	private Set<WorldEntity> entities;
+	private List<WorldEntity> entities;
 	
 	private Map<WorldEntityType, Set<WorldEntity> > types;
 	
@@ -78,10 +79,10 @@ public class SimpleWorld implements World {
 		this.width = width;
 		this.height = height;
 		listeners = new ArrayList<WorldListener>();
-		entities = new HashSet<WorldEntity>();
+		entities = new CopyOnWriteArrayList<WorldEntity>();
 		area = new WorldEntity[width][height];
 		binder = new WorldBinder(this);
-		types = new HashMap<WorldEntityType, Set<WorldEntity> >();
+		types = new ConcurrentHashMap<WorldEntityType, Set<WorldEntity> >();
 		player = new SimplePlayer();
 		snake = new SimpleSnake(5, 5, this);
 	}
@@ -263,7 +264,7 @@ public class SimpleWorld implements World {
 
 	@Override
 	public Set<WorldEntity> getEntitiesOfType(WorldEntityType type) {
-		return types.get(type) != null ? types.get(type) : new HashSet<WorldEntity>();
+		return types.get(type) != null ? new HashSet<WorldEntity>(types.get(type)) : new HashSet<WorldEntity>();
 	}
 
 	@Override

@@ -47,6 +47,7 @@ public class Resources {
 	public static Texture TEXTURE_BLOCK_GREEN;
 	public static Texture TEXTURE_BLOCK_VIOLET;
 	public static Texture TEXTURE_BLOCK_ORANGE;
+	public static Texture TEXTURE_BLOCK_ORANGE_FROZEN;
 	public static Texture TEXTURE_BLOCK_BLUE;
 	public static Texture TEXTURE_BLOCK;
 	public static Texture TEXTURE_ICON_ACHIEVEMENTS;
@@ -70,6 +71,10 @@ public class Resources {
 		
 		if (TEXTURE_BLOCK_VIOLET != null) {
 			TEXTURE_BLOCK_VIOLET.dispose();
+		}
+		
+		if (TEXTURE_BLOCK_ORANGE_FROZEN != null) {
+			TEXTURE_BLOCK_ORANGE_FROZEN.dispose();
 		}
 		
 		if (TEXTURE_BLOCK_ORANGE != null) {
@@ -106,6 +111,7 @@ public class Resources {
 		TEXTURE_BLOCK_GREEN = new Texture("data/block-green.png");
 		TEXTURE_BLOCK_VIOLET = new Texture("data/block-violet.png");
 		TEXTURE_BLOCK_ORANGE = new Texture("data/block-orange.png");
+		TEXTURE_BLOCK_ORANGE_FROZEN = new Texture("data/block-orange-frozen.png");
 		TEXTURE_BLOCK_BLUE = new Texture("data/block-blue.png");
 		TEXTURE_ICON_ACHIEVEMENTS = new Texture("data/icon-achievements.png");
 		TEXTURE_ICON_SCORES = new Texture("data/icon-scores.png");
@@ -174,11 +180,15 @@ public class Resources {
 	public static ParticleEffect PARTICLE_EXPLOSION_ORANGE = new ParticleEffect();
 	public static ParticleEffect PARTICLE_EXPLOSION_VIOLET = new ParticleEffect();
 	public static ParticleEffect PARTICLE_EXPLOSION_BLUE = new ParticleEffect();
+	public static ParticleEffect PARTICLE_EXPLOSION_WHITE = new ParticleEffect();
+	public static ParticleEffect PARTICLE_EXPLOSION_ICE = new ParticleEffect();
 	
 	public static ParticleEffect PARTICLE_FIELD_BLUE = new ParticleEffect();
 	public static ParticleEffect PARTICLE_FIELD_ORANGE = new ParticleEffect();
 	public static ParticleEffect PARTICLE_FIELD_GREEN = new ParticleEffect();
 	public static ParticleEffect PARTICLE_FIELD_VIOLET = new ParticleEffect();
+	public static ParticleEffect PARTICLE_FIELD_WHITE = new ParticleEffect();
+	public static ParticleEffect PARTICLE_FIELD_ICE = new ParticleEffect();
 	
 	public static void reloadParticles() {
 		
@@ -202,6 +212,14 @@ public class Resources {
 			PARTICLE_EXPLOSION_BLUE.dispose();
 		}
 		
+		if (PARTICLE_EXPLOSION_WHITE != null) {
+			PARTICLE_EXPLOSION_WHITE.dispose();
+		}
+		
+		if (PARTICLE_EXPLOSION_ICE != null) {
+			PARTICLE_EXPLOSION_ICE.dispose();
+		}
+		
 		if (PARTICLE_FIELD_ORANGE != null) {
 			PARTICLE_FIELD_ORANGE.dispose();
 		}
@@ -212,6 +230,14 @@ public class Resources {
 		
 		if (PARTICLE_FIELD_VIOLET != null) {
 			PARTICLE_FIELD_VIOLET.dispose();
+		}
+		
+		if (PARTICLE_FIELD_WHITE != null) {
+			PARTICLE_FIELD_WHITE.dispose();
+		}
+		
+		if (PARTICLE_FIELD_ICE != null) {
+			PARTICLE_FIELD_ICE.dispose();
 		}
 		
 		PARTICLE_EXPLOSION_GREEN.load(Gdx.files.internal("data/particleExplosionGreen.p"), 
@@ -226,6 +252,12 @@ public class Resources {
 		PARTICLE_EXPLOSION_BLUE.load(Gdx.files.internal("data/particleExplosionBlue.p"), 
 	            Gdx.files.internal("data"));
 		
+		PARTICLE_EXPLOSION_WHITE.load(Gdx.files.internal("data/particleExplosionWhite.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_EXPLOSION_ICE.load(Gdx.files.internal("data/particleExplosionIce.p"), 
+	            Gdx.files.internal("data"));
+		
 		PARTICLE_FIELD_BLUE.load(Gdx.files.internal("data/particleFieldBlue.p"), 
 	            Gdx.files.internal("data"));
 		
@@ -236,6 +268,12 @@ public class Resources {
 	            Gdx.files.internal("data"));
 		
 		PARTICLE_FIELD_VIOLET.load(Gdx.files.internal("data/particleFieldViolet.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_FIELD_WHITE.load(Gdx.files.internal("data/particleFieldWhite.p"), 
+	            Gdx.files.internal("data"));
+		
+		PARTICLE_FIELD_ICE.load(Gdx.files.internal("data/particleFieldIce.p"), 
 	            Gdx.files.internal("data"));
 	}
 	
@@ -248,6 +286,7 @@ public class Resources {
 	public static CellRenderer CELL_RENDERER_GREEN;
 	public static CellRenderer CELL_RENDERER_VIOLET;
 	public static CellRenderer CELL_RENDERER_WHITE;
+	public static CellRenderer CELL_RENDERER_ORANGE_FROZEN;
 	
 	public static final void reloadCellRenderer(GdxBufferedRenderer renderer) {
 		CELL_RENDERER_ORANGE = new GdxCellRenderer(TEXTURE_BLOCK_ORANGE, renderer);
@@ -255,5 +294,6 @@ public class Resources {
 		CELL_RENDERER_GREEN = new GdxCellRenderer(TEXTURE_BLOCK_GREEN, renderer);
 		CELL_RENDERER_VIOLET = new GdxCellRenderer(TEXTURE_BLOCK_VIOLET, renderer);
 		CELL_RENDERER_WHITE = new GdxCellRenderer(TEXTURE_BLOCK, renderer);
+		CELL_RENDERER_ORANGE_FROZEN = new GdxCellRenderer(TEXTURE_BLOCK_ORANGE_FROZEN, renderer);
 	}
 }

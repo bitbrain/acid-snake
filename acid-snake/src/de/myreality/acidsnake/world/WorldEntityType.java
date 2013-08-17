@@ -357,9 +357,9 @@ public enum WorldEntityType implements SnakeListener {
 		
 		private static final int MAX_COUNT = 6;
 		
-		private static final double SPAWN_CHANCE = 20.0;
+		private static final double SPAWN_CHANCE = 30.0;
 		
-		private static final double REMOVE_CHANCE = 20.0;
+		private static final double REMOVE_CHANCE = 10.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -460,17 +460,17 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public ParticleEffect getFieldEffect() {
-			return null;
+			return Resources.PARTICLE_FIELD_ICE;
 		}
 
 		@Override
 		public ParticleEffect getExplodeEffect() {
-			return null;
+			return Resources.PARTICLE_EXPLOSION_ICE;
 		}
 
 		@Override
 		public CellRenderer getCellRenderer() {
-			return Resources.CELL_RENDERER_WHITE;
+			return Resources.CELL_RENDERER_ORANGE_FROZEN;
 		}
 
 		@Override
@@ -481,6 +481,8 @@ public enum WorldEntityType implements SnakeListener {
 	},
 	
 	ICE {
+		
+		private static final double SPAWN_CHANCE = 10.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -491,9 +493,26 @@ public enum WorldEntityType implements SnakeListener {
 		public void onCollide(int indexX, int indexY, Snake snake,
 				WorldEntity target) {
 			super.onCollide(indexX, indexY, snake, target);
+
+			World world = snake.getWorld();
 			
 			if (target.getType().equals(this)) {
 				
+				// Fetch all bombs
+				Set<WorldEntity> bombs = world.getEntitiesOfType(WorldEntityType.BOMB);
+				
+				// For each bomb: remove it and replace it with ice
+				for (WorldEntity bomb : bombs) {
+					world.remove(bomb);
+					spawnAtPosition(bomb.getIndexX(), bomb.getIndexY(), WorldEntityType.FROZEN_BOMB, world);
+				}
+				
+				// Remove the target
+				world.remove(target);
+			}
+			
+			if (world.getEntityCount(WorldEntityType.BOMB) > 0 && isChance(SPAWN_CHANCE)) {
+				spawnAtRandomPosition(this, snake.getWorld());
 			}
 		}
 		@Override
@@ -508,12 +527,12 @@ public enum WorldEntityType implements SnakeListener {
 
 		@Override
 		public ParticleEffect getFieldEffect() {
-			return null;
+			return Resources.PARTICLE_FIELD_WHITE;
 		}
 
 		@Override
 		public ParticleEffect getExplodeEffect() {
-			return null;
+			return Resources.PARTICLE_EXPLOSION_WHITE;
 		}
 
 		@Override

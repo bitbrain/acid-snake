@@ -57,7 +57,7 @@ public class PlayerActorAnimator implements PlayerListener {
 		this.tweenManager = manager;
 		this.actor = actor;
 		Tween.registerAccessor(Actor.class, new LabelTween());
-		actor.setColor(1f, 1f, 1f, 0.5f);
+		actor.setColor(1f, 1f, 1f, 0.3f);
 	}
 
 	// ===========================================================
@@ -73,7 +73,7 @@ public class PlayerActorAnimator implements PlayerListener {
 		tweenManager.killTarget(actor);
 		actor.setColor(1f, 1f, 1f, 1f);
 		Tween.to(actor, LabelTween.ALPHA, 3)
-	 	.target(0.5f)
+	 	.target(0.3f)
 		.ease(TweenEquations.easeInOutQuad)
 		.start(tweenManager);
 	}
