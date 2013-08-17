@@ -427,6 +427,105 @@ public enum WorldEntityType implements SnakeListener {
 			return 0;
 		}
 		
+	},
+	
+	FROZEN_BOMB {
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			super.onCollide(indexX, indexY, snake, target);
+			
+			World world = snake.getWorld();
+			
+			if (target.getType().equals(this)) {
+				world.remove(target);
+			}
+		}
+		
+		@Override
+		public void onKill(Snake snake) {
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return null;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return null;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_WHITE;
+		}
+
+		@Override
+		public int getPoints() {
+			return 45;
+		}
+		
+	},
+	
+	ICE {
+
+		@Override
+		public void onEnterPosition(int indexX, int indexY, Snake snake) {
+			
+		}
+
+		@Override
+		public void onCollide(int indexX, int indexY, Snake snake,
+				WorldEntity target) {
+			super.onCollide(indexX, indexY, snake, target);
+			
+			if (target.getType().equals(this)) {
+				
+			}
+		}
+		@Override
+		public void onKill(Snake snake) {
+			
+		}
+
+		@Override
+		public void onSpawn(Snake snake) {
+			
+		}
+
+		@Override
+		public ParticleEffect getFieldEffect() {
+			return null;
+		}
+
+		@Override
+		public ParticleEffect getExplodeEffect() {
+			return null;
+		}
+
+		@Override
+		public CellRenderer getCellRenderer() {
+			return Resources.CELL_RENDERER_WHITE;
+		}
+
+		@Override
+		public int getPoints() {
+			return 30;
+		}
+		
 	};
 	
 	private static WorldEntityFactory entityFactory = null;
@@ -468,7 +567,11 @@ public enum WorldEntityType implements SnakeListener {
 			validPosition = !world.hasEntity(randomX, randomY) && validIndexRadius(randomX, randomY, world.getSnake(), SPAWN_RADIUS);
 		}
 		
-		world.put(randomX, randomY, entityFactory.create(randomX, randomY, type));
+		spawnAtPosition(randomX, randomY, type, world);
+	}
+	
+	private static void spawnAtPosition(int indexX, int indexY, WorldEntityType type, World world) {
+		world.put(indexX, indexY, entityFactory.create(indexX, indexY, type));
 	}
 	
 	private static boolean isChance(double chance) {
