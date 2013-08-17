@@ -18,7 +18,7 @@
 
 package de.myreality.acidsnake.world;
 
-import java.util.Set;
+import java.util.List;
 
 import de.myreality.acidsnake.core.Player;
 import de.myreality.acidsnake.core.Snake;
@@ -129,6 +129,6 @@ public interface World extends Buildable, Updateable, Pauseable {
 	
 	boolean hasEntity(WorldEntity entity);
 	
-	Set<WorldEntity> getEntitiesOfType(WorldEntityType type);
+	List<WorldEntity> getEntitiesOfType(WorldEntityType type);
 
 }

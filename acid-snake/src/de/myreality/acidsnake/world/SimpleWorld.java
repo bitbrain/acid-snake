@@ -63,7 +63,7 @@ public class SimpleWorld implements World {
 	
 	private List<WorldEntity> entities;
 	
-	private Map<WorldEntityType, Set<WorldEntity> > types;
+	private Map<WorldEntityType, List<WorldEntity> > types;
 	
 	private WorldBinder binder;
 	
@@ -82,7 +82,7 @@ public class SimpleWorld implements World {
 		entities = new CopyOnWriteArrayList<WorldEntity>();
 		area = new WorldEntity[width][height];
 		binder = new WorldBinder(this);
-		types = new ConcurrentHashMap<WorldEntityType, Set<WorldEntity> >();
+		types = new ConcurrentHashMap<WorldEntityType, List<WorldEntity> >();
 		player = new SimplePlayer();
 		snake = new SimpleSnake(5, 5, this);
 	}
@@ -155,10 +155,10 @@ public class SimpleWorld implements World {
 		}
 		area[indexX][indexY] = entity;
 		
-		Set<WorldEntity> targets = types.get(entity.getType());
+		List<WorldEntity> targets = types.get(entity.getType());
 		
 		if (targets == null) {
-			targets = new HashSet<WorldEntity>();
+			targets = new CopyOnWriteArrayList<WorldEntity>();
 			types.put(entity.getType(), targets);
 		}
 		
@@ -193,7 +193,7 @@ public class SimpleWorld implements World {
 			if (!moved) {
 				entities.remove(entity);
 				
-				Set<WorldEntity> targets = types.get(entity.getType());
+				List<WorldEntity> targets = types.get(entity.getType());
 				targets.remove(entity);			
 				if (targets.isEmpty()) {
 					types.remove(targets);
@@ -252,7 +252,7 @@ public class SimpleWorld implements World {
 
 	@Override
 	public int getEntityCount(WorldEntityType type) {
-		Set<WorldEntity> targets = types.get(type);
+		List<WorldEntity> targets = types.get(type);
 		
 		return targets != null ? targets.size() : 0;
 	}
@@ -263,8 +263,8 @@ public class SimpleWorld implements World {
 	}
 
 	@Override
-	public Set<WorldEntity> getEntitiesOfType(WorldEntityType type) {
-		return types.get(type) != null ? new HashSet<WorldEntity>(types.get(type)) : new HashSet<WorldEntity>();
+	public List<WorldEntity> getEntitiesOfType(WorldEntityType type) {
+		return types.get(type) != null ? types.get(type) : new ArrayList<WorldEntity>();
 	}
 
 	@Override

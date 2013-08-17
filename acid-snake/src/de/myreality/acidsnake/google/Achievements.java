@@ -52,5 +52,6 @@ public class Achievements {
 	public static final String LEVEL_5 = "CgkI1pOy-tIHEAIQFw";
 	public static final String LEVEL_10 = "CgkI1pOy-tIHEAIQGA";
 	public static final String LEVEL_20 = "CgkI1pOy-tIHEAIQGQ";
+	public static final String ICE_CRUSHER = "CgkI1pOy-tIHEAIQGg";
 	
 }

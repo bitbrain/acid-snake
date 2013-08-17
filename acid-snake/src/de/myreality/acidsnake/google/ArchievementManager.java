@@ -175,6 +175,15 @@ public class ArchievementManager implements SnakeListener, PlayerListener {
 				submitAchievement(Achievements.TIME_TRAVELLER, indexX, indexY);
 			}
 			break;
+		case ICE:
+			World world = snake.getWorld();
+			// count the bombs 
+			int bombCount = world.getEntityCount(WorldEntityType.BOMB);
+			
+			if (bombCount >= 6) {
+				submitAchievement(Achievements.ICE_CRUSHER, indexX, indexY);
+			}
+			break;
 		default:
 			break;
 		}

@@ -18,7 +18,7 @@
 
 package de.myreality.acidsnake.world;
 
-import java.util.Set;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
@@ -294,7 +294,7 @@ public enum WorldEntityType implements SnakeListener {
 				
 				// 1. Fetch the other portal
 				
-				Set<WorldEntity> portals = world.getEntitiesOfType(this);				
+				List<WorldEntity> portals = world.getEntitiesOfType(this);				
 				
 				for (WorldEntity tempPortal : portals) {
 					if (!tempPortal.equals(target)) {
@@ -357,9 +357,9 @@ public enum WorldEntityType implements SnakeListener {
 		
 		private static final int MAX_COUNT = 6;
 		
-		private static final double SPAWN_CHANCE = 30.0;
+		private static final double SPAWN_CHANCE = 80.0;
 		
-		private static final double REMOVE_CHANCE = 10.0;
+		private static final double REMOVE_CHANCE = 5.0;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -378,7 +378,7 @@ public enum WorldEntityType implements SnakeListener {
 			}
 			
 			if (isChance(REMOVE_CHANCE)) {
-				Set<WorldEntity> bombs = world.getEntitiesOfType(this);
+				List<WorldEntity> bombs = world.getEntitiesOfType(this);
 				int randomIndex = (int) (Math.random() * bombs.size());
 				int currentIndex = 0;
 				for (WorldEntity bomb : bombs) {
@@ -499,7 +499,7 @@ public enum WorldEntityType implements SnakeListener {
 			if (target.getType().equals(this)) {
 				
 				// Fetch all bombs
-				Set<WorldEntity> bombs = world.getEntitiesOfType(WorldEntityType.BOMB);
+				List<WorldEntity> bombs = world.getEntitiesOfType(WorldEntityType.BOMB);
 				
 				// For each bomb: remove it and replace it with ice
 				for (WorldEntity bomb : bombs) {

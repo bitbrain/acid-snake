@@ -144,6 +144,7 @@ public class Resources {
 	public static final Color COLOR_DARK_VIOLET = Color.valueOf("2a003d");
 	public static final Color COLOR_ORANGE = Color.valueOf("ff3600");
 	public static final Color COLOR_BLUE = Color.valueOf("00a2ff");
+	public static final Color COLOR_ICE = Color.valueOf("9dfcff");
 	
 	// ===========================================================
 	// Strings
