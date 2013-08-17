@@ -26,6 +26,7 @@ import de.myreality.acid.CellRenderer;
 import de.myreality.acidsnake.Resources;
 import de.myreality.acidsnake.core.Snake;
 import de.myreality.acidsnake.core.SnakeListener;
+import de.myreality.acidsnake.util.Indexable;
 
 /**
  * Type of a world object
@@ -428,7 +429,9 @@ public enum WorldEntityType implements SnakeListener {
 		
 	};
 	
-	private static WorldEntityFactory entityFactory = null; // TODO
+	private static WorldEntityFactory entityFactory = null;
+	
+	static final int SPAWN_RADIUS = 5;
 	
 	public abstract ParticleEffect getFieldEffect();
 	public abstract ParticleEffect getExplodeEffect();
@@ -446,6 +449,7 @@ public enum WorldEntityType implements SnakeListener {
 			target.setRendering(false);
 		}
 	}
+	
 	private static void spawnAtRandomPosition(WorldEntityType type, World world) {
 		
 		if (entityFactory == null) {
@@ -461,7 +465,7 @@ public enum WorldEntityType implements SnakeListener {
 			randomX = (int) (Math.random() * world.getWidth());
 			randomY = (int) (Math.random() * world.getHeight());
 			
-			validPosition = !world.hasEntity(randomX, randomY);
+			validPosition = !world.hasEntity(randomX, randomY) && validIndexRadius(randomX, randomY, world.getSnake(), SPAWN_RADIUS);
 		}
 		
 		world.put(randomX, randomY, entityFactory.create(randomX, randomY, type));
@@ -469,5 +473,13 @@ public enum WorldEntityType implements SnakeListener {
 	
 	private static boolean isChance(double chance) {
 		return Math.random() * 100.0 <= chance;
+	}
+	
+	private static boolean validIndexRadius(int indexX, int indexY, Indexable indexable, int radius) {
+		
+		int deltaX = Math.abs(indexX - indexable.getIndexX());
+		int deltaY = Math.abs(indexY - indexable.getIndexY());
+		
+		return deltaX > radius && deltaY > radius;		
 	}
 }
