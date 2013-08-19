@@ -266,7 +266,7 @@ public class IngameScreen implements Screen {
 	// ===========================================================
 	
 	private void applyUI() {
-		btnPause.setX(Gdx.graphics.getWidth() - btnPause.getWidth() - GLOBAL_PADDING);
+		btnPause.setX(GLOBAL_PADDING);
 		btnPause.setY(GLOBAL_PADDING);		
 		lblScore.setX(GLOBAL_PADDING);
 		lblScore.setY(Gdx.graphics.getHeight() - lblScore.getHeight() - 10);
