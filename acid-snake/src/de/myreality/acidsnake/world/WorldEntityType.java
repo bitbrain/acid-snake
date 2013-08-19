@@ -373,7 +373,7 @@ public enum WorldEntityType implements SnakeListener {
 			super.onCollide(indexX, indexY, snake, target);
 			World world = snake.getWorld();
 			
-			boolean spawnForbidden = target.getType().equals(WorldEntityType.ICE);
+			boolean iceCollision = target.getType().equals(WorldEntityType.ICE);
 			
 			if (target.getType().equals(this)) {
 				snake.kill();
@@ -381,7 +381,7 @@ public enum WorldEntityType implements SnakeListener {
 			
 			int bombCount = world.getEntityCount(WorldEntityType.BOMB);
 			
-			if (bombCount > 0 && isChance(REMOVE_CHANCE)) {
+			if (!iceCollision && bombCount > 0 && isChance(REMOVE_CHANCE)) {
 				List<WorldEntity> bombs = world.getEntitiesOfType(this);
 				int randomIndex = (int) (Math.random() * bombs.size());
 				WorldEntity bomb = bombs.get(randomIndex);				
@@ -396,7 +396,7 @@ public enum WorldEntityType implements SnakeListener {
 			}
 			
 			
-			if (!spawnForbidden && isChance(SPAWN_CHANCE) && world.getEntityCount(this) < MAX_COUNT) {
+			if (!iceCollision && isChance(SPAWN_CHANCE) && world.getEntityCount(this) < MAX_COUNT) {
 				spawnAtRandomPosition(this, world);
 			}
 		}
