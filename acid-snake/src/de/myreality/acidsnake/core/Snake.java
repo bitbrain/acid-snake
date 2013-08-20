@@ -53,6 +53,7 @@ public interface Snake extends Moveable, Indexable, Buildable {
 	 * Adds a new chunk to the snake
 	 */
 	void addChunk();
+	void addChunk(boolean initial);
 	
 	void removeChunk();
 	

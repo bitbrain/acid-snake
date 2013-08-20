@@ -47,35 +47,35 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private Direction direction, fixedDirection;
-	
+
 	private List<SnakeChunk> chunks;
-	
+
 	private SnakeChunk head, tail;
-	
+
 	private World world;
-	
+
 	private boolean killed;
-	
+
 	private List<SnakeListener> listeners;
-	
+
 	private WorldEntityFactory factory;
-	
+
 	private WorldBinder binder;
-	
+
 	private boolean directionApplied;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public SimpleSnake(int indexX, int indexY, World world) {
 		super(indexX, indexY);
 		this.world = world;
 		listeners = new ArrayList<SnakeListener>();
 		chunks = new ArrayList<SnakeChunk>();
-		factory = new SimpleWorldEntityFactory(world);	
+		factory = new SimpleWorldEntityFactory(world);
 		fixedDirection = Direction.RIGHT;
 		setDirection(Direction.RIGHT);
 		binder = new WorldBinder(world);
@@ -91,16 +91,17 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void setDirection(Direction direction) {
-		
+
 		if (directionApplied) {
 			fixedDirection = this.direction;
 			directionApplied = false;
 		}
-		
+
 		if (this.direction == null || fixedDirection.isValid(direction)) {
 			this.direction = direction;
 		}
 	}
+
 	@Override
 	public Direction getDirection() {
 		return direction;
@@ -109,18 +110,18 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 	@Override
 	public void move() {
 		switch (direction) {
-			case DOWN:
-				setIndexY(getIndexY() + 1);
-				break;
-			case LEFT:
-				setIndexX(getIndexX() - 1);
-				break;
-			case RIGHT:
-				setIndexX(getIndexX() + 1);
-				break;
-			case UP:
-				setIndexY(getIndexY() - 1);
-				break;
+		case DOWN:
+			setIndexY(getIndexY() + 1);
+			break;
+		case LEFT:
+			setIndexX(getIndexX() - 1);
+			break;
+		case RIGHT:
+			setIndexX(getIndexX() + 1);
+			break;
+		case UP:
+			setIndexY(getIndexY() - 1);
+			break;
 		}
 	}
 
@@ -131,39 +132,49 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void addChunk() {
-		
+		addChunk(false);
+	}
+
+	@Override
+	public void addChunk(boolean initial) {
 		int chunkX = getIndexX(), chunkY = getIndexY();
-		
+
 		if (tail != null) {
 			IndexConverter converter = new IndexConverter(tail);
 			chunkX = converter.getInvertedIndexX(getDirection());
 			chunkY = converter.getInvertedIndexY(getDirection());
 		}
-		
-		SnakeChunk chunk = (SnakeChunk) factory.create(chunkX, chunkY, WorldEntityType.SNAKE);
+
+		SnakeChunk chunk = (SnakeChunk) factory.create(chunkX, chunkY,
+				WorldEntityType.SNAKE);
 		if (chunks.isEmpty()) {
 			head = chunk;
 		} else {
 			chunk.setNext(tail);
+			
+			if (!initial) {
+				chunkX = tail.getIndexX();
+				chunkY = tail.getIndexY();
+			}
 		}
-		
-		chunks.add(chunk);
+
 		chunk.setIndex(chunkX, chunkY);
+		chunks.add(chunk);
 		tail = chunk;
 	}
 
 	@Override
 	public void removeChunk() {
-		
-		SnakeChunk tail = getTail();		
-		
+
+		SnakeChunk tail = getTail();
+
 		if (tail != null) {
-			
+
 			world.remove(tail);
-			chunks.remove(tail);			
+			chunks.remove(tail);
 			this.tail = tail.getNext();
 		}
-		
+
 	}
 
 	@Override
@@ -200,7 +211,7 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 		for (SnakeListener listener : listeners) {
 			listener.onKill(this);
 		}
-		
+
 		killed = true;
 	}
 
@@ -211,31 +222,31 @@ public class SimpleSnake extends AbstractIndexable implements Snake {
 
 	@Override
 	public void setIndex(int indexX, int indexY) {
-		
+
 		indexX = binder.bindIndexX(indexX);
 		indexY = binder.bindIndexY(indexY);
-		
-		boolean collision = world.hasEntity(indexX, indexY);		
+
+		boolean collision = world.hasEntity(indexX, indexY);
 		WorldEntity collisionTarget = world.getEntity(indexX, indexY);
-		
+
 		super.setIndex(indexX, indexY);
-		
+
 		for (SnakeListener listener : listeners) {
-			listener.onEnterPosition(indexX, indexY, this);		
+			listener.onEnterPosition(indexX, indexY, this);
 			if (collision) {
 				listener.onCollide(indexX, indexY, this, collisionTarget);
 			}
 		}
-		
+
 		if (!isKilled()) {
-			
+
 			SnakeChunk newTail = tail.getNext();
 			tail.setIndex(indexX, indexY);
 			head.setNext(tail);
 			head = tail;
 			tail = newTail;
 			head.setNext(null);
-			
+
 			directionApplied = true;
 		}
 	}

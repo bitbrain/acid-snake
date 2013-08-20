@@ -129,7 +129,7 @@ public enum WorldEntityType implements SnakeListener {
 		@Override
 		public void onSpawn(Snake snake) {
 			for (int i = 0; i < SNAKE_LENGTH; ++i) {
-				snake.addChunk();
+				snake.addChunk(true);
 			}
 		}
 
@@ -156,8 +156,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	SMALL_FOOD {
 		
-		private static final int COUNT = 50;
-
+		private static final int COUNT = 4;
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
 			
