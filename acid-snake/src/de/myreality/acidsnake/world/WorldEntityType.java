@@ -156,7 +156,7 @@ public enum WorldEntityType implements SnakeListener {
 	
 	SMALL_FOOD {
 		
-		private static final int COUNT = 5;
+		private static final int COUNT = 50;
 
 		@Override
 		public void onEnterPosition(int indexX, int indexY, Snake snake) {
@@ -611,6 +611,6 @@ public enum WorldEntityType implements SnakeListener {
 		int deltaX = Math.abs(indexX - indexable.getIndexX());
 		int deltaY = Math.abs(indexY - indexable.getIndexY());
 		
-		return deltaX > radius && deltaY > radius;		
+		return deltaX > radius || deltaY > radius;		
 	}
 }

@@ -99,7 +99,7 @@ public class ProgressImage extends Actor {
 		if (currentWidth < progressWidth) {
 			currentWidth += (progressWidth - currentWidth) / 20;
 		} else {
-			currentWidth = progressWidth;
+			currentWidth = 0;
 		}
 		background.setX(currentWidth);
 		image.setX(-image.getWidth() + background.getX());

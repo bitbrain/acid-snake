@@ -142,6 +142,10 @@ public class ArchievementManager implements SnakeListener, PlayerListener {
 		
 		WorldEntityType type = target.getType();
 		
+		if (type.equals(WorldEntityType.RARE_FOOD)) {
+			type = WorldEntityType.SMALL_FOOD;
+		}
+		
 		if (directComboDetector.hasCombo(type, 3)) {
 			submitAchievement(Achievements.COMBO_SAIYAJIN, indexX, indexY);
 			directComboDetector.clear();
@@ -191,10 +195,6 @@ public class ArchievementManager implements SnakeListener, PlayerListener {
 		counter30.count();
 		counter40.count();
 		counter50.count();
-		
-		if (type.equals(WorldEntityType.RARE_FOOD)) {
-			type = WorldEntityType.SMALL_FOOD;
-		}
 		
 		if (!target.getType().equals(WorldEntityType.SNAKE)) {
 			incrementAchievement(Achievements.ACID_HUNTER, 1, indexX, indexY);
