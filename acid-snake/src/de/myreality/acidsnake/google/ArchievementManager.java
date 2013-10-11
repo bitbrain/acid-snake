@@ -188,6 +188,11 @@ public class ArchievementManager implements SnakeListener, PlayerListener {
 				submitAchievement(Achievements.ICE_CRUSHER, indexX, indexY);
 			}
 			break;
+		case FROZEN_BOMB:
+			incrementAchievement(Achievements.ICE_HUNTER, 1, indexX, indexY);
+			incrementAchievement(Achievements.ICE_EXPERT, 1, indexX, indexY);
+			incrementAchievement(Achievements.ICE_LEGEND, 1, indexX, indexY);
+			break;
 		default:
 			break;
 		}
