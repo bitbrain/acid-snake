@@ -24,9 +24,11 @@ import com.badlogic.gdx.InputProcessor;
 
 import de.myreality.acidsnake.SnakeGame;
 import de.myreality.acidsnake.screens.MainMenuScreen;
+import de.myreality.acidsnake.util.Timer;
 
 /**
- * Processor for the main menu
+ * Processor for the game over menu. A timer is used to add some
+ * virtual delay in order to make the score visible.
  * 
  * @author Miguel Gonzalez <miguel-gonzalez@gmx.de>
  * @since 1.0
@@ -34,10 +36,16 @@ import de.myreality.acidsnake.screens.MainMenuScreen;
  */
 public class GameOverProcessor implements InputProcessor {
 	
+	private static final int DELAY = 1500;
+	
 	private SnakeGame game;
+	
+	private Timer timer;
 	
 	public GameOverProcessor(SnakeGame game) {
 		this.game = game;
+		timer = new Timer();
+		timer.start();
 		Gdx.input.setCatchBackKey(true);
 	}
 
@@ -64,8 +72,14 @@ public class GameOverProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.setScreen(new MainMenuScreen(game));
-		return true;
+		
+		if (timer.getTicks() >= DELAY) {
+			timer.stop();
+			game.setScreen(new MainMenuScreen(game));
+			return true;
+		} 
+		
+		return false;
 	}
 
 	@Override
